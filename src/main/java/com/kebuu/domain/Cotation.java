@@ -2,15 +2,17 @@ package com.kebuu.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "date"))
 public class Cotation {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private Date date;
     private double start;
