@@ -2,7 +2,11 @@ package com.kebuu.service;
 
 public interface DataEnricher {
 
-    void addFloatingMean(int floatingMeanDay);
+    void addFloatingMean(int slippingMeanDay);
 
-    void addEndDailyDelta(int floatingMeanDay);
+    void addDirectionInfo();
+
+    void addEndDailyDelta();
+
+    void addIntraDayDeltas();
 }
