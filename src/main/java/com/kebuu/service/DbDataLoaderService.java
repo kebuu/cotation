@@ -4,7 +4,7 @@ import org.apache.commons.vfs2.FileObject;
 
 import java.util.List;
 
-public interface DbDataLoader {
+public interface DbDataLoaderService {
 
     FileObject loadCotationFile(FileObject fileObject);
 

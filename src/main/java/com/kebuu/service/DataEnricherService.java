@@ -1,6 +1,6 @@
 package com.kebuu.service;
 
-public interface DataEnricher {
+public interface DataEnricherService {
 
     void addFloatingMean(int slippingMeanDay);
 

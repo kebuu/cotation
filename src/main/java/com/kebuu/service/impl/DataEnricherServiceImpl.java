@@ -1,10 +1,10 @@
 package com.kebuu.service.impl;
 
-import com.kebuu.service.DataEnricher;
+import com.kebuu.service.DataEnricherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class DataEnricherImpl implements DataEnricher{
+public class DataEnricherServiceImpl implements DataEnricherService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

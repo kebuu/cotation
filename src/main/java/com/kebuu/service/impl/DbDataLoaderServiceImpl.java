@@ -3,18 +3,20 @@ package com.kebuu.service.impl;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.kebuu.service.DbDataLoader;
+import com.kebuu.service.DbDataLoaderService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.OutputStream;
 import java.util.List;
 
-public class DbDataLoaderImpl implements DbDataLoader {
+@Service
+public class DbDataLoaderServiceImpl implements DbDataLoaderService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
