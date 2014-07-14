@@ -8,6 +8,5 @@ import java.util.List;
 @Data
 public class TimeSerieCotation {
 
-    private List<Cotation> previousCotations = Lists.newArrayList();
-    private Cotation cotation;
+    private List<Cotation> cotations = Lists.newArrayList();
 }

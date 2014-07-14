@@ -2,6 +2,7 @@ package com.kebuu.service.impl;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.kebuu.domain.ArffAttribute;
 import com.kebuu.domain.Cotation;
 import com.kebuu.domain.TimeSerieCotation;
 import com.kebuu.service.ArffService;
@@ -57,20 +58,29 @@ public class ArffServiceImpl implements ArffService {
     @SneakyThrows
     public String toArff(List<Cotation> cotations) {
         List<String> attributes = buildHeaderLines();
+        List<String> headerDataSepararor = Lists.newArrayList(IOUtils.LINE_SEPARATOR);
         List<String> dataLines = buildDataLines(cotations);
 
-        return StreamSupport.stream(Iterables.concat(attributes, dataLines).spliterator(), false)
-                   .collect(Collectors.joining(IOUtils.LINE_SEPARATOR));
+        return StreamSupport.stream(Iterables.concat(attributes, headerDataSepararor, dataLines)
+                .spliterator(), false)
+                .collect(Collectors.joining(IOUtils.LINE_SEPARATOR));
     }
 
     @Override
     public String toArff(TimeSerieCotation timeSerieCotation) {
         List<String> attributes = Lists.newArrayList();
 
-        for (int i = timeSerieCotation.getPreviousCotations().size(); i > 0; i--) {
-            attributes.addAll(buildHeaderLines());
+        for (int i = timeSerieCotation.getCotations().size(); i > 0; i--) {
+            attributes.addAll(buildHeaderLines(Optional.of(String.valueOf(i))));
         }
-        return null;
+
+        List<String> headerDataSepararor = Lists.newArrayList(IOUtils.LINE_SEPARATOR);
+        List<String> dataLines = buildDataLines(timeSerieCotation.getCotations());
+
+
+        return StreamSupport.stream(Iterables.concat(attributes, headerDataSepararor, dataLines)
+                    .spliterator(), false)
+                    .collect(Collectors.joining(IOUtils.LINE_SEPARATOR));
     }
 
     private List<String> buildHeaderLines() {
@@ -78,15 +88,19 @@ public class ArffServiceImpl implements ArffService {
     }
 
     private List<String> buildHeaderLines(Optional<String> attributeSuffix) {
-        List<String> attributes = Lists.newArrayList();
-        attributes.add(ATTRIBUTE + " date" + attributeSuffix.map(x -> "_" + x).orElse("") + " date[" + YYYY_MM_DD + "]");
-        attributes.add(ATTRIBUTE + " start" + attributeSuffix.map(x -> "_" + x).orElse("") + " real");
-        attributes.add(ATTRIBUTE + " end" + attributeSuffix.map(x -> "_" + x).orElse("") + " real");
-        attributes.add(ATTRIBUTE + " min" + attributeSuffix.map(x -> "_" + x).orElse("") + " real");
-        attributes.add(ATTRIBUTE + " max" + attributeSuffix.map(x -> "_" + x).orElse("") + " real");
-        attributes.add(ATTRIBUTE + " volume" + attributeSuffix.map(x -> "_" + x).orElse("") + " integer");
-        attributes.add(IOUtils.LINE_SEPARATOR);
-        return attributes;
+        List<ArffAttribute> arffAttributes = Lists.newArrayList(
+            new ArffAttribute("date", "date[" + YYYY_MM_DD + "]"),
+            new ArffAttribute("start", "real"),
+            new ArffAttribute("end", "real"),
+            new ArffAttribute("min", "real"),
+            new ArffAttribute("max", "real"),
+            new ArffAttribute("volume", "integer")
+        );
+
+        return arffAttributes
+                .stream()
+                .map(ArffAttribute::toText)
+                .collect(Collectors.toList());
     }
 
     private List<String> buildDataLines(List<Cotation> cotations) {
