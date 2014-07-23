@@ -9,4 +9,6 @@ public interface DataEnricherService {
     void addEndDailyDelta();
 
     void addIntraDayDeltas();
+
+    void createTimeSeriesView(int timeSeriesLength);
 }
