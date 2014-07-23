@@ -1,7 +1,7 @@
 package com.kebuu.service;
 
 import com.kebuu.domain.Cotation;
-import com.kebuu.domain.TimeSerieCotation;
+import com.kebuu.domain.TimeSeriesCotation;
 import org.apache.commons.vfs2.FileObject;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface ArffService {
 
     String toArff(List<Cotation> cotations);
 
-    String toArff(TimeSerieCotation timeSerieCotation);
+    String toArff(TimeSeriesCotation timeSeriesCotation);
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TimeSerieCotation {
+public class TimeSeriesCotation {
 
     private List<Cotation> cotations = Lists.newArrayList();
 }

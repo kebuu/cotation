@@ -4,7 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.kebuu.domain.ArffAttribute;
 import com.kebuu.domain.Cotation;
-import com.kebuu.domain.TimeSerieCotation;
+import com.kebuu.domain.TimeSeriesCotation;
 import com.kebuu.service.ArffService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
@@ -26,7 +26,6 @@ public class ArffServiceImpl implements ArffService {
 
     public static final String SEPARATOR = ",";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
-    public static final String ATTRIBUTE = "@attribute";
     public static final String MISSING_VALUE = "?";
 
     @Autowired
@@ -48,6 +47,10 @@ public class ArffServiceImpl implements ArffService {
         return jdbcTemplate.query("SELECT id, date, start, end, min, max, volume FROM cotation", new BeanPropertyRowMapper<Cotation>(Cotation.class));
     }
 
+    private TimeSeriesCotation getTimeSeriesCotations(int timeSeriesLength) {
+        return null;
+    }
+
     @Override
     @SneakyThrows
     public String toArff() {
@@ -67,15 +70,15 @@ public class ArffServiceImpl implements ArffService {
     }
 
     @Override
-    public String toArff(TimeSerieCotation timeSerieCotation) {
+    public String toArff(TimeSeriesCotation timeSeriesCotation) {
         List<String> attributes = Lists.newArrayList();
 
-        for (int i = timeSerieCotation.getCotations().size(); i > 0; i--) {
+        for (int i = timeSeriesCotation.getCotations().size(); i > 0; i--) {
             attributes.addAll(buildHeaderLines(Optional.of(String.valueOf(i))));
         }
 
         List<String> headerDataSepararor = Lists.newArrayList(IOUtils.LINE_SEPARATOR);
-        List<String> dataLines = buildDataLines(timeSerieCotation.getCotations());
+        List<String> dataLines = buildDataLines(timeSeriesCotation.getCotations());
 
 
         return StreamSupport.stream(Iterables.concat(attributes, headerDataSepararor, dataLines)

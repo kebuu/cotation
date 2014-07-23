@@ -62,7 +62,7 @@ public class DataEnricherServiceImpl implements DataEnricherService {
         jdbcTemplate.execute("CREATE OR REPLACE VIEW V_TIME_SERIES_" + timeSeriesLength + " AS SELECT cotation.date AS baseDate, pastCotation.* " +
             "FROM COTATION cotation " +
             "JOIN COTATION pastCotation " +
-            "ON pastCotation.date in (SELECT subCotation.date FROM COTATION subCotation WHERE subCotation.date < cotation.date ORDER BY subCotation.date DESC LIMIT " + timeSeriesLength + ") " +
+            "ON pastCotation.date in (SELECT subCotation.date FROM COTATION subCotation WHERE subCotation.date <= cotation.date ORDER BY subCotation.date DESC LIMIT " + timeSeriesLength + ") " +
             "WHERE cotation.date not in (SELECT excludeCotation.date FROM COTATION excludeCotation ORDER BY excludeCotation.date ASC LIMIT " + timeSeriesLength +") "
         );
     }
