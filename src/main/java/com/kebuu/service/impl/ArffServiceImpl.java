@@ -10,12 +10,12 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.vfs2.FileObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,14 +33,14 @@ public class ArffServiceImpl implements ArffService {
 
     @Override
     @SneakyThrows
-    public void writeToFile(List<Cotation> cotations, FileObject fileObject) {
-        IOUtils.write(toArff(cotations), fileObject.getContent().getOutputStream(false));
+    public void write(List<Cotation> cotations, OutputStream outputStream) {
+        IOUtils.write(toArff(cotations), outputStream);
     }
 
     @Override
     @SneakyThrows
-    public void writeToFile(FileObject fileObject) {
-        writeToFile(getCotations(), fileObject);
+    public void write(OutputStream outputStream) {
+        write(getCotations(), outputStream);
     }
 
     private List<Cotation> getCotations() {
