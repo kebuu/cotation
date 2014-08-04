@@ -91,18 +91,18 @@ public class ArffServiceImpl implements ArffService {
     }
 
     private List<String> buildHeaderLines(Optional<String> attributeSuffix) {
-        List<ArffAttribute> arffAttributes = Lists.newArrayList(
-            new ArffAttribute("date", "date[" + YYYY_MM_DD + "]"),
-            new ArffAttribute("start", "real"),
-            new ArffAttribute("end", "real"),
-            new ArffAttribute("min", "real"),
-            new ArffAttribute("max", "real"),
-            new ArffAttribute("volume", "integer")
+        List<ArffAttribute<Cotation>> arffAttributes = Lists.newArrayList(
+            new ArffAttribute<Cotation>("date", "date[" + YYYY_MM_DD + "]", Cotation::getDate),
+            new ArffAttribute<Cotation>("start", "real", Cotation::getStart),
+            new ArffAttribute<Cotation>("end", "real", Cotation::getEnd),
+            new ArffAttribute<Cotation>("min", "real", Cotation::getMin),
+            new ArffAttribute<Cotation>("max", "real", Cotation::getMax),
+            new ArffAttribute<Cotation>("volume", "integer", Cotation::getVolume)
         );
 
         return arffAttributes
                 .stream()
-                .map(ArffAttribute::toText)
+                .map(ArffAttribute::toHeaderText)
                 .collect(Collectors.toList());
     }
 
