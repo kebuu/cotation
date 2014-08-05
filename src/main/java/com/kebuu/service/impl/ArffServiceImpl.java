@@ -2,6 +2,7 @@ package com.kebuu.service.impl;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.kebuu.dao.EnhancedCotationRepository;
 import com.kebuu.domain.ArffAttribute;
 import com.kebuu.domain.Cotation;
 import com.kebuu.domain.TimeSeriesCotation;
@@ -30,6 +31,9 @@ public class ArffServiceImpl implements ArffService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private EnhancedCotationRepository enhancedCotationRepository;
 
     @Override
     @SneakyThrows
@@ -84,6 +88,11 @@ public class ArffServiceImpl implements ArffService {
         return StreamSupport.stream(Iterables.concat(attributes, headerDataSepararor, dataLines)
                     .spliterator(), false)
                     .collect(Collectors.joining(IOUtils.LINE_SEPARATOR));
+    }
+
+    @Override
+    public String getEnhancedCotationsAsString() {
+        return null;//enhancedCotationRepository.findAll();
     }
 
     private List<String> buildHeaderLines() {

@@ -17,4 +17,6 @@ public interface ArffService {
     String toArff(List<Cotation> cotations);
 
     String toArff(TimeSeriesCotation timeSeriesCotation);
+
+    String getEnhancedCotationsAsString();
 }
