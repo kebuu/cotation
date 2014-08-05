@@ -1,22 +1,11 @@
 package com.kebuu.service;
 
-import com.kebuu.domain.Cotation;
-import com.kebuu.domain.TimeSeriesCotation;
-
-import java.io.OutputStream;
-import java.util.List;
+import com.kebuu.domain.EnhancedCotation;
+import com.kebuu.dto.TimeSerie;
 
 public interface ArffService {
 
-    void write(List<Cotation> cotations, OutputStream outputStream);
+    String enhancedCotationsToArff(Iterable<EnhancedCotation> cotations);
 
-    void write(OutputStream outputStream);
-
-    String toArff();
-
-    String toArff(List<Cotation> cotations);
-
-    String toArff(TimeSeriesCotation timeSeriesCotation);
-
-    String getEnhancedCotationsAsString();
+    String timeSeriesToArff(Iterable<TimeSerie<EnhancedCotation>> timeSerieCotation);
 }

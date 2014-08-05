@@ -8,10 +8,11 @@ import java.util.Date;
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "date"))
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Cotation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     private Date date;

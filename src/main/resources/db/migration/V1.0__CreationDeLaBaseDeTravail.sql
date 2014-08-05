@@ -1,4 +1,4 @@
-CREATE TABLE working_cotation (
+CREATE TABLE enhanced_cotation (
 	id BIGINT NOT NULL PRIMARY KEY,
 	date TIMESTAMP,
 	end DOUBLE NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE working_cotation (
 	volume BIGINT
 );
 
-INSERT INTO working_cotation (id, date, end, max, min, start, volume)
+INSERT INTO enhanced_cotation (id, date, end, max, min, start, volume)
 SELECT id, date, end, max, min, start, volume FROM cotation;
 
-CREATE UNIQUE INDEX ON working_cotation(date);
+CREATE UNIQUE INDEX ON enhanced_cotation(date);
