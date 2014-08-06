@@ -1,10 +1,10 @@
 package com.kebuu.service.impl;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
 import com.kebuu.domain.EnhancedCotation;
 import com.kebuu.dto.ArffAttributes;
 import com.kebuu.dto.TimeSerie;
+import com.kebuu.factory.TimeSerieFactory;
 import com.kebuu.service.ArffService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
@@ -21,8 +21,10 @@ import java.util.stream.StreamSupport;
 public class ArffServiceImpl implements ArffService {
 
     public static final String DATA_TAG = "@data";
+    public static final String RELATION_TAG = "@relation";
 
     @Autowired private ArffAttributes enhancedCotationAttributes;
+    @Autowired private TimeSerieFactory timeSerieFactory;
 
     @Override
     @SneakyThrows
@@ -31,8 +33,10 @@ public class ArffServiceImpl implements ArffService {
     }
 
     @Override
-    public String timeSeriesToArff(Iterable<TimeSerie<EnhancedCotation>> timeSerieCotation) {
-        String header = IntStream.range(0, Iterables.size(timeSerieCotation))
+    public String timeSeriesToArff(Iterable<EnhancedCotation> enhancedCotations, int elementsInSerie) {
+        Iterable<TimeSerie<EnhancedCotation>> timeSerieCotation = timeSerieFactory.toTimeSeries(enhancedCotations, elementsInSerie);
+
+        String header = IntStream.range(0, elementsInSerie)
             .mapToObj(x -> enhancedCotationAttributes.toHeaderText(Optional.of("_" + x)))
             .collect(Collectors.joining(IOUtils.LINE_SEPARATOR));
 
@@ -48,7 +52,9 @@ public class ArffServiceImpl implements ArffService {
     }
 
     private String buildArff(String header, List<String> valueLines) {
-        return header +
+        return RELATION_TAG + " \"Cotations\"" +
+               IOUtils.LINE_SEPARATOR +
+               header +
                IOUtils.LINE_SEPARATOR +
                DATA_TAG + IOUtils.LINE_SEPARATOR +
                Joiner.on(IOUtils.LINE_SEPARATOR).join(valueLines);

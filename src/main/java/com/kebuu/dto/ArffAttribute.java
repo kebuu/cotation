@@ -16,7 +16,7 @@ public class ArffAttribute<T> {
     private Function<T, Object> valueExtractor;
 
     public String toHeaderText(Optional<String> attributeSuffix) {
-        return ATTRIBUTE + " " + name + attributeSuffix.map(x -> "_" + x).orElse("") + " " + type;
+        return ATTRIBUTE + " " + name + attributeSuffix.orElse("") + " " + type;
     }
 
     public String toValueText(T valueBean) {
