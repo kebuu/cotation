@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-public class TimeSerieFactory {
+public class TimeSerieFactory2 {
 
     public <T> List<TimeSerie<T>> toTimeSeries(Iterable<T> data, int elementsInSerie) {
         List<T> dataAsList = Lists.newArrayList(data);
