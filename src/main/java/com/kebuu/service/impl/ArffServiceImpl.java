@@ -4,7 +4,7 @@ import com.google.common.base.Joiner;
 import com.kebuu.domain.EnhancedCotation;
 import com.kebuu.dto.ArffAttributes;
 import com.kebuu.dto.TimeSerie;
-import com.kebuu.factory.TimeSerieFactory2;
+import com.kebuu.factory.TimeSerieFactory;
 import com.kebuu.service.ArffService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
@@ -24,7 +24,7 @@ public class ArffServiceImpl implements ArffService {
     public static final String RELATION_TAG = "@relation";
 
     @Autowired private ArffAttributes enhancedCotationAttributes;
-    @Autowired private TimeSerieFactory2 timeSerieFactory;
+    @Autowired private TimeSerieFactory timeSerieFactory;
 
     @Override
     @SneakyThrows
