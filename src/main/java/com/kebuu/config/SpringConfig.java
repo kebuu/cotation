@@ -40,6 +40,7 @@ public class SpringConfig {
         flyway.setDataSource(dataSource);
         flyway.setInitOnMigrate(true);
         flyway.setInitVersion("0");
+        flyway.repair();
         flyway.migrate();
         return flyway;
     }

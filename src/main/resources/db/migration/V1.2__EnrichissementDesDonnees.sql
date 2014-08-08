@@ -1,0 +1,5 @@
+UPDATE enhanced_cotation SET direction = CASE
+    WHEN DAILY_END_DELTA_PERCENT > (0.75 / 100) THEN 'UP'
+    WHEN DAILY_END_DELTA_PERCENT < (-0.75 / 100) THEN 'DOWN'
+    ELSE 'NONE'
+END;

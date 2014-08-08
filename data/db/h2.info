@@ -1,5 +1,0 @@
-Pour insérer les données dans h2 à partir du fichier CotationsAll.txt, j'ai fait :
-
-INSERT into cotation(date,start,end,min,max,volume)
-SELECT "date", "start" ,"end", "min", "max", "volume"
-FROM CSVREAD('E://ctardella/projects/github/cotation/data/file/CotationsAll.txt', 'code,date,start,max,min,end,volume');
