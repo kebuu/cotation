@@ -1,0 +1,41 @@
+package com.kebuu.misc;
+
+import com.google.common.collect.Lists;
+
+import java.util.Iterator;
+import java.util.List;
+
+public abstract class ListWrapper<T> implements Iterable<T> {
+
+    protected List<T> wrappedList = Lists.newArrayList();
+
+    protected ListWrapper() { }
+
+    protected ListWrapper(Iterable<T> iterable) {
+        addAll(iterable);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return wrappedList.iterator();
+    }
+
+    public <K extends ListWrapper<T> > K concat(K listWrapper) {
+        wrappedList.addAll(listWrapper.wrappedList);
+        return (K)this;
+    }
+
+    public <K extends ListWrapper<T>> K addAll(Iterable<T> iterable) {
+        wrappedList.addAll(Lists.newArrayList(iterable));
+        return (K) this;
+    }
+
+    public <K extends ListWrapper<T>> K add(T t) {
+        wrappedList.add(t);
+        return (K) this;
+    }
+
+    public int size() {
+        return wrappedList.size();
+    }
+}

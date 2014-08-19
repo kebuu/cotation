@@ -1,16 +1,15 @@
 package com.kebuu.web.controller;
 
-import com.kebuu.dao.EnhancedCotationRepository;
-import com.kebuu.domain.EnhancedCotation;
+import com.kebuu.builder.impl.MultiCotationBuilder;
+import com.kebuu.dao.CotationRepository;
+import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.service.ArffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,22 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArffController {
 
     @Autowired private ArffService arffService;
-    @Autowired private EnhancedCotationRepository enhancedCotationRepository;
+    @Autowired private MultiCotationBuilder multiCotationBuilder;
+    @Autowired private CotationRepository cotationRepository;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String cotationsAsArff() {
-        return arffService.enhancedCotationsToArff(enhancedCotationRepository.findAll());
+    @RequestMapping(value = "/built", method = RequestMethod.GET)
+    public String getbuildCotations() {
+        Cotations cotations = new Cotations(cotationRepository.findAll());
+        return arffService.ToArff(multiCotationBuilder.attributes(), multiCotationBuilder.basedOn(cotations));
     }
 
-    @RequestMapping(value = "/timeserie", method = RequestMethod.GET)
-    public String timeSerieCotationsAsArff(@RequestParam("elementsInSerie") int elementsInSerie) {
-        Iterable<EnhancedCotation> enhancedCotations = enhancedCotationRepository.findAll(new Sort(Sort.Direction.ASC, "date"));
-        return arffService.timeSeriesToArff(enhancedCotations, elementsInSerie);
-    }
-
-    @RequestMapping(value = "/timeserie/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public Resource timeSerieCotationsAsArffFile(@RequestParam("elementsInSerie") int elementsInSerie) {
-        String fileContent = timeSerieCotationsAsArff(elementsInSerie);
+    @RequestMapping(value = "/built/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Resource getbuildCotationsAsFile() {
+        String fileContent = getbuildCotations();
         return new ByteArrayResource(fileContent.getBytes());
     }
 }
