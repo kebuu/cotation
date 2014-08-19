@@ -1,20 +1,24 @@
 package com.kebuu.builder.impl;
 
+import com.kebuu.builder.CotationBuilder;
+import com.kebuu.domain.Cotation;
+import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
-import com.kebuu.builder.CotationBuilder;
-import com.kebuu.utils.StreamUtils;
 
 public abstract class AbstractBuilder implements CotationBuilder {
 
     @Override
     public BuiltCotations build(Cotations cotations) {
-        return StreamUtils.stream(cotations)
-            .map(cotation -> build(cotation, cotations))
-            .reduce(
-                new BuiltCotations(),
-                (improvedCotations, improvedCotation) -> improvedCotations.add(improvedCotation),
-                BuiltCotations::concat
-            );
+        BuiltCotations builtCotations = new BuiltCotations();
+
+        for (Cotation cotation : cotations) {
+            BuiltCotation builtCotation = build(cotation, cotations, builtCotations);
+            builtCotations.add(builtCotation);
+        }
+
+        return builtCotations;
     }
+
+    protected abstract BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations);
 }

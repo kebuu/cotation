@@ -10,13 +10,13 @@ public class MultiCotationBuilder extends ListWrapper<CotationBuilder> {
 
     public CotationAttributes attributes() {
         return wrappedList.stream()
-            .map(CotationBuilder::attributes)
+            .map(CotationBuilder::builtAttributes)
             .reduce(new CotationAttributes(), CotationAttributes::concat);
     }
 
     public BuiltCotations basedOn(Cotations cotations) {
         return wrappedList.stream()
-           .map(improver -> improver.build(cotations))
+           .map(builder -> builder.build(cotations))
            .reduce(BuiltCotations::merge).orElse(new BuiltCotations());
     }
 }

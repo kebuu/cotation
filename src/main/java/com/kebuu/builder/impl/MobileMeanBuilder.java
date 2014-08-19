@@ -3,6 +3,7 @@ package com.kebuu.builder.impl;
 import com.google.common.base.Preconditions;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
+import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
@@ -35,7 +36,7 @@ public class MobileMeanBuilder extends AbstractBuilder {
     }
 
     @Override
-    public CotationAttributes attributes() {
+    public CotationAttributes builtAttributes() {
         CotationAttributes attributes = new CotationAttributes();
         attributes.add(new RealCotationAttribute(MOBILE_MEAN_PREFIX_NAME + mobileMeanRange));
         attributes.add(new NominalCotationAttribute(MOBILE_MEAN_PREFIX_NAME + POSITIONPREFIX_NAME + mobileMeanRange, IndicatorPosition.class));
@@ -43,7 +44,7 @@ public class MobileMeanBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations) {
+    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations) {
         DoubleSummaryStatistics mobileMeanSummary = StreamUtils.stream(cotations)
             .sorted(Comparator.comparingInt(Cotation::getPosition).reversed())
             .filter(currentCotation -> currentCotation.getPosition() <= cotation.getPosition())
