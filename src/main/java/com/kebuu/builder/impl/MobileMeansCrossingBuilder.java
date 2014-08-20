@@ -6,13 +6,10 @@ import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
-import com.kebuu.dto.cotation.value.NominalCotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.MobileMeansCrossingStatus;
 
-import static com.kebuu.enums.MobileMeansCrossingStatus.FIRST_CROSSING_DOWN;
-import static com.kebuu.enums.MobileMeansCrossingStatus.FIRST_CROSSING_UP;
-import static com.kebuu.enums.MobileMeansCrossingStatus.NOT_CROSSING;
+import static com.kebuu.enums.MobileMeansCrossingStatus.*;
 
 /**
  * Indicateur de croisement de deux moyennes mobiles.
@@ -51,7 +48,7 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
         Double mobileMeanRange1MinusMobileMeanRange2CurrentCotation = mobileMeanRange1ValueCurrentCotation - mobileMeanRange2ValueCurrentCotation;
         Double mobileMeanRange1MinusMobileMeanRange2PreviousCotation = mobileMeanRange1ValuePreviousCotation - mobileMeanRange2ValuePreviousCotation;
 
-        SimpleCotationValue mobileMeansCrossingValue = new NominalCotationValue(nominalCotationAttribute, NOT_CROSSING);
+        SimpleCotationValue<MobileMeansCrossingStatus> mobileMeansCrossingValue = new SimpleCotationValue(nominalCotationAttribute, NOT_CROSSING);
 
         if (Math.signum(mobileMeanRange1MinusMobileMeanRange2CurrentCotation) != Math.signum(mobileMeanRange1MinusMobileMeanRange2PreviousCotation)) {
             if (mobileMeanRange1MinusMobileMeanRange2CurrentCotation >= 0) {

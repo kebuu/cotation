@@ -8,8 +8,6 @@ import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
-import com.kebuu.dto.cotation.value.DoubleCotationValue;
-import com.kebuu.dto.cotation.value.NominalCotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.IndicatorPosition;
 import com.kebuu.utils.StreamUtils;
@@ -52,8 +50,8 @@ public class MobileMeanBuilder extends AbstractBuilder {
             .limit(mobileMeanRange)
             .collect(Collectors.summarizingDouble(Cotation::getEnd));
 
-        SimpleCotationValue<Double> mobileMeanValue = new DoubleCotationValue(mobileMeanValueAttribute);
-        SimpleCotationValue mobileMeanPosition = new NominalCotationValue(mobileMeanPositionAttribute);
+        SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue(mobileMeanValueAttribute);
+        SimpleCotationValue<IndicatorPosition> mobileMeanPosition = new SimpleCotationValue(mobileMeanPositionAttribute);
 
         if(canCalculateMobileMean(mobileMeanSummary)) {
             mobileMeanValue = mobileMeanValue.withValue(mobileMeanSummary.getAverage());
