@@ -1,13 +1,12 @@
 package com.kebuu.dto.cotation.attribute;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.kebuu.dto.cotation.formatter.CotationAttributeFormatter;
 
-@Getter
-@AllArgsConstructor
-public abstract class CotationAttribute {
+public interface CotationAttribute<T> {
 
-    private String name;
+    CotationAttributeFormatter<T> getFormatter();
+
+    String getName();
     
-    public abstract String getArffType();
+    String getArffType();
 }

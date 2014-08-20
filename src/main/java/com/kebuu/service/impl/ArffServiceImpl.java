@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import com.kebuu.dto.arff.ArffAttributes;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
-import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.factory.TimeSerieFactory;
 import com.kebuu.service.ArffService;
 import com.kebuu.utils.StreamUtils;
@@ -53,7 +52,7 @@ public class ArffServiceImpl implements ArffService {
         List<String> valueLines = StreamUtils.stream(builtCotations)
                 .map(builtCotation -> {
                     String valueLine = builtCotation.getValues().stream()
-                       .map(CotationValue::getValueAsText)
+                       .map(cotationValue -> cotationValue.getAttribute().getFormatter().format(cotationValue))
                        .collect(Collectors.joining(ArffAttributes.VALUE_SEPARATOR));
                     return valueLine;
                 })

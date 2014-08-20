@@ -15,12 +15,16 @@ public abstract class ListWrapper<T> implements Iterable<T> {
         addAll(iterable);
     }
 
+    protected ListWrapper(T...values) {
+        this(Lists.newArrayList(values));
+    }
+
     @Override
     public Iterator<T> iterator() {
         return wrappedList.iterator();
     }
 
-    public <K extends ListWrapper<T> > K concat(K listWrapper) {
+    public <K extends ListWrapper<T>> K concat(K listWrapper) {
         wrappedList.addAll(listWrapper.wrappedList);
         return (K)this;
     }

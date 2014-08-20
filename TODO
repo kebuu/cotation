@@ -1,8 +1,3 @@
-Trouver un moyen plus joli de faire le formattage des CotationValue (ne plus passer par la méthode getValueAsText)
-Idem pour la méthode getArffType des CotationAttribute
--> Passer par un paramètrage des classe CotationValue, CotationAttribute et CotationValueFormatter(à créer)
--> Remplacer EmptyCotationValue par un optional
-
 Initilisation de la base de données
 
 Petit TU
@@ -12,3 +7,5 @@ Extraire texte exception/precondition
 Nettoyer le code inutile
 
 Cotation -> quotation ?
+
+Trouver une solution au probleme : withValue

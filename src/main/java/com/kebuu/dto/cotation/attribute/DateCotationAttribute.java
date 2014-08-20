@@ -1,15 +1,19 @@
 package com.kebuu.dto.cotation.attribute;
 
 import com.kebuu.constant.Constant;
+import com.kebuu.dto.cotation.formatter.DateFormatter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-public class DateCotationAttribute extends CotationAttribute {
+import java.util.Date;
 
-    private String dateFormat;
+public class DateCotationAttribute extends AbstractAttribute<Date> {
+
+    private final String arffType;
 
     public DateCotationAttribute(String name, String dateFormat) {
         super(name);
-        this.dateFormat = dateFormat;
+        formatter = new DateFormatter(dateFormat);
+        arffType = Constant.ARFF_TYPE_DATE + " " + dateFormat;
     }
 
     public DateCotationAttribute(String name) {
@@ -18,6 +22,6 @@ public class DateCotationAttribute extends CotationAttribute {
 
     @Override
     public String getArffType() {
-        return Constant.ARFF_TYPE_DATE + " " + dateFormat;
+        return arffType;
     }
 }

@@ -14,7 +14,7 @@ public final class DecimalFormatUtils {
     static {
         DEFAULT_DECIMAL_FORMAT = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
         DEFAULT_DECIMAL_FORMAT.applyPattern(Constant.DEFAULT_DECIMAL_FORMAT_PATTERN);
-        DEFAULT_DECIMAL_FORMAT.setRoundingMode(RoundingMode.HALF_DOWN);;
+        DEFAULT_DECIMAL_FORMAT.setRoundingMode(RoundingMode.HALF_DOWN);
     }
 
     private DecimalFormatUtils() { }

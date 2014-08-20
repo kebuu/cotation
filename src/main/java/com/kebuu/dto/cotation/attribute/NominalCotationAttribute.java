@@ -1,17 +1,19 @@
 package com.kebuu.dto.cotation.attribute;
 
 import com.kebuu.constant.Constant;
+import com.kebuu.dto.cotation.formatter.NominalFormatter;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class NominalCotationAttribute extends CotationAttribute {
+public class NominalCotationAttribute extends AbstractAttribute<Enum<? extends Enum<?>>> {
 
     private Class<? extends Enum<? extends Enum<?>>> enumClass;
 
     public NominalCotationAttribute(String name, Class<? extends Enum<? extends Enum<?>>> enumClass) {
         super(name);
         this.enumClass = enumClass;
+        this.formatter = new NominalFormatter();
     }
 
     @Override

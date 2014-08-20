@@ -1,6 +1,12 @@
 package com.kebuu.dto.cotation.value;
 
-public interface CotationValue {
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 
-    String getValueAsText();
+import java.util.Optional;
+
+public interface CotationValue<T> {
+
+    Optional<T> getValue();
+
+    CotationAttribute<T> getAttribute();
 }

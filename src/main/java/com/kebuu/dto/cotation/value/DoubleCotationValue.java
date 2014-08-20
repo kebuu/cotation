@@ -1,15 +1,14 @@
 package com.kebuu.dto.cotation.value;
 
-import com.kebuu.utils.DecimalFormatUtils;
-import lombok.Value;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 
-@Value
-public class DoubleCotationValue implements CotationValue {
+public class DoubleCotationValue extends SimpleCotationValue<Double> {
 
-    private Double value;
+    public DoubleCotationValue(CotationAttribute<Double> attribute, Double value) {
+        super(attribute, value);
+    }
 
-    @Override
-    public String getValueAsText() {
-        return DecimalFormatUtils.getDefault().format(value);
+    public DoubleCotationValue(CotationAttribute<Double> attribute) {
+        super(attribute);
     }
 }

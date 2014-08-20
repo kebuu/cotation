@@ -39,10 +39,6 @@ public class BuiltCotation {
         return this;
     }
 
-    public BuiltCotation concat(BuiltCotation builtCotation) {
-        values.addAll(builtCotation.values);
-        return this;
-    }
     public static BuiltCotation merge(BuiltCotation builtCotation1, BuiltCotation builtCotation2) {
         Preconditions.checkArgument(builtCotation1.getBaseCotation().equals(builtCotation2.getBaseCotation()), "Both parameters have to be built on the same base cotation");
 

@@ -2,7 +2,7 @@ package com.kebuu.dto.cotation.attribute;
 
 import com.kebuu.constant.Constant;
 
-public class IntegerCotationAttribute extends CotationAttribute {
+public class IntegerCotationAttribute extends AbstractAttribute<Integer> {
 
     public IntegerCotationAttribute(String name) {
         super(name);

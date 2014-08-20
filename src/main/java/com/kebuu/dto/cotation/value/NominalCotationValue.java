@@ -1,14 +1,14 @@
 package com.kebuu.dto.cotation.value;
 
-import lombok.Value;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 
-@Value
-public class NominalCotationValue implements CotationValue {
+public class NominalCotationValue extends SimpleCotationValue<Enum<? extends Enum<?>>> {
 
-    private Enum<? extends Enum<?>> value;
+    public NominalCotationValue(CotationAttribute<Enum<? extends Enum<?>>> attribute, Enum<? extends Enum<?>> value) {
+        super(attribute, value);
+    }
 
-    @Override
-    public String getValueAsText() {
-        return value.name();
+    public NominalCotationValue(CotationAttribute<Enum<? extends Enum<?>>> attribute) {
+        super(attribute);
     }
 }

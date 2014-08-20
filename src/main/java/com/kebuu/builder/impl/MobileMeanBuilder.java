@@ -8,10 +8,9 @@ import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
-import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.DoubleCotationValue;
-import com.kebuu.dto.cotation.value.EmptyCotationValue;
 import com.kebuu.dto.cotation.value.NominalCotationValue;
+import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.IndicatorPosition;
 import com.kebuu.utils.StreamUtils;
 
@@ -29,18 +28,20 @@ public class MobileMeanBuilder extends AbstractBuilder {
     public static final String POSITIONPREFIX_NAME = "position_";
 
     private int mobileMeanRange;
+    private RealCotationAttribute mobileMeanValueAttribute;
+    private NominalCotationAttribute mobileMeanPositionAttribute;
 
     public MobileMeanBuilder(int mobileMeanRange) {
         Preconditions.checkArgument(mobileMeanRange > 0);
+
         this.mobileMeanRange = mobileMeanRange;
+        this.mobileMeanValueAttribute = new RealCotationAttribute(MOBILE_MEAN_PREFIX_NAME + mobileMeanRange);
+        this.mobileMeanPositionAttribute = new NominalCotationAttribute(MOBILE_MEAN_PREFIX_NAME + POSITIONPREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
     }
 
     @Override
     public CotationAttributes builtAttributes() {
-        CotationAttributes attributes = new CotationAttributes();
-        attributes.add(new RealCotationAttribute(MOBILE_MEAN_PREFIX_NAME + mobileMeanRange));
-        attributes.add(new NominalCotationAttribute(MOBILE_MEAN_PREFIX_NAME + POSITIONPREFIX_NAME + mobileMeanRange, IndicatorPosition.class));
-        return attributes;
+        return new CotationAttributes(mobileMeanValueAttribute, mobileMeanPositionAttribute);
     }
 
     @Override
@@ -51,14 +52,15 @@ public class MobileMeanBuilder extends AbstractBuilder {
             .limit(mobileMeanRange)
             .collect(Collectors.summarizingDouble(Cotation::getEnd));
 
-        CotationValue mobileMeanValue = canCalculateMobileMean(mobileMeanSummary) ? new DoubleCotationValue(mobileMeanSummary.getAverage()) : EmptyCotationValue.INSTANCE;
-        CotationValue nominalCotationValue = EmptyCotationValue.INSTANCE;
+        SimpleCotationValue<Double> mobileMeanValue = new DoubleCotationValue(mobileMeanValueAttribute);
+        SimpleCotationValue mobileMeanPosition = new NominalCotationValue(mobileMeanPositionAttribute);
 
-        if (canCalculateMobileMean(mobileMeanSummary)) {
-            nominalCotationValue = new NominalCotationValue(IndicatorPosition.basedOn(cotation.getEnd(), mobileMeanSummary.getAverage()));
+        if(canCalculateMobileMean(mobileMeanSummary)) {
+            mobileMeanValue = mobileMeanValue.withValue(mobileMeanSummary.getAverage());
+            mobileMeanPosition = mobileMeanPosition.withValue(IndicatorPosition.basedOn(cotation.getEnd(), mobileMeanSummary.getAverage()));
         }
 
-        return new BuiltCotation(cotation).withAdditionalValues(mobileMeanValue, nominalCotationValue);
+        return new BuiltCotation(cotation).withAdditionalValues(mobileMeanValue, mobileMeanPosition);
     }
 
     private boolean canCalculateMobileMean(DoubleSummaryStatistics mobileMeanSummary) {
