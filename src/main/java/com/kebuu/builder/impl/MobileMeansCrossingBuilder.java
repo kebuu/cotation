@@ -23,7 +23,7 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
 
     private MobileMeanBuilder mobileMeanBuilder1;
     private MobileMeanBuilder mobileMeanBuilder2;
-    private NominalCotationAttribute nominalCotationAttribute;
+    private NominalCotationAttribute<MobileMeansCrossingStatus> nominalCotationAttribute;
 
     public MobileMeansCrossingBuilder(MobileMeanBuilder mobileMeanBuilder1, MobileMeanBuilder mobileMeanBuilder2) {
         this.mobileMeanBuilder1 = mobileMeanBuilder1;

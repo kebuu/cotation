@@ -15,6 +15,7 @@ public abstract class ListWrapper<T> implements Iterable<T> {
         addAll(iterable);
     }
 
+    @SafeVarargs
     protected ListWrapper(T...values) {
         this(Lists.newArrayList(values));
     }

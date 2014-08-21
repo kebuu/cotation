@@ -8,7 +8,7 @@ public abstract class AbstractFormatter<T> implements CotationAttributeFormatter
     @Override
     public String format(CotationValue<T> cotationValue) {
         return cotationValue.getValue()
-            .map(value -> doFormat(value))
+            .map(this::doFormat)
             .orElse(Constant.EMPTY_VALUE);
     }
 

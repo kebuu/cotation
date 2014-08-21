@@ -14,7 +14,7 @@ public class Cotations extends ListWrapper<Cotation> {
         super(iterable);
     }
 
-    public Optional<Cotation> getCotationAtPosition(int position) {
+    public Optional<Cotation> getCotation(int position) {
         return wrappedList.stream()
             .filter(cotation -> cotation.getPosition() == position)
             .findFirst();

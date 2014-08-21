@@ -8,7 +8,7 @@ import lombok.Getter;
 public abstract class AbstractAttribute<T>  implements CotationAttribute<T>{
 
     protected String name;
-    protected CotationAttributeFormatter<T> formatter = new DefaultFormatter<T>();
+    protected CotationAttributeFormatter<T> formatter = new DefaultFormatter<>();
 
     protected AbstractAttribute(String name) {
         this.name = name;

@@ -6,6 +6,7 @@ import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.exception.NoBuiltCotationAtPosition;
 import com.kebuu.misc.ListWrapper;
 import com.kebuu.utils.StreamUtils;
+import com.kebuu.utils.Utils;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,8 @@ public class BuiltCotations extends ListWrapper<BuiltCotation> {
         List<BuiltCotation> mergedBuiltCotation = StreamUtils.stream(builtCotations1)
             .map(builtCotation1 -> {
                 int builtCotationPosition = builtCotation1.getPosition();
-                BuiltCotation builtCotation2 = builtCotations2.getBuiltCotation(builtCotationPosition).orElseThrow(NoBuiltCotationAtPosition.from(builtCotationPosition));
+                BuiltCotation builtCotation2 = builtCotations2.getBuiltCotation(builtCotationPosition)
+                    .orElseThrow(Utils.supply(new NoBuiltCotationAtPosition(builtCotationPosition)));
                 return BuiltCotation.merge(builtCotation1, builtCotation2);
             }).collect(Collectors.toList());
 

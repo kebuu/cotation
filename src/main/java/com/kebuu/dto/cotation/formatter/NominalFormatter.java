@@ -1,9 +1,9 @@
 package com.kebuu.dto.cotation.formatter;
 
-public class NominalFormatter extends AbstractFormatter<Enum<? extends Enum<?>>> {
+public class NominalFormatter<T extends Enum<? extends Enum<?>>> extends AbstractFormatter<T> {
 
     @Override
-    public String doFormat(Enum<? extends Enum<?>> value) {
+    public String doFormat(T value) {
         return value.name();
     }
 }

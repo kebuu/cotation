@@ -28,7 +28,7 @@ public class MobileMeanBuilder extends AbstractBuilder {
 
     @Getter private int mobileMeanRange;
     @Getter private RealCotationAttribute mobileMeanValueAttribute;
-    @Getter private NominalCotationAttribute mobileMeanPositionAttribute;
+    @Getter private NominalCotationAttribute<IndicatorPosition> mobileMeanPositionAttribute;
 
     public MobileMeanBuilder(int mobileMeanRange) {
         Preconditions.checkArgument(mobileMeanRange > 0);

@@ -23,7 +23,7 @@ public class SimpleCotationValue<T> implements CotationValue<T> {
     }
 
     public SimpleCotationValue<T> withValue(T value) {
-        return new SimpleCotationValue(attribute, value);
+        return new SimpleCotationValue<T>(attribute, value);
     }
 
     @Override

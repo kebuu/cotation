@@ -6,14 +6,14 @@ import com.kebuu.dto.cotation.formatter.NominalFormatter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class NominalCotationAttribute extends AbstractAttribute<Enum<? extends Enum<?>>> {
+public class NominalCotationAttribute<T extends Enum<? extends Enum<?>>> extends AbstractAttribute<T> {
 
-    private Class<? extends Enum<? extends Enum<?>>> enumClass;
+    private Class<T> enumClass;
 
-    public NominalCotationAttribute(String name, Class<? extends Enum<? extends Enum<?>>> enumClass) {
+    public NominalCotationAttribute(String name, Class<T> enumClass) {
         super(name);
         this.enumClass = enumClass;
-        this.formatter = new NominalFormatter();
+        this.formatter = new NominalFormatter<T>();
     }
 
     @Override
