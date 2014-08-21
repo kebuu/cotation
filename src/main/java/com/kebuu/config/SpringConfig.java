@@ -1,5 +1,6 @@
 package com.kebuu.config;
 
+import com.kebuu.builder.impl.MobileMeansCrossingBuilder;
 import com.kebuu.builder.impl.MultiCotationBuilder;
 import com.kebuu.builder.impl.MobileMeanBuilder;
 import com.kebuu.dto.arff.ArffAttributes;
@@ -28,10 +29,10 @@ public class SpringConfig {
 
     @Bean
     public MultiCotationBuilder cotationBuilders() {
-        MultiCotationBuilder multiCotationBuilder = new MultiCotationBuilder();
-        multiCotationBuilder.add(new MobileMeanBuilder(20));
-        multiCotationBuilder.add(new MobileMeanBuilder(50));
-        return multiCotationBuilder;
+        MobileMeanBuilder mobileMeanBuilder20 = new MobileMeanBuilder(20);
+        MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
+        MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
+        return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050);
     }
 
     @Bean

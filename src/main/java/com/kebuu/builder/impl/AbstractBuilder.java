@@ -9,16 +9,16 @@ import com.kebuu.dto.cotation.Cotations;
 public abstract class AbstractBuilder implements CotationBuilder {
 
     @Override
-    public BuiltCotations build(Cotations cotations) {
+    public BuiltCotations build(Cotations cotations, BuiltCotations alreadyBuiltCotations) {
         BuiltCotations builtCotations = new BuiltCotations();
 
         for (Cotation cotation : cotations) {
-            BuiltCotation builtCotation = build(cotation, cotations, builtCotations);
+            BuiltCotation builtCotation = build(cotation, cotations, builtCotations, alreadyBuiltCotations);
             builtCotations.add(builtCotation);
         }
 
         return builtCotations;
     }
 
-    protected abstract BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations);
+    protected abstract BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations);
 }

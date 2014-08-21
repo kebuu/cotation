@@ -42,4 +42,8 @@ public abstract class ListWrapper<T> implements Iterable<T> {
     public int size() {
         return wrappedList.size();
     }
+
+    public boolean isEmpty() {
+        return wrappedList.isEmpty();
+    }
 }

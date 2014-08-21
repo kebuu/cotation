@@ -8,6 +8,10 @@ import com.kebuu.misc.ListWrapper;
 
 public class MultiCotationBuilder extends ListWrapper<CotationBuilder> {
 
+    public MultiCotationBuilder(CotationBuilder... values) {
+        super(values);
+    }
+
     public CotationAttributes attributes() {
         return wrappedList.stream()
             .map(CotationBuilder::builtAttributes)
@@ -15,8 +19,18 @@ public class MultiCotationBuilder extends ListWrapper<CotationBuilder> {
     }
 
     public BuiltCotations basedOn(Cotations cotations) {
-        return wrappedList.stream()
-           .map(builder -> builder.build(cotations))
-           .reduce(BuiltCotations::merge).orElse(new BuiltCotations());
+        BuiltCotations aggregatedBuiltCotations = new BuiltCotations();
+
+        for (CotationBuilder cotationBuilder : wrappedList) {
+            BuiltCotations builtCotations = cotationBuilder.build(cotations, aggregatedBuiltCotations);
+
+            if (aggregatedBuiltCotations.isEmpty()) {
+                aggregatedBuiltCotations = builtCotations;
+            } else {
+                aggregatedBuiltCotations = BuiltCotations.merge(aggregatedBuiltCotations, builtCotations);
+            }
+        }
+
+        return aggregatedBuiltCotations;
     }
 }

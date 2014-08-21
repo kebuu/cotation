@@ -1,6 +1,8 @@
 package com.kebuu.dto.cotation;
 
 import com.google.common.base.Preconditions;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
+import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.exception.NoBuiltCotationAtPosition;
 import com.kebuu.misc.ListWrapper;
 import com.kebuu.utils.StreamUtils;
@@ -24,16 +26,24 @@ public class BuiltCotations extends ListWrapper<BuiltCotation> {
         List<BuiltCotation> mergedBuiltCotation = StreamUtils.stream(builtCotations1)
             .map(builtCotation1 -> {
                 int builtCotationPosition = builtCotation1.getPosition();
-                BuiltCotation builtCotation2 = builtCotations2.getBuiltCotationAtPosition(builtCotationPosition).orElseThrow(NoBuiltCotationAtPosition.from(builtCotationPosition));
+                BuiltCotation builtCotation2 = builtCotations2.getBuiltCotation(builtCotationPosition).orElseThrow(NoBuiltCotationAtPosition.from(builtCotationPosition));
                 return BuiltCotation.merge(builtCotation1, builtCotation2);
             }).collect(Collectors.toList());
 
         return new BuiltCotations(mergedBuiltCotation);
     }
 
-    public Optional<BuiltCotation> getBuiltCotationAtPosition(int position) {
+    public Optional<BuiltCotation> getBuiltCotation(int position) {
         return wrappedList.stream()
                 .filter(builtCotation -> builtCotation.getPosition() == position)
                 .findFirst();
+    }
+
+    public <T> Optional<? extends CotationValue<T>> getCotationValue(int cotationPosition, CotationAttribute<T> attribute) {
+        return getBuiltCotation(cotationPosition)
+               .flatMap(optionalBuiltCotation -> optionalBuiltCotation.getValueByAttribute(attribute));
+    }
+    public <T> Optional<T> getValue(int cotationPosition, CotationAttribute<T> attribute) {
+        return getCotationValue(cotationPosition, attribute).flatMap(CotationValue::getValue);
     }
 }

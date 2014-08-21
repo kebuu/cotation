@@ -5,9 +5,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.kebuu.domain.Cotation;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BuiltCotation {
 
@@ -37,6 +39,13 @@ public class BuiltCotation {
     public BuiltCotation withAdditionalValues(List<CotationValue> cotationValues) {
         values.addAll(cotationValues);
         return this;
+    }
+
+    public <T> Optional<CotationValue<T>> getValueByAttribute(CotationAttribute<T> attribute) {
+        return values.stream()
+            .filter(cotationValue -> cotationValue.getAttribute().getName().equals(attribute.getName()))
+            .map(cotationValue -> (CotationValue<T>) cotationValue)
+            .findFirst();
     }
 
     public static BuiltCotation merge(BuiltCotation builtCotation1, BuiltCotation builtCotation2) {

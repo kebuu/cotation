@@ -8,5 +8,5 @@ public interface CotationBuilder {
 
     CotationAttributes builtAttributes();
 
-    BuiltCotations build(Cotations cotations);
+    BuiltCotations build(Cotations cotations, BuiltCotations alreadyBuiltCotations);
 }

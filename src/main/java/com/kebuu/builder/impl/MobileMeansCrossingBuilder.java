@@ -9,6 +9,8 @@ import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.MobileMeansCrossingStatus;
 
+import java.util.Optional;
+
 import static com.kebuu.enums.MobileMeansCrossingStatus.*;
 
 /**
@@ -19,14 +21,16 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
 
     public static final String MOBILE_MEANS_CROSSING_PREFIX_NAME = "mobile_means_crossing_";
 
-    private int mobileMeanRange1;
-    private int mobileMeanRange2;
+    private MobileMeanBuilder mobileMeanBuilder1;
+    private MobileMeanBuilder mobileMeanBuilder2;
     private NominalCotationAttribute nominalCotationAttribute;
 
-    public MobileMeansCrossingBuilder(int mobileMeanRange1, int mobileMeanRange2) {
-        this.mobileMeanRange1 = mobileMeanRange1;
-        this.mobileMeanRange2 = mobileMeanRange2;
-        this.nominalCotationAttribute = new NominalCotationAttribute(MOBILE_MEANS_CROSSING_PREFIX_NAME + mobileMeanRange1 + "_" + mobileMeanRange1, MobileMeansCrossingStatus.class);
+    public MobileMeansCrossingBuilder(MobileMeanBuilder mobileMeanBuilder1, MobileMeanBuilder mobileMeanBuilder2) {
+        this.mobileMeanBuilder1 = mobileMeanBuilder1;
+        this.mobileMeanBuilder2 = mobileMeanBuilder2;
+
+        String nominalCotationAttributeName = MOBILE_MEANS_CROSSING_PREFIX_NAME + mobileMeanBuilder1.getMobileMeanRange() + "_" + mobileMeanBuilder2.getMobileMeanRange();
+        this.nominalCotationAttribute = new NominalCotationAttribute(nominalCotationAttributeName, MobileMeansCrossingStatus.class);
     }
 
     @Override
@@ -35,29 +39,33 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations) {
-        builtCotations.getBuiltCotationAtPosition(cotation.getPosition()).get().getValues()
-            .stream().filter(x -> true)
-            .findFirst();
+    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+        Optional<Double> builder1ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), mobileMeanBuilder1.getMobileMeanValueAttribute());
+        Optional<Double> builder2ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), mobileMeanBuilder2.getMobileMeanValueAttribute());
+        Optional<Double> builder1ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, mobileMeanBuilder1.getMobileMeanValueAttribute());
+        Optional<Double> builder2ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, mobileMeanBuilder2.getMobileMeanValueAttribute());
 
-        Double mobileMeanRange1ValueCurrentCotation = null;
-        Double mobileMeanRange2ValueCurrentCotation = null;
-        Double mobileMeanRange1ValuePreviousCotation = null;
-        Double mobileMeanRange2ValuePreviousCotation = null;
+        SimpleCotationValue<MobileMeansCrossingStatus> mobileMeansCrossingValue = new SimpleCotationValue(nominalCotationAttribute);
 
-        Double mobileMeanRange1MinusMobileMeanRange2CurrentCotation = mobileMeanRange1ValueCurrentCotation - mobileMeanRange2ValueCurrentCotation;
-        Double mobileMeanRange1MinusMobileMeanRange2PreviousCotation = mobileMeanRange1ValuePreviousCotation - mobileMeanRange2ValuePreviousCotation;
+        if (areNeededValuesPresent(builder1ValueCurrentCotation, builder2ValueCurrentCotation, builder1ValuePreviousCotation, builder2ValuePreviousCotation)) {
+            mobileMeansCrossingValue = mobileMeansCrossingValue.withValue(NOT_CROSSING);
 
-        SimpleCotationValue<MobileMeansCrossingStatus> mobileMeansCrossingValue = new SimpleCotationValue(nominalCotationAttribute, NOT_CROSSING);
+            Double mobileMeanRange1MinusMobileMeanRange2CurrentCotation = builder1ValueCurrentCotation.get() - builder2ValueCurrentCotation.get();
+            Double mobileMeanRange1MinusMobileMeanRange2PreviousCotation = builder1ValuePreviousCotation.get() - builder2ValuePreviousCotation.get();
 
-        if (Math.signum(mobileMeanRange1MinusMobileMeanRange2CurrentCotation) != Math.signum(mobileMeanRange1MinusMobileMeanRange2PreviousCotation)) {
-            if (mobileMeanRange1MinusMobileMeanRange2CurrentCotation >= 0) {
-                mobileMeansCrossingValue = mobileMeansCrossingValue.withValue(FIRST_CROSSING_DOWN);
-            } else {
-                mobileMeansCrossingValue = mobileMeansCrossingValue.withValue(FIRST_CROSSING_UP);
+            if (Math.signum(mobileMeanRange1MinusMobileMeanRange2CurrentCotation) != Math.signum(mobileMeanRange1MinusMobileMeanRange2PreviousCotation)) {
+                if (mobileMeanRange1MinusMobileMeanRange2CurrentCotation >= 0) {
+                    mobileMeansCrossingValue = mobileMeansCrossingValue.withValue(FIRST_CROSSING_DOWN);
+                } else {
+                    mobileMeansCrossingValue = mobileMeansCrossingValue.withValue(FIRST_CROSSING_UP);
+                }
             }
         }
 
         return new BuiltCotation(cotation).withAdditionalValues(mobileMeansCrossingValue);
+    }
+
+    private boolean areNeededValuesPresent(Optional<Double> builder1ValueCurrentCotation, Optional<Double> builder2ValueCurrentCotation, Optional<Double> builder1ValuePreviousCotation, Optional<Double> builder2ValuePreviousCotation) {
+        return builder1ValueCurrentCotation.isPresent() && builder2ValueCurrentCotation.isPresent() && builder1ValuePreviousCotation.isPresent() && builder2ValuePreviousCotation.isPresent();
     }
 }

@@ -11,6 +11,7 @@ import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.IndicatorPosition;
 import com.kebuu.utils.StreamUtils;
+import lombok.Getter;
 
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
@@ -25,9 +26,9 @@ public class MobileMeanBuilder extends AbstractBuilder {
     public static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
     public static final String POSITIONPREFIX_NAME = "position_";
 
-    private int mobileMeanRange;
-    private RealCotationAttribute mobileMeanValueAttribute;
-    private NominalCotationAttribute mobileMeanPositionAttribute;
+    @Getter private int mobileMeanRange;
+    @Getter private RealCotationAttribute mobileMeanValueAttribute;
+    @Getter private NominalCotationAttribute mobileMeanPositionAttribute;
 
     public MobileMeanBuilder(int mobileMeanRange) {
         Preconditions.checkArgument(mobileMeanRange > 0);
@@ -43,7 +44,7 @@ public class MobileMeanBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations) {
+    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         DoubleSummaryStatistics mobileMeanSummary = StreamUtils.stream(cotations)
             .sorted(Comparator.comparingInt(Cotation::getPosition).reversed())
             .filter(currentCotation -> currentCotation.getPosition() <= cotation.getPosition())
