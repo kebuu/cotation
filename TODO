@@ -1,0 +1,21 @@
+Permettre l'utilisation de Builder se basant sur le résultat de Builder précédent
+
+Initilisation de la base de données
+
+Petit TU
+
+Extraire texte exception/precondition
+
+Nettoyer le code inutile
+
+Cotation -> quotation ?
+
+Trouver une solution au probleme : withValue
+
+S'assurer qu'on ajoute pas deux fois le même nom d'attribut dans un BuiltCotation ?
+
+Optimiser le calcule des moyenne mobile (par exemple en se basant sur la moyenne du jour précédent)
+
+Ajouter des commentaires sur les interfaces (au moins certaines)
+
+clone alreadyBuiltCotations
