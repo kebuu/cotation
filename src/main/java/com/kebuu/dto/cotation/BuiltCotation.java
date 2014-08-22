@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class BuiltCotation {
 
-    private Cotation baseCotation;
+    private final Cotation baseCotation;
     private List<CotationValue> values = Lists.newArrayList();
 
     public BuiltCotation(Cotation baseCotation) {

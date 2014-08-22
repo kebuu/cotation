@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 public class NominalCotationAttribute<T extends Enum<? extends Enum<?>>> extends AbstractAttribute<T> {
 
-    private Class<T> enumClass;
+    private final Class<T> enumClass;
 
     public NominalCotationAttribute(String name, Class<T> enumClass) {
         super(name);
         this.enumClass = enumClass;
-        this.formatter = new NominalFormatter<T>();
+        this.formatter = new NominalFormatter<>();
     }
 
     @Override

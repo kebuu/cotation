@@ -26,16 +26,16 @@ public class MobileMeanBuilder extends AbstractBuilder {
     public static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
     public static final String POSITIONPREFIX_NAME = "position_";
 
-    @Getter private int mobileMeanRange;
-    @Getter private RealCotationAttribute mobileMeanValueAttribute;
-    @Getter private NominalCotationAttribute<IndicatorPosition> mobileMeanPositionAttribute;
+    @Getter private final int mobileMeanRange;
+    @Getter private final RealCotationAttribute mobileMeanValueAttribute;
+    @Getter private final NominalCotationAttribute<IndicatorPosition> mobileMeanPositionAttribute;
 
     public MobileMeanBuilder(int mobileMeanRange) {
         Preconditions.checkArgument(mobileMeanRange > 0);
 
         this.mobileMeanRange = mobileMeanRange;
         this.mobileMeanValueAttribute = new RealCotationAttribute(MOBILE_MEAN_PREFIX_NAME + mobileMeanRange);
-        this.mobileMeanPositionAttribute = new NominalCotationAttribute(MOBILE_MEAN_PREFIX_NAME + POSITIONPREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
+        this.mobileMeanPositionAttribute = new NominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + POSITIONPREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class MobileMeanBuilder extends AbstractBuilder {
             .limit(mobileMeanRange)
             .collect(Collectors.summarizingDouble(Cotation::getEnd));
 
-        SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue(mobileMeanValueAttribute);
-        SimpleCotationValue<IndicatorPosition> mobileMeanPosition = new SimpleCotationValue(mobileMeanPositionAttribute);
+        SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue<>(mobileMeanValueAttribute);
+        SimpleCotationValue<IndicatorPosition> mobileMeanPosition = new SimpleCotationValue<>(mobileMeanPositionAttribute);
 
         if(canCalculateMobileMean(mobileMeanSummary)) {
             mobileMeanValue = mobileMeanValue.withValue(mobileMeanSummary.getAverage());

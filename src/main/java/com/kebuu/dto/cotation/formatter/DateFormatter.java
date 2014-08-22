@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class DateFormatter extends AbstractFormatter<Date> {
 
-    private String dateFormat;
+    private final String dateFormat;
 
     public DateFormatter(String dateFormat) {
         this.dateFormat = dateFormat;
