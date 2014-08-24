@@ -15,7 +15,6 @@ import static com.kebuu.enums.MobileMeansCrossingStatus.*;
 
 /**
  * Indicateur de croisement de deux moyennes mobiles.
- * On considere qu'il y a signal d'achat lorsque
  */
 public class MobileMeansCrossingBuilder extends AbstractBuilder {
 

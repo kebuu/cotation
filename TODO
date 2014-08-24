@@ -6,10 +6,11 @@ Extraire texte exception/precondition
 
 Cotation -> quotation ?
 
-S'assurer qu'on ajoute pas deux fois le même nom d'attribut dans un BuiltCotation ?
+S'assurer qu'on ajoute pas deux fois le même nom d'attribut dans un BuiltCotation ? -> TU
 
-Optimiser le calcule des moyenne mobile (par exemple en se basant sur la moyenne du jour précédent)
-
+Optimiser la recherche de cotation par position (use hashmap ?)
 Ajouter des commentaires sur les interfaces (au moins certaines)
 
 clone alreadyBuiltCotations
+
+check IntStream nextDays have no duplicate value

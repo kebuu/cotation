@@ -7,9 +7,13 @@ import com.google.common.collect.Lists;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
+import com.kebuu.utils.StreamUtils;
 
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 
 public class BuiltCotation {
 
@@ -37,8 +41,17 @@ public class BuiltCotation {
     }
 
     public BuiltCotation withAdditionalValues(List<CotationValue> cotationValues) {
+        Preconditions.checkArgument(valuesShouldBeOnDifferentAttribute(cotationValues), "All cotationValues should reference a different attribute name");
+
         values.addAll(cotationValues);
         return this;
+    }
+
+    private boolean valuesShouldBeOnDifferentAttribute(List<CotationValue> cotationValues) {
+        return StreamUtils.stream(Iterables.concat(values, cotationValues))
+            .collect(groupingBy(cotationValue -> cotationValue.getAttribute().getName(), counting()))
+                .values().stream()
+                .noneMatch(count -> count > 1);
     }
 
     public <T> Optional<CotationValue<T>> getValueByAttribute(CotationAttribute<T> attribute) {

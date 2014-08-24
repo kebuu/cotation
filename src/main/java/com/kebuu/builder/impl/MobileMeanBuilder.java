@@ -9,12 +9,14 @@ import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
+import com.kebuu.enums.Direction;
 import com.kebuu.enums.IndicatorPosition;
 import com.kebuu.utils.StreamUtils;
 import lombok.Getter;
 
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -24,45 +26,54 @@ import java.util.stream.Collectors;
 public class MobileMeanBuilder extends AbstractBuilder {
 
     public static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
-    public static final String POSITIONPREFIX_NAME = "position_";
+    public static final String POSITION_PREFIX_NAME = "position_";
+    public static final String DIRECTION_PREFIX_NAME = "direction_";
 
     @Getter private final int mobileMeanRange;
     @Getter private final RealCotationAttribute mobileMeanValueAttribute;
     @Getter private final NominalCotationAttribute<IndicatorPosition> mobileMeanPositionAttribute;
+    @Getter private final NominalCotationAttribute<Direction> mobileMeanDirectionAttribute;
 
     public MobileMeanBuilder(int mobileMeanRange) {
-        Preconditions.checkArgument(mobileMeanRange > 0);
+        Preconditions.checkArgument(mobileMeanRange > 0, "Mobile mean range should be greater than 0");
 
         this.mobileMeanRange = mobileMeanRange;
         this.mobileMeanValueAttribute = new RealCotationAttribute(MOBILE_MEAN_PREFIX_NAME + mobileMeanRange);
-        this.mobileMeanPositionAttribute = new NominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + POSITIONPREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
+        this.mobileMeanPositionAttribute = new NominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + POSITION_PREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
+        this.mobileMeanDirectionAttribute = new NominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + DIRECTION_PREFIX_NAME + mobileMeanRange, Direction.class);
     }
 
     @Override
     public CotationAttributes builtAttributes() {
-        return new CotationAttributes(mobileMeanValueAttribute, mobileMeanPositionAttribute);
+        return new CotationAttributes(mobileMeanValueAttribute, mobileMeanPositionAttribute, mobileMeanDirectionAttribute);
     }
 
     @Override
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        DoubleSummaryStatistics mobileMeanSummary = StreamUtils.stream(cotations)
-            .sorted(Comparator.comparingInt(Cotation::getPosition).reversed())
-            .filter(currentCotation -> currentCotation.getPosition() <= cotation.getPosition())
-            .limit(mobileMeanRange)
-            .collect(Collectors.summarizingDouble(Cotation::getEnd));
-
         SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue<>(mobileMeanValueAttribute);
         SimpleCotationValue<IndicatorPosition> mobileMeanPosition = new SimpleCotationValue<>(mobileMeanPositionAttribute);
+        SimpleCotationValue<Direction> mobileMeanDirection = new SimpleCotationValue<>(mobileMeanDirectionAttribute);
 
-        if(canCalculateMobileMean(mobileMeanSummary)) {
+        Optional<Double> previousMobileMeanValue = builtCotations.getValue(cotation.getPosition() - 1, mobileMeanValueAttribute);
+
+        if (previousMobileMeanValue.isPresent()) {
+            Cotation lastCotationUsedToCalculatePreviousMobileMean = cotations.getCotation(cotation.getPosition() - (mobileMeanRange + 1)).get();
+            mobileMeanValue = mobileMeanValue.withValue(previousMobileMeanValue.get() + ((cotation.getEnd() - lastCotationUsedToCalculatePreviousMobileMean.getEnd()) / (double)mobileMeanRange));
+            mobileMeanDirection = mobileMeanDirection.withValue(Direction.fromConsecutiveValues(previousMobileMeanValue.get(), mobileMeanValue.unwrapValue()));
+        } else if (cotations.getCotation(cotation.getPosition() - mobileMeanRange).isPresent()) {
+            DoubleSummaryStatistics mobileMeanSummary = StreamUtils.stream(cotations)
+                .sorted(Comparator.comparingInt(Cotation::getPosition).reversed())
+                .filter(currentCotation -> currentCotation.getPosition() <= cotation.getPosition())
+                .limit(mobileMeanRange)
+                .collect(Collectors.summarizingDouble(Cotation::getEnd));
+
             mobileMeanValue = mobileMeanValue.withValue(mobileMeanSummary.getAverage());
-            mobileMeanPosition = mobileMeanPosition.withValue(IndicatorPosition.basedOn(cotation.getEnd(), mobileMeanSummary.getAverage()));
         }
 
-        return new BuiltCotation(cotation).withAdditionalValues(mobileMeanValue, mobileMeanPosition);
-    }
+        if (mobileMeanValue.hasValue()) {
+            mobileMeanPosition = mobileMeanPosition.withValue(IndicatorPosition.basedOn(cotation.getEnd(), mobileMeanValue.unwrapValue()));
+        }
 
-    private boolean canCalculateMobileMean(DoubleSummaryStatistics mobileMeanSummary) {
-        return mobileMeanSummary.getCount() >= mobileMeanRange;
+        return new BuiltCotation(cotation).withAdditionalValues(mobileMeanValue, mobileMeanPosition, mobileMeanDirection);
     }
 }

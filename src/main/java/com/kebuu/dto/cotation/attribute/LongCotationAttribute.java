@@ -2,9 +2,9 @@ package com.kebuu.dto.cotation.attribute;
 
 import com.kebuu.constant.Constant;
 
-public class IntegerCotationAttribute extends AbstractAttribute<Integer> {
+public class LongCotationAttribute extends AbstractAttribute<Long> {
 
-    public IntegerCotationAttribute(String name) {
+    public LongCotationAttribute(String name) {
         super(name);
     }
 
