@@ -64,7 +64,7 @@ public class NextDaysEndDirectionBuilder extends AbstractBuilder {
         SimpleCotationValue<Direction> futureCotationEndValue = new SimpleCotationValue<>(builtAttributesByNextDay.get(nextDay));
 
         Double currentCotationEnd = cotation.getEnd();
-        Optional<Cotation> futureCotationEnd = cotations.getCotation(cotation.getPosition() + nextDay);
+        Optional<Cotation> futureCotationEnd = cotations.getByIndex(cotation.getPosition() + nextDay);
 
         if (futureCotationEnd.isPresent()) {
             futureCotationEndValue = futureCotationEndValue.withValue(Direction.fromConsecutiveValues(futureCotationEnd.get().getEnd(), currentCotationEnd));

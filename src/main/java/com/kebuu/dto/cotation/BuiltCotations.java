@@ -4,21 +4,23 @@ import com.google.common.base.Preconditions;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.exception.NoBuiltCotationAtPosition;
-import com.kebuu.misc.ListWrapper;
+import com.kebuu.misc.IndexedListWrapper;
 import com.kebuu.utils.StreamUtils;
 import com.kebuu.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BuiltCotations extends ListWrapper<BuiltCotation> {
+public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
 
     public BuiltCotations() {
+        this(new ArrayList<>());
     }
 
     public BuiltCotations(Iterable<BuiltCotation> iterable) {
-        super(iterable);
+        super(iterable, BuiltCotation::getPosition);
     }
 
     public static BuiltCotations merge(BuiltCotations builtCotations1, BuiltCotations builtCotations2) {
@@ -27,7 +29,7 @@ public class BuiltCotations extends ListWrapper<BuiltCotation> {
         List<BuiltCotation> mergedBuiltCotation = StreamUtils.stream(builtCotations1)
             .map(builtCotation1 -> {
                 int builtCotationPosition = builtCotation1.getPosition();
-                BuiltCotation builtCotation2 = builtCotations2.getBuiltCotation(builtCotationPosition)
+                BuiltCotation builtCotation2 = builtCotations2.getByIndex(builtCotationPosition)
                     .orElseThrow(Utils.supply(new NoBuiltCotationAtPosition(builtCotationPosition)));
                 return BuiltCotation.merge(builtCotation1, builtCotation2);
             }).collect(Collectors.toList());
@@ -35,14 +37,8 @@ public class BuiltCotations extends ListWrapper<BuiltCotation> {
         return new BuiltCotations(mergedBuiltCotation);
     }
 
-    public Optional<BuiltCotation> getBuiltCotation(int position) {
-        return wrappedList.stream()
-                .filter(builtCotation -> builtCotation.getPosition() == position)
-                .findFirst();
-    }
-
     public <T> Optional<? extends CotationValue<T>> getCotationValue(int cotationPosition, CotationAttribute<T> attribute) {
-        return getBuiltCotation(cotationPosition)
+        return getByIndex(cotationPosition)
                .flatMap(optionalBuiltCotation -> optionalBuiltCotation.getValueByAttribute(attribute));
     }
     public <T> Optional<T> getValue(int cotationPosition, CotationAttribute<T> attribute) {

@@ -57,10 +57,10 @@ public class MobileMeanBuilder extends AbstractBuilder {
         Optional<Double> previousMobileMeanValue = builtCotations.getValue(cotation.getPosition() - 1, mobileMeanValueAttribute);
 
         if (previousMobileMeanValue.isPresent()) {
-            Cotation lastCotationUsedToCalculatePreviousMobileMean = cotations.getCotation(cotation.getPosition() - (mobileMeanRange + 1)).get();
+            Cotation lastCotationUsedToCalculatePreviousMobileMean = cotations.getByIndex(cotation.getPosition() - (mobileMeanRange + 1)).get();
             mobileMeanValue = mobileMeanValue.withValue(previousMobileMeanValue.get() + ((cotation.getEnd() - lastCotationUsedToCalculatePreviousMobileMean.getEnd()) / (double)mobileMeanRange));
             mobileMeanDirection = mobileMeanDirection.withValue(Direction.fromConsecutiveValues(previousMobileMeanValue.get(), mobileMeanValue.unwrapValue()));
-        } else if (cotations.getCotation(cotation.getPosition() - mobileMeanRange).isPresent()) {
+        } else if (cotations.getByIndex(cotation.getPosition() - mobileMeanRange).isPresent()) {
             DoubleSummaryStatistics mobileMeanSummary = StreamUtils.stream(cotations)
                 .sorted(Comparator.comparingInt(Cotation::getPosition).reversed())
                 .filter(currentCotation -> currentCotation.getPosition() <= cotation.getPosition())

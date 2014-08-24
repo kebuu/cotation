@@ -26,8 +26,7 @@ public abstract class ListWrapper<T> implements Iterable<T> {
     }
 
     public <K extends ListWrapper<T>> K concat(K listWrapper) {
-        wrappedList.addAll(listWrapper.wrappedList);
-        return (K)this;
+        return addAll(listWrapper.wrappedList);
     }
 
     public <K extends ListWrapper<T>> K addAll(Iterable<T> iterable) {
@@ -36,8 +35,7 @@ public abstract class ListWrapper<T> implements Iterable<T> {
     }
 
     public <K extends ListWrapper<T>> K add(T t) {
-        wrappedList.add(t);
-        return (K) this;
+        return addAll(Lists.newArrayList(t));
     }
 
     public int size() {
