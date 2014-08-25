@@ -11,6 +11,7 @@ import com.kebuu.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
@@ -20,7 +21,12 @@ public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
     }
 
     public BuiltCotations(Iterable<BuiltCotation> iterable) {
-        super(iterable, BuiltCotation::getPosition);
+        super(iterable);
+    }
+
+    @Override
+    protected Function<BuiltCotation, Integer> getIndexFunction() {
+        return BuiltCotation::getPosition;
     }
 
     public static BuiltCotations merge(BuiltCotations builtCotations1, BuiltCotations builtCotations2) {
