@@ -8,9 +8,19 @@ Cotation -> quotation ?
 
 S'assurer qu'on ajoute pas deux fois le même nom d'attribut dans un BuiltCotation ? -> TU
 
-Optimiser la recherche de cotation par position (use hashmap ?)
 Ajouter des commentaires sur les interfaces (au moins certaines)
 
 clone alreadyBuiltCotations
 
-check IntStream nextDays have no duplicate value
+check IntStream nextDays have no duplicate value (de manière générique pour un stream)
+
+Ajouter le %D au stocastic
+
+Créer un CrossingValueBuilder plus général que le MobileMeanBuilder
+Créer un MomentumBuilder
+Créer un MacdBuilder
+Créer un CandleBuilder
+Créer un DateInfoBuilder
+Regarder le Rate Of Change (ROC), Ease of Movement, Chaikin money flow
+
+Finir le TimeSerieBuilder
