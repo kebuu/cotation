@@ -1,9 +1,6 @@
 package com.kebuu.config;
 
-import com.kebuu.builder.impl.MobileMeanBuilder;
-import com.kebuu.builder.impl.MobileMeansCrossingBuilder;
-import com.kebuu.builder.impl.MultiCotationBuilder;
-import com.kebuu.builder.impl.NextDaysEndDirectionBuilder;
+import com.kebuu.builder.impl.*;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +30,8 @@ public class SpringConfig {
         MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
+        StochasticBuilder stochasticBuilder = new StochasticBuilder();
 
-        return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050, nextDaysEndDirectionBuilder);
+        return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050, nextDaysEndDirectionBuilder, stochasticBuilder);
     }
 }
