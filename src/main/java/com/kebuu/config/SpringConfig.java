@@ -31,7 +31,9 @@ public class SpringConfig {
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
+        RocBuilder rocBuilder = new RocBuilder();
 
-        return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050, nextDaysEndDirectionBuilder, stochasticBuilder);
+        return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
+                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder);
     }
 }
