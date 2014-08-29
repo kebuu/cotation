@@ -3,7 +3,7 @@ package com.kebuu.dto.cotation;
 import com.google.common.base.Preconditions;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
-import com.kebuu.exception.NoBuiltCotationAtPosition;
+import com.kebuu.exception.NoBuiltCotationAtPositionException;
 import com.kebuu.misc.IndexedListWrapper;
 import com.kebuu.utils.StreamUtils;
 import com.kebuu.utils.Utils;
@@ -36,7 +36,7 @@ public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
             .map(builtCotation1 -> {
                 int builtCotationPosition = builtCotation1.getPosition();
                 BuiltCotation builtCotation2 = builtCotations2.getByIndex(builtCotationPosition)
-                    .orElseThrow(Utils.supply(new NoBuiltCotationAtPosition(builtCotationPosition)));
+                    .orElseThrow(Utils.supply(new NoBuiltCotationAtPositionException(builtCotationPosition)));
                 return BuiltCotation.merge(builtCotation1, builtCotation2);
             }).collect(Collectors.toList());
 

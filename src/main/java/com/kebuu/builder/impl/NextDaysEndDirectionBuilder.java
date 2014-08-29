@@ -7,7 +7,7 @@ import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
-import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
+import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.Direction;
@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.*;
 
 public class NextDaysEndDirectionBuilder extends AbstractBuilder {
 
-    public static final String MOBILE_MEANS_CROSSING_PREFIX_NAME = "next_days_end_status_";
+    private static final String ATTRIBUTE_PREFIX_NAME = "next_days_end_status_";
 
     private final SortedSet<Integer> nextDays;
     private final Map<Integer, CotationAttribute<Direction>> builtAttributesByNextDay = new LinkedHashMap<>();
@@ -57,7 +57,7 @@ public class NextDaysEndDirectionBuilder extends AbstractBuilder {
     }
 
     public CotationAttribute<Direction> createAttribute(Integer nextDay) {
-        return new NominalCotationAttribute<>(MOBILE_MEANS_CROSSING_PREFIX_NAME + nextDay, Direction.class);
+        return new EnumeratedNominalCotationAttribute<>(ATTRIBUTE_PREFIX_NAME + nextDay, Direction.class);
     }
 
     private CotationValue<Direction> createCotationValue(Cotation cotation, Cotations cotations, int nextDay) {

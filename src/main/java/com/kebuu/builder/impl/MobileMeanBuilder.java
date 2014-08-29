@@ -6,7 +6,7 @@ import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
-import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
+import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.Direction;
@@ -25,22 +25,22 @@ import java.util.stream.Collectors;
  */
 public class MobileMeanBuilder extends AbstractBuilder {
 
-    public static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
-    public static final String POSITION_PREFIX_NAME = "position_";
-    public static final String DIRECTION_PREFIX_NAME = "direction_";
+    private static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
+    private static final String POSITION_PREFIX_NAME = "position_";
+    private static final String DIRECTION_PREFIX_NAME = "direction_";
 
     @Getter private final int mobileMeanRange;
     @Getter private final RealCotationAttribute mobileMeanValueAttribute;
-    @Getter private final NominalCotationAttribute<IndicatorPosition> mobileMeanPositionAttribute;
-    @Getter private final NominalCotationAttribute<Direction> mobileMeanDirectionAttribute;
+    @Getter private final EnumeratedNominalCotationAttribute<IndicatorPosition> mobileMeanPositionAttribute;
+    @Getter private final EnumeratedNominalCotationAttribute<Direction> mobileMeanDirectionAttribute;
 
     public MobileMeanBuilder(int mobileMeanRange) {
         Preconditions.checkArgument(mobileMeanRange > 0, "Mobile mean range should be greater than 0");
 
         this.mobileMeanRange = mobileMeanRange;
         this.mobileMeanValueAttribute = new RealCotationAttribute(MOBILE_MEAN_PREFIX_NAME + mobileMeanRange);
-        this.mobileMeanPositionAttribute = new NominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + POSITION_PREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
-        this.mobileMeanDirectionAttribute = new NominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + DIRECTION_PREFIX_NAME + mobileMeanRange, Direction.class);
+        this.mobileMeanPositionAttribute = new EnumeratedNominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + POSITION_PREFIX_NAME + mobileMeanRange, IndicatorPosition.class);
+        this.mobileMeanDirectionAttribute = new EnumeratedNominalCotationAttribute<>(MOBILE_MEAN_PREFIX_NAME + DIRECTION_PREFIX_NAME + mobileMeanRange, Direction.class);
     }
 
     @Override

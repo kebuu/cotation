@@ -1,12 +1,13 @@
-package com.kebuu.builder.impl;
+package com.kebuu.builder.impl.relation;
 
+import com.kebuu.builder.impl.AbstractBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
-import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
+import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.CrossingValuesStatus;
 
@@ -19,7 +20,7 @@ public class ValuesCrossingBuilder extends AbstractBuilder {
 
     public static final String ATTRIBUTE_NAME_PREFIX = "values_crossing_";
 
-    private final NominalCotationAttribute<CrossingValuesStatus> attribute;
+    private final EnumeratedNominalCotationAttribute<CrossingValuesStatus> attribute;
 
     private final Function<BuiltCotation, Optional<Double>> value1Transfomer;
     private final Function<BuiltCotation, Optional<Double>> value2Transfomer;
@@ -32,7 +33,7 @@ public class ValuesCrossingBuilder extends AbstractBuilder {
         this.value1Name = value1Name;
         this.value2Name = value2Name;
 
-        attribute = new NominalCotationAttribute<>(ATTRIBUTE_NAME_PREFIX + value1Name + "_" + value2Name, CrossingValuesStatus.class);
+        attribute = new EnumeratedNominalCotationAttribute<>(ATTRIBUTE_NAME_PREFIX + value1Name + "_" + value2Name, CrossingValuesStatus.class);
     }
 
     public ValuesCrossingBuilder(String value1Name, Function<BuiltCotation, Optional<Double>> value1Transfomer, Double constantValue) {

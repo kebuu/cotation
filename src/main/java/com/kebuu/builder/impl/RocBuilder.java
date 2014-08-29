@@ -17,9 +17,8 @@ import java.util.Optional;
  */
 public class RocBuilder extends AbstractBuilder {
 
-    public static final String ROC_PREFIX_NAME = "roc_";
-
-    public static final int DEFAULT_PERIOD = 12;
+    private static final String ROC_PREFIX_NAME = "roc_";
+    private static final int DEFAULT_PERIOD = 12;
 
     @Getter private final int period;
     @Getter private final RealCotationAttribute rocValueAttribute;

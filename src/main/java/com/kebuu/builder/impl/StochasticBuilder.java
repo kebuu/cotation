@@ -20,9 +20,8 @@ import java.util.stream.IntStream;
  */
 public class StochasticBuilder extends AbstractBuilder {
 
-    public static final String STOCHASTIC_PREFIX_NAME = "stochastic_";
-
-    public static final int DEFAULT_PERIOD = 14;
+    private static final String STOCHASTIC_PREFIX_NAME = "stochastic_";
+    private static final int DEFAULT_PERIOD = 14;
 
     @Getter private final int period;
     @Getter private final RealCotationAttribute stochasticValueAttribute;

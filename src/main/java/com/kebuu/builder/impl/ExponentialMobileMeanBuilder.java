@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
  */
 public class ExponentialMobileMeanBuilder extends AbstractBuilder {
 
-    public static final String EMM_PREFIX_NAME = "emm_";
+    private static final String EMM_PREFIX_NAME = "emm_";
 
     @Getter private final int period;
     @Getter private final RealCotationAttribute emmValueAttribute;

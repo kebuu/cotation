@@ -1,6 +1,9 @@
 package com.kebuu.config;
 
 import com.kebuu.builder.impl.*;
+import com.kebuu.builder.impl.simple.DayOfWeekInfoBuilder;
+import com.kebuu.builder.impl.simple.MonthInfoBuilder;
+import com.kebuu.builder.impl.simple.YearInfoBuilder;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +29,10 @@ public class SpringConfig {
 
     @Bean
     public MultiCotationBuilder cotationBuilders() {
+        YearInfoBuilder yearInfoBuilder = new YearInfoBuilder();
+        MonthInfoBuilder monthInfoBuilder = new MonthInfoBuilder();
+        DayOfWeekInfoBuilder dayOfWeekInfoBuilder = new DayOfWeekInfoBuilder();
+
         MobileMeanBuilder mobileMeanBuilder20 = new MobileMeanBuilder(20);
         MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
@@ -34,6 +41,7 @@ public class SpringConfig {
         RocBuilder rocBuilder = new RocBuilder();
 
         return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
-                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder);
+                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder,
+               yearInfoBuilder, monthInfoBuilder, dayOfWeekInfoBuilder);
     }
 }
