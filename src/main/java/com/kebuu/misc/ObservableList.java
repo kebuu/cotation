@@ -8,13 +8,15 @@ import java.util.Collection;
 
 public class ObservableList<T> extends ArrayList<T> {
 
-    private EventListenerSupport<ListObserver> innerListeners = EventListenerSupport.create(ListObserver.class);
+    private final EventListenerSupport<ListObserver> innerListeners = EventListenerSupport.create(ListObserver.class);
 
+    @SafeVarargs
     public ObservableList(ListObserver<T>... listeners) {
         addListener(listeners);
     }
 
-    public ObservableList<T> addListener(ListObserver<T>... listeners) {
+    @SafeVarargs
+    public final ObservableList<T> addListener(ListObserver<T>... listeners) {
         Arrays.asList(listeners).stream().forEach(innerListeners::addListener);
         return this;
     }

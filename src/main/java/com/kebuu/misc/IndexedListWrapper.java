@@ -13,7 +13,7 @@ public abstract class IndexedListWrapper<T, K> extends ListWrapper<T> implements
     private final Map<K, T> index = new HashMap<>();
 
     public IndexedListWrapper(Iterable<T> iterable) {
-        wrappedList = new ObservableList<T>(this);
+        wrappedList = new ObservableList<>(this);
         addAll(iterable);
     }
 

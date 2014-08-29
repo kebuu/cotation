@@ -30,7 +30,7 @@ public class NextDaysEndDirectionBuilder extends AbstractBuilder {
 
         this.nextDays = nextDays;
         this.nextDays.forEach(nextDay -> {
-            builtAttributesByNextDay.put(Integer.valueOf(nextDay), createAttribute(nextDay));
+            builtAttributesByNextDay.put(nextDay, createAttribute(nextDay));
         });
     }
 

@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class BuiltCotation {
 
     private final Cotation baseCotation;
-    private List<CotationValue> values = Lists.newArrayList();
+    private final List<CotationValue> values = Lists.newArrayList();
 
     public BuiltCotation(Cotation baseCotation) {
         this.baseCotation = baseCotation;
