@@ -51,9 +51,8 @@ public class ValuesCrossingBuilder extends AbstractBuilder {
         this(attribute1.getName(), createValueTransformer(attribute1), constantValue);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private static <T> Function<BuiltCotation, Optional<Double>> createValueTransformer(CotationAttribute attribute) {
-        return (BuiltCotation x) -> x.getValueByAttribute(attribute);
+    private static Function<BuiltCotation, Optional<Double>> createValueTransformer(CotationAttribute<Double> attribute) {
+        return (BuiltCotation x) -> x.getValueByAttribute(attribute).get().getValue();
     }
 
     @Override
