@@ -7,11 +7,11 @@ import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.NominalCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
-import com.kebuu.enums.MobileMeansCrossingStatus;
+import com.kebuu.enums.CrossingValuesStatus;
 
 import java.util.Optional;
 
-import static com.kebuu.enums.MobileMeansCrossingStatus.*;
+import static com.kebuu.enums.CrossingValuesStatus.*;
 
 /**
  * Indicateur de croisement de deux moyennes mobiles.
@@ -22,14 +22,14 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
 
     private final MobileMeanBuilder mobileMeanBuilder1;
     private final MobileMeanBuilder mobileMeanBuilder2;
-    private final NominalCotationAttribute<MobileMeansCrossingStatus> nominalCotationAttribute;
+    private final NominalCotationAttribute<CrossingValuesStatus> nominalCotationAttribute;
 
     public MobileMeansCrossingBuilder(MobileMeanBuilder mobileMeanBuilder1, MobileMeanBuilder mobileMeanBuilder2) {
         this.mobileMeanBuilder1 = mobileMeanBuilder1;
         this.mobileMeanBuilder2 = mobileMeanBuilder2;
 
         String nominalCotationAttributeName = MOBILE_MEANS_CROSSING_PREFIX_NAME + mobileMeanBuilder1.getMobileMeanRange() + "_" + mobileMeanBuilder2.getMobileMeanRange();
-        this.nominalCotationAttribute = new NominalCotationAttribute<>(nominalCotationAttributeName, MobileMeansCrossingStatus.class);
+        this.nominalCotationAttribute = new NominalCotationAttribute<>(nominalCotationAttributeName, CrossingValuesStatus.class);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
         Optional<Double> builder1ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, mobileMeanBuilder1.getMobileMeanValueAttribute());
         Optional<Double> builder2ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, mobileMeanBuilder2.getMobileMeanValueAttribute());
 
-        SimpleCotationValue<MobileMeansCrossingStatus> mobileMeansCrossingValue = new SimpleCotationValue<>(nominalCotationAttribute);
+        SimpleCotationValue<CrossingValuesStatus> mobileMeansCrossingValue = new SimpleCotationValue<>(nominalCotationAttribute);
 
         if (areNeededValuesPresent(builder1ValueCurrentCotation, builder2ValueCurrentCotation, builder1ValuePreviousCotation, builder2ValuePreviousCotation)) {
             mobileMeansCrossingValue = mobileMeansCrossingValue.withValue(NOT_CROSSING);
