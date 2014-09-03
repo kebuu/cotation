@@ -18,4 +18,9 @@ public abstract class AbstractAttribute<T>  implements CotationAttribute<T>{
         this.name = name;
         this.formatter = formatter;
     }
+
+    @Override
+    public CotationAttribute<T> copy() {
+        return null;
+    }
 }

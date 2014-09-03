@@ -9,7 +9,7 @@ public class VolumeInfoBuilder extends SimpleCotationInfoBuilder<Long> {
     private static final String ATTRIBUTE_NAME = "base_cotation_volume";
     private final LongCotationAttribute volumeCotationAttribute = new LongCotationAttribute(ATTRIBUTE_NAME);
 
-    protected VolumeInfoBuilder() {
+    public VolumeInfoBuilder() {
         super(Cotation::getVolume);
     }
 

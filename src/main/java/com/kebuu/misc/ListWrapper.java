@@ -1,6 +1,7 @@
 package com.kebuu.misc;
 
 import com.google.common.collect.Lists;
+import com.kebuu.exception.ListWrapperCopyException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -44,5 +45,14 @@ public abstract class ListWrapper<T> implements Iterable<T> {
 
     public boolean isEmpty() {
         return wrappedList.isEmpty();
+    }
+
+    public <K extends ListWrapper<T>> K copy() {
+        try {
+            K newInstance = (K) this.getClass().newInstance();
+            return newInstance.concat((K) this);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new ListWrapperCopyException();
+        }
     }
 }

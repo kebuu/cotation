@@ -1,26 +1,15 @@
 Initilisation de la base de données
 
-Petit TU
+Petit TU -> voir si on peut n'initialiser la base de données qu'une seule fois pour tous les tests (et après c'est la transation qui gère)
 
 Extraire texte exception/precondition
 
 Cotation -> quotation ?
 
-S'assurer qu'on ajoute pas deux fois le même nom d'attribut dans un BuiltCotation ? -> TU
-
 Ajouter des commentaires sur les interfaces (au moins certaines)
 
-clone alreadyBuiltCotations
-
-check IntStream nextDays have no duplicate value (de manière générique pour un stream)
-
 Ajouter le %D au stocastic
-
-Créer un CrossingValueBuilder plus général que le MobileMeanBuilder
-Créer un MomentumBuilder
-Créer un MacdBuilder
 Créer un CandleBuilder
-Créer un DateInfoBuilder
-Regarder le Rate Of Change (ROC), Ease of Movement, Chaikin money flow
+Regarder le Ease of Movement, Chaikin money flow
 
 Finir le TimeSerieBuilder

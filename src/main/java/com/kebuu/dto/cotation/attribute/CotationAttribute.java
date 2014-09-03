@@ -9,4 +9,6 @@ public interface CotationAttribute<T> {
     String getName();
     
     String getArffType();
+
+    CotationAttribute<T> copy();
 }

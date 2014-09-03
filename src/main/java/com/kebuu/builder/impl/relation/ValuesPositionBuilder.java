@@ -12,11 +12,11 @@ import java.util.Optional;
 
 public class ValuesPositionBuilder extends ValuesRelationBuilder<ValueComparisonPosition> {
 
-    public ValuesPositionBuilder(CotationAttribute attribute1, Double constantValue) {
+    public ValuesPositionBuilder(CotationAttribute<Double> attribute1, Double constantValue) {
         super(attribute1, constantValue);
     }
 
-    public ValuesPositionBuilder(CotationAttribute attribute1, CotationAttribute attribute2) {
+    public ValuesPositionBuilder(CotationAttribute<Double> attribute1, CotationAttribute attribute2) {
         super(attribute1, attribute2);
     }
 

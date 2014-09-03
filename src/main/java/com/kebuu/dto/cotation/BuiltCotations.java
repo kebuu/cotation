@@ -6,7 +6,6 @@ import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.exception.NoBuiltCotationAtPositionException;
 import com.kebuu.misc.IndexedListWrapper;
 import com.kebuu.utils.StreamUtils;
-import com.kebuu.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
             .map(builtCotation1 -> {
                 int builtCotationPosition = builtCotation1.getPosition();
                 BuiltCotation builtCotation2 = builtCotations2.getByIndex(builtCotationPosition)
-                    .orElseThrow(Utils.supply(new NoBuiltCotationAtPositionException(builtCotationPosition)));
+                    .orElseThrow(() -> new NoBuiltCotationAtPositionException(builtCotationPosition));
                 return BuiltCotation.merge(builtCotation1, builtCotation2);
             }).collect(Collectors.toList());
 
@@ -47,6 +46,7 @@ public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
         return getByIndex(cotationPosition)
                .flatMap(optionalBuiltCotation -> optionalBuiltCotation.getValueByAttribute(attribute));
     }
+
     public <T> Optional<T> getValue(int cotationPosition, CotationAttribute<T> attribute) {
         return getCotationValue(cotationPosition, attribute).flatMap(CotationValue::getValue);
     }

@@ -6,10 +6,10 @@ import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.misc.ListWrapper;
 
-public class MultiCotationBuilder extends ListWrapper<CotationBuilder> {
+public class CompositeCotationBuilder extends ListWrapper<CotationBuilder> {
 
-    public MultiCotationBuilder(CotationBuilder... values) {
-        super(values);
+    public CompositeCotationBuilder(CotationBuilder... builders) {
+        super(builders);
     }
 
     public CotationAttributes attributes() {
@@ -22,7 +22,7 @@ public class MultiCotationBuilder extends ListWrapper<CotationBuilder> {
         BuiltCotations aggregatedBuiltCotations = new BuiltCotations();
 
         for (CotationBuilder cotationBuilder : wrappedList) {
-            BuiltCotations builtCotations = cotationBuilder.build(cotations, aggregatedBuiltCotations);
+            BuiltCotations builtCotations = cotationBuilder.build(cotations, aggregatedBuiltCotations.copy());
 
             if (aggregatedBuiltCotations.isEmpty()) {
                 aggregatedBuiltCotations = builtCotations;

@@ -1,7 +1,9 @@
 package com.kebuu.config;
 
 import com.kebuu.builder.impl.*;
+import com.kebuu.builder.impl.relation.ValuesPositionBuilder;
 import com.kebuu.builder.impl.simple.DayOfWeekInfoBuilder;
+import com.kebuu.builder.impl.simple.EndInfoBuilder;
 import com.kebuu.builder.impl.simple.MonthInfoBuilder;
 import com.kebuu.builder.impl.simple.YearInfoBuilder;
 import org.flywaydb.core.Flyway;
@@ -22,26 +24,34 @@ public class SpringConfig {
         flyway.setDataSource(dataSource);
         flyway.setInitOnMigrate(true);
         flyway.setInitVersion("0");
-        //flyway.repair();
-        //flyway.migrate();
+        flyway.repair();
+        flyway.migrate();
         return flyway;
     }
 
     @Bean
-    public MultiCotationBuilder cotationBuilders() {
+    public CompositeCotationBuilder cotationBuilders() {
         YearInfoBuilder yearInfoBuilder = new YearInfoBuilder();
         MonthInfoBuilder monthInfoBuilder = new MonthInfoBuilder();
         DayOfWeekInfoBuilder dayOfWeekInfoBuilder = new DayOfWeekInfoBuilder();
+        EndInfoBuilder endInfoBuilder = new EndInfoBuilder();
 
         MobileMeanBuilder mobileMeanBuilder20 = new MobileMeanBuilder(20);
         MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
+
+        ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute());
+        ValuesPositionBuilder mobileMeanBuilder20Position = new ValuesPositionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getAttribute());
+
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
-        NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
+
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         RocBuilder rocBuilder = new RocBuilder();
+        MacdBuilder macdBuilder = new MacdBuilder();
 
-        return new MultiCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
-                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder,
+        NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
+
+        return new CompositeCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
+                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder,
                yearInfoBuilder, monthInfoBuilder, dayOfWeekInfoBuilder);
     }
 }

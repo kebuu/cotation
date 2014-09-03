@@ -9,4 +9,8 @@ public interface CotationValue<T> {
     Optional<T> getValue();
 
     CotationAttribute<T> getAttribute();
+
+    default T forceGetValue() {
+        return getValue().get();
+    }
 }

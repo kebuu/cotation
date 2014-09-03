@@ -1,6 +1,6 @@
 package com.kebuu.web.controller;
 
-import com.kebuu.builder.impl.MultiCotationBuilder;
+import com.kebuu.builder.impl.CompositeCotationBuilder;
 import com.kebuu.dao.CotationRepository;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.service.ArffService;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArffController {
 
     @Autowired private ArffService arffService;
-    @Autowired private MultiCotationBuilder multiCotationBuilder;
+    @Autowired private CompositeCotationBuilder compositeCotationBuilder;
     @Autowired private CotationRepository cotationRepository;
 
     @RequestMapping(value = "/built", method = RequestMethod.GET)
     public String getBuiltCotations() {
         Cotations cotations = new Cotations(cotationRepository.findAll());
-        return arffService.ToArff(multiCotationBuilder.attributes(), multiCotationBuilder.basedOn(cotations));
+        return arffService.ToArff(compositeCotationBuilder.attributes(), compositeCotationBuilder.basedOn(cotations));
     }
 
     @RequestMapping(value = "/built/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
