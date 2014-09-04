@@ -50,8 +50,8 @@ public class SpringConfig {
 
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
 
-        return new CompositeCotationBuilder(mobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
-                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder,
-               yearInfoBuilder, monthInfoBuilder, dayOfWeekInfoBuilder);
+        return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
+                mobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
+                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder);
     }
 }
