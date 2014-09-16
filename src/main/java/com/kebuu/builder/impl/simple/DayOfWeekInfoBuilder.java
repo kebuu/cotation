@@ -17,7 +17,7 @@ public class DayOfWeekInfoBuilder extends SimpleCotationInfoBuilder<DayOfWeek> {
     }
 
     @Override
-    public CotationAttribute<DayOfWeek> getAttribute() {
+    public CotationAttribute<DayOfWeek> getSingleAttribute() {
         return dayCotationAttribute;
     }
 }

@@ -5,7 +5,7 @@ import com.kebuu.builder.impl.relation.ValuesPositionBuilder;
 import com.kebuu.builder.impl.simple.DayOfWeekInfoBuilder;
 import com.kebuu.builder.impl.simple.EndInfoBuilder;
 import com.kebuu.builder.impl.simple.MonthInfoBuilder;
-import com.kebuu.builder.impl.simple.YearInfoBuilder;
+import com.kebuu.builder.impl.simple.YearInfoValueBuilder;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ public class SpringConfig {
 
     @Bean
     public CompositeCotationBuilder cotationBuilders() {
-        YearInfoBuilder yearInfoBuilder = new YearInfoBuilder();
+        YearInfoValueBuilder yearInfoBuilder = new YearInfoValueBuilder();
         MonthInfoBuilder monthInfoBuilder = new MonthInfoBuilder();
         DayOfWeekInfoBuilder dayOfWeekInfoBuilder = new DayOfWeekInfoBuilder();
         EndInfoBuilder endInfoBuilder = new EndInfoBuilder();
@@ -40,7 +40,7 @@ public class SpringConfig {
         MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
 
         ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute());
-        ValuesPositionBuilder mobileMeanBuilder20Position = new ValuesPositionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getAttribute());
+        ValuesPositionBuilder mobileMeanBuilder20Position = new ValuesPositionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getSingleAttribute());
 
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
 

@@ -14,7 +14,7 @@ public class EndInfoBuilder extends SimpleCotationInfoBuilder<Double> {
     }
 
     @Override
-    public CotationAttribute<Double> getAttribute() {
+    public CotationAttribute<Double> getSingleAttribute() {
         return endCotationAttribute;
     }
 }

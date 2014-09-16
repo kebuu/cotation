@@ -17,7 +17,7 @@ public abstract class AbstractBuilderTests<T extends AbstractBuilder> {
         builder = createBuilder();
     }
 
-    protected Double forceGetValue(BuiltCotations builtCotations, int position, CotationAttribute<Double> attribute) {
+    protected <T> T forceGetValue(BuiltCotations builtCotations, int position, CotationAttribute<T> attribute) {
         return builtCotations.getCotationValue(position, attribute).get().forceGetValue();
     }
 

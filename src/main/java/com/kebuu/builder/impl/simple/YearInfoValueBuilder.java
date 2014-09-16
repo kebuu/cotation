@@ -1,9 +1,8 @@
 package com.kebuu.builder.impl.simple;
 
-import com.kebuu.builder.impl.AbstractBuilder;
-import com.kebuu.builder.impl.RestrictedBuilder;
+import com.kebuu.builder.impl.RestrictedValueBuilder;
+import com.kebuu.builder.impl.SingleAttributeAbstractBuilder;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
-import com.kebuu.dto.cotation.attribute.ListedNominalCotationAttribute;
 import com.kebuu.dto.cotation.attribute.LongCotationAttribute;
 import org.joda.time.DateTime;
 
@@ -11,20 +10,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-public class YearInfoBuilder extends RestrictedBuilder<Long> {
+public class YearInfoValueBuilder extends RestrictedValueBuilder<Long> {
 
     private static final List<Long> DEFAULT_YEAR_RANGE = LongStream.rangeClosed(1990, 2020).boxed().collect(Collectors.toList());
 
-    public YearInfoBuilder(AbstractBuilder delegate, ListedNominalCotationAttribute<Long> listedAttribute) {
-        super(delegate, listedAttribute);
+    public YearInfoValueBuilder(SingleAttributeAbstractBuilder<Long> delegate, Iterable<Long> restrictedValues) {
+        super(delegate, restrictedValues);
     }
 
-    public YearInfoBuilder(ListedNominalCotationAttribute<Long> listedAttribute) {
+    public YearInfoValueBuilder(Iterable<Long> listedAttribute) {
         this(new InnerYearInfoBuilder(), listedAttribute);
     }
 
-    public YearInfoBuilder() {
-        this(new ListedNominalCotationAttribute<Long>(InnerYearInfoBuilder.ATTRIBUTE_NAME, DEFAULT_YEAR_RANGE));
+    public YearInfoValueBuilder() {
+        this(DEFAULT_YEAR_RANGE);
     }
 
     private static class InnerYearInfoBuilder extends SimpleCotationInfoBuilder<Long> {
@@ -38,7 +37,7 @@ public class YearInfoBuilder extends RestrictedBuilder<Long> {
         }
 
         @Override
-        public CotationAttribute<Long> getAttribute() {
+        public CotationAttribute<Long> getSingleAttribute() {
             return yearCotationAttribute;
         }
     }
