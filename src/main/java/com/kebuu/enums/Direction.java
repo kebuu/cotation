@@ -10,9 +10,9 @@ public enum Direction {
     public static Direction fromConsecutiveValues(double value1, double value2, double noneUnderThisAbsoluteValue) {
         double difference = value2 - value1;
 
-        if (difference <= -noneUnderThisAbsoluteValue) {
+        if (difference <= -noneUnderThisAbsoluteValue && difference != 0.0) {
             return DOWN;
-        } else if (difference >= noneUnderThisAbsoluteValue) {
+        } else if (difference >= noneUnderThisAbsoluteValue && difference != 0.0) {
             return UP;
         } else {
             return NONE;

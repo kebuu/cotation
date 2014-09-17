@@ -11,6 +11,7 @@ import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.Direction;
+import lombok.Getter;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -22,7 +23,7 @@ public class NextDaysEndDirectionBuilder extends AbstractBuilder {
     private static final String ATTRIBUTE_PREFIX_NAME = "next_days_end_status_";
 
     private final SortedSet<Integer> nextDays;
-    private final Map<Integer, CotationAttribute<Direction>> builtAttributesByNextDay = new LinkedHashMap<>();
+    @Getter private final Map<Integer, CotationAttribute<Direction>> builtAttributesByNextDay = new LinkedHashMap<>();
 
     public NextDaysEndDirectionBuilder(SortedSet<Integer> nextDays) {
         Preconditions.checkArgument(!nextDays.isEmpty(), "You should chose at least one next day value");
@@ -67,7 +68,7 @@ public class NextDaysEndDirectionBuilder extends AbstractBuilder {
         Optional<Cotation> futureCotationEnd = cotations.getByIndex(cotation.getPosition() + nextDay);
 
         if (futureCotationEnd.isPresent()) {
-            futureCotationEndValue = futureCotationEndValue.withValue(Direction.fromConsecutiveValues(futureCotationEnd.get().getEnd(), currentCotationEnd));
+            futureCotationEndValue = futureCotationEndValue.withValue(Direction.fromConsecutiveValues(currentCotationEnd, futureCotationEnd.get().getEnd()));
         }
 
         return futureCotationEndValue;
