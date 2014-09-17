@@ -46,7 +46,7 @@ public class RocBuilder extends AbstractBuilder {
         Optional<Cotation> cotationAtPeriod = cotations.getByIndex(cotation.getPosition() - period);
 
         if (cotationAtPeriod.isPresent()) {
-            rocValue.withValue(calculateRocValue(cotation.getEnd(), cotationAtPeriod.get().getEnd()));
+            rocValue = rocValue.withValue(calculateRocValue(cotation.getEnd(), cotationAtPeriod.get().getEnd()));
         }
 
         return new BuiltCotation(cotation).withAdditionalValues(rocValue);
