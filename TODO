@@ -1,5 +1,3 @@
-Initilisation de la base de données
-
 Petit TU -> voir si on peut n'initialiser la base de données qu'une seule fois pour tous les tests (et après c'est la transation qui gère)
 
 Extraire texte exception/precondition
@@ -13,3 +11,4 @@ Créer un CandleBuilder
 Regarder le Ease of Movement, Chaikin money flow
 
 Finir le TimeSerieBuilder
+Ajouter un TrendBuilder ?
