@@ -32,7 +32,7 @@ public class ValueDirectionBuilder extends AbstractBuilder {
         Optional<Double> previousValue = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, targetAttribute);
 
         if (previousValue.isPresent()) {
-            directionValue = directionValue.withValue(Direction.fromConsecutiveValues(currentValue.get(), previousValue.get()));
+            directionValue = directionValue.withValue(Direction.fromConsecutiveValues(previousValue.get(), currentValue.get()));
         }
         return new BuiltCotation(cotation).withAdditionalValues(directionValue);
     }
