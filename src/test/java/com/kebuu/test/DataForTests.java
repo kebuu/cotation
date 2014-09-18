@@ -16,7 +16,7 @@ public class DataForTests {
             createCotation(4L, new Date(), "code1", 4, 1.0, 1.0, 1.0, 2.0, 30L),
             createCotation(5L, new Date(), "code1", 5, 3.0, 1.0, 3.0, 1.0, 40L),
             createCotation(6L, new Date(), "code1", 6, 1.0, 3.0, 1.0, 3.0, 50L),
-            createCotation(7L, new Date(), "code1", 7, 1.0, 1.0, 3.0, 1.0, 60L),
+            createCotation(7L, new Date(), "code1", 7, 1.0, 1.0, 3.0, 4.0, 60L),
             createCotation(8L, new Date(), "code1", 8, 1.0, 1.0, 1.0, 3.0, 70L),
             createCotation(9L, new Date(), "code1", 9, 1.0, 1.0, 1.0, 1.0, 80L)
         );

@@ -49,7 +49,7 @@ public class StochasticBuilder extends AbstractBuilder {
         Optional<Cotation> stochasticStartCotation = cotations.getByIndex(cotation.getPosition() - period);
 
         if (stochasticStartCotation.isPresent()) {
-            DoubleSummaryStatistics doubleSummaryStatistics = IntStream.range(0, period)
+            DoubleSummaryStatistics doubleSummaryStatistics = IntStream.rangeClosed(0, period)
                .mapToObj(index -> cotations.getByIndex(cotation.getPosition() - index).get())
                .collect(Collectors.summarizingDouble(Cotation::getEnd));
 
