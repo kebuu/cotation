@@ -1,6 +1,6 @@
 package com.kebuu.builder.impl.simple;
 
-import com.kebuu.builder.impl.SingleAttributeAbstractBuilder;
+import com.kebuu.builder.impl.AbstractSingleAttributeBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
@@ -10,7 +10,7 @@ import com.kebuu.exception.InvalidCotationInfoException;
 
 import java.util.function.Function;
 
-public abstract class SimpleCotationInfoBuilder<T> extends SingleAttributeAbstractBuilder<T> {
+public abstract class SimpleCotationInfoBuilder<T> extends AbstractSingleAttributeBuilder<T> {
 
     private final Function<Cotation, T> tranformer;
 

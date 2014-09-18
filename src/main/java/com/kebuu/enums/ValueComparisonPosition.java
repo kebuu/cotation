@@ -11,9 +11,9 @@ public enum ValueComparisonPosition {
         double difference = value2 - value1;
 
         if (difference <= -equalUnderThisAbsoluteValue && difference != 0) {
-            return FIRST_VALUE_LOWER;
-        } else if (difference >= equalUnderThisAbsoluteValue && difference != 0) {
             return FIRST_VALUE_UPPER;
+        } else if (difference >= equalUnderThisAbsoluteValue && difference != 0) {
+            return FIRST_VALUE_LOWER;
         } else {
             return EQUAL_VALUES;
         }

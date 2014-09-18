@@ -1,7 +1,7 @@
 package com.kebuu.builder.impl.simple;
 
 import com.kebuu.builder.impl.RestrictedValueBuilder;
-import com.kebuu.builder.impl.SingleAttributeAbstractBuilder;
+import com.kebuu.builder.impl.AbstractSingleAttributeBuilder;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.LongCotationAttribute;
 import org.joda.time.DateTime;
@@ -14,7 +14,7 @@ public class YearInfoValueBuilder extends RestrictedValueBuilder<Long> {
 
     private static final List<Long> DEFAULT_YEAR_RANGE = LongStream.rangeClosed(1990, 2020).boxed().collect(Collectors.toList());
 
-    public YearInfoValueBuilder(SingleAttributeAbstractBuilder<Long> delegate, Iterable<Long> restrictedValues) {
+    public YearInfoValueBuilder(AbstractSingleAttributeBuilder<Long> delegate, Iterable<Long> restrictedValues) {
         super(delegate, restrictedValues);
     }
 

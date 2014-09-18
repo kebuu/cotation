@@ -11,12 +11,12 @@ import com.kebuu.dto.cotation.value.CotationValue;
 
 import java.util.Set;
 
-public class RestrictedValueBuilder<T> extends SingleAttributeAbstractBuilder<T> {
+public class RestrictedValueBuilder<T> extends AbstractSingleAttributeBuilder<T> {
 
-    private final SingleAttributeAbstractBuilder<T> delegate;
+    private final AbstractSingleAttributeBuilder<T> delegate;
     private final Set<T> restrictedValues;
 
-    public RestrictedValueBuilder(SingleAttributeAbstractBuilder<T> delegate, Iterable<T> restrictedValues) {
+    public RestrictedValueBuilder(AbstractSingleAttributeBuilder<T> delegate, Iterable<T> restrictedValues) {
         this.delegate = delegate;
         this.restrictedValues = ImmutableSet.copyOf(restrictedValues);
     }
