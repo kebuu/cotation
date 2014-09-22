@@ -24,7 +24,7 @@ public class RestrictedValueBuilder<T> extends AbstractSingleAttributeBuilder<T>
     @Override
     protected BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         BuiltCotation builtCotation = delegate.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
-        validateListedAttributeValue(builtCotation.getValueByAttribute(delegate.getSingleAttribute()).get());
+        validateListedAttributeValue(builtCotation.getCotationValueByAttribute(delegate.getSingleAttribute()).get());
         return builtCotation;
     }
 

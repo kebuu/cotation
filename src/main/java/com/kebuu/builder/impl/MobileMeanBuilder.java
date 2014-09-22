@@ -21,8 +21,6 @@ import java.util.stream.IntStream;
 public class MobileMeanBuilder extends AbstractBuilder {
 
     private static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
-    private static final String POSITION_PREFIX_NAME = "position_";
-    private static final String DIRECTION_PREFIX_NAME = "direction_";
 
     @Getter private final int mobileMeanRange;
     @Getter private final RealCotationAttribute mobileMeanValueAttribute;

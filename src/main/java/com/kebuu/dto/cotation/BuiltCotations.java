@@ -44,7 +44,7 @@ public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
 
     public <T> Optional<? extends CotationValue<T>> getCotationValue(int cotationPosition, CotationAttribute<T> attribute) {
         return getByIndex(cotationPosition)
-               .flatMap(optionalBuiltCotation -> optionalBuiltCotation.getValueByAttribute(attribute));
+               .flatMap(optionalBuiltCotation -> optionalBuiltCotation.getCotationValueByAttribute(attribute));
     }
 
     public <T> Optional<T> getValue(int cotationPosition, CotationAttribute<T> attribute) {

@@ -47,7 +47,7 @@ public abstract class ValuesRelationBuilder<T extends Enum<? extends Enum<?>>> e
     }
 
     private static Function<BuiltCotation, Optional<Double>> createValueTransformer(CotationAttribute<Double> attribute) {
-        return (BuiltCotation x) -> x.getValueByAttribute(attribute).get().getValue();
+        return (BuiltCotation x) -> x.getValueByAttribute(attribute);
     }
 
     protected Optional<Double> getValue1(BuiltCotations builtCotations, int position) {

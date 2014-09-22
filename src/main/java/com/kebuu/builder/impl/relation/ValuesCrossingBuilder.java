@@ -53,7 +53,7 @@ public class ValuesCrossingBuilder extends AbstractBuilder {
     }
 
     private static Function<BuiltCotation, Optional<Double>> createValueTransformer(CotationAttribute<Double> attribute) {
-        return (BuiltCotation x) -> x.getValueByAttribute(attribute).get().getValue();
+        return (BuiltCotation x) -> x.getCotationValueByAttribute(attribute).get().getValue();
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import lombok.Getter;
 
 /**
- * Calcul de l'EMM : EMM(p) = TODO
+ * Calcul du MACD : il s'agit d'une difference entre deux moyennes mobiles exponentielles
  */
 public class MacdBuilder extends AbstractBuilder {
 
@@ -54,8 +54,8 @@ public class MacdBuilder extends AbstractBuilder {
         BuiltCotation shortPeriodBuiltValue = shortPeriodBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
         BuiltCotation longPeriodBuiltValue = longPeriodBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
 
-        CotationValue<Double> shortPeriodValue = shortPeriodBuiltValue.getValueByAttribute(shortPeriodBuilder.getAttribute()).get();
-        CotationValue<Double> longPeriodValue = longPeriodBuiltValue.getValueByAttribute(longPeriodBuilder.getAttribute()).get();
+        CotationValue<Double> shortPeriodValue = shortPeriodBuiltValue.getCotationValueByAttribute(shortPeriodBuilder.getAttribute()).get();
+        CotationValue<Double> longPeriodValue = longPeriodBuiltValue.getCotationValueByAttribute(longPeriodBuilder.getAttribute()).get();
 
         if (longPeriodValue.getValue().isPresent()) {
             macdCotationValue = macdCotationValue.withValue(longPeriodValue.forceGetValue() - shortPeriodValue.forceGetValue());

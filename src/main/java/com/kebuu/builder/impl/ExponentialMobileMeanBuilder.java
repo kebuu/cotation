@@ -10,13 +10,11 @@ import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import lombok.Getter;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 /**
- * Calcul de l'EMM : EMM(p) = TODO
+ * Calcul de l'EMM : EMM(n) = end * C + (1 - C) * EMM(n - 1)
+ * Avec C = 2 / (period + 1)
  */
 public class ExponentialMobileMeanBuilder extends AbstractBuilder {
 
@@ -25,6 +23,7 @@ public class ExponentialMobileMeanBuilder extends AbstractBuilder {
     @Getter private final int period;
     @Getter private final RealCotationAttribute attribute;
     private final double exponentialFactor;
+    private final MobileMeanBuilder simpleMobileMeanBuilder;
 
     public ExponentialMobileMeanBuilder(int period) {
         Preconditions.checkArgument(period > 0, "Period should be greater than 0");
@@ -32,6 +31,7 @@ public class ExponentialMobileMeanBuilder extends AbstractBuilder {
         this.exponentialFactor = 2.0 / ((double)period + 1.0);
 
         this.attribute = new RealCotationAttribute(EMM_PREFIX_NAME + period);
+        this.simpleMobileMeanBuilder = new MobileMeanBuilder(period);
     }
 
     @Override
@@ -43,28 +43,23 @@ public class ExponentialMobileMeanBuilder extends AbstractBuilder {
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         SimpleCotationValue<Double> emmCotationValue = new SimpleCotationValue<>(attribute);
 
-        if (cotations.getByIndex(cotation.getPosition() - period).isPresent()) {
-            List<Cotation> usedCotations = IntStream.range(0, period)
-                .mapToObj(i -> cotations.getByIndex(cotation.getPosition() - i).get())
-                .sorted(Comparator.comparingInt(Cotation::getPosition).reversed())
-                .collect(Collectors.toList());
+        Optional<Double> previousEmmValue = builtCotations.getValue(cotation.getPosition() - 1, attribute);
+        if (previousEmmValue.isPresent()) {
+            emmCotationValue = emmCotationValue.withValue(calculateEmmValue(cotation, previousEmmValue.get(), exponentialFactor));
+        } else {
+            BuiltCotation simpleMobileMeanBuiltCotation = simpleMobileMeanBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
+            Optional<Double> simpleMobileMeanValue = simpleMobileMeanBuiltCotation.getValueByAttribute(simpleMobileMeanBuilder.getMobileMeanValueAttribute());
 
-            emmCotationValue = emmCotationValue.withValue(calculateEmmValue(usedCotations, exponentialFactor));
+            if (simpleMobileMeanValue.isPresent()) {
+                emmCotationValue = emmCotationValue.withValue(simpleMobileMeanValue.get());
+            }
         }
 
         return new BuiltCotation(cotation).withAdditionalValues(emmCotationValue);
     }
 
-    private double calculateEmmValue(List<Cotation> usedCotations, double exponentialFactor) {
-        double emmNumeratorValue = 0.0;
-        double factorSum = 0.0;
+    private Double calculateEmmValue(Cotation cotation, Double previousEmmValue, double exponentialFactor) {
+        return cotation.getEnd() * exponentialFactor + (1.0 - exponentialFactor) * previousEmmValue;
 
-        for (int i = 0; i < usedCotations.size(); i++) {
-            double factor = Math.pow(exponentialFactor, (double)i);
-            emmNumeratorValue += usedCotations.get(i).getEnd() * factor;
-            factorSum += factor;
-        }
-
-        return emmNumeratorValue / factorSum;
     }
 }

@@ -54,11 +54,19 @@ public class BuiltCotation {
                 .noneMatch(count -> count > 1);
     }
 
-    public <T> Optional<CotationValue<T>> getValueByAttribute(CotationAttribute<T> attribute) {
+    public <T> Optional<CotationValue<T>> getCotationValueByAttribute(CotationAttribute<T> attribute) {
         return values.stream()
             .filter(cotationValue -> cotationValue.getAttribute().getName().equals(attribute.getName()))
             .map(cotationValue -> (CotationValue<T>) cotationValue)
             .findFirst();
+    }
+
+    public <T> Optional<T> getValueByAttribute(CotationAttribute<T> attribute) {
+        return getCotationValueByAttribute(attribute).flatMap(CotationValue::getValue);
+    }
+
+    public <T> T forceGetValueByAttribute(CotationAttribute<T> attribute) {
+        return getCotationValueByAttribute(attribute).get().forceGetValue();
     }
 
     public static BuiltCotation merge(BuiltCotation builtCotation1, BuiltCotation builtCotation2) {
