@@ -12,7 +12,7 @@ import lombok.Getter;
 
 import java.util.DoubleSummaryStatistics;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 /**
@@ -49,9 +49,10 @@ public class StochasticBuilder extends AbstractBuilder {
         Optional<Cotation> stochasticStartCotation = cotations.getByIndex(cotation.getPosition() - period);
 
         if (stochasticStartCotation.isPresent()) {
-            DoubleSummaryStatistics doubleSummaryStatistics = IntStream.rangeClosed(0, period)
+            DoubleSummaryStatistics doubleSummaryStatistics = IntStream.range(0, period)
                .mapToObj(index -> cotations.getByIndex(cotation.getPosition() - index).get())
-               .collect(Collectors.summarizingDouble(Cotation::getEnd));
+               .flatMapToDouble(x -> DoubleStream.of(x.getMax(), x.getMin()))
+               .summaryStatistics();
 
             double max = doubleSummaryStatistics.getMax();
             double min = doubleSummaryStatistics.getMin();

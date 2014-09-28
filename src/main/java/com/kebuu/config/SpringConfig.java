@@ -1,7 +1,7 @@
 package com.kebuu.config;
 
 import com.kebuu.builder.impl.*;
-import com.kebuu.builder.impl.relation.ValuesPositionBuilder;
+import com.kebuu.builder.impl.relation.ValuesEnumPositionBuilder;
 import com.kebuu.builder.impl.simple.DayOfWeekInfoBuilder;
 import com.kebuu.builder.impl.simple.EndInfoBuilder;
 import com.kebuu.builder.impl.simple.MonthInfoBuilder;
@@ -40,7 +40,7 @@ public class SpringConfig {
         MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
 
         ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute());
-        ValuesPositionBuilder mobileMeanBuilder20Position = new ValuesPositionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getSingleAttribute());
+        ValuesEnumPositionBuilder mobileMeanBuilder20Position = new ValuesEnumPositionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getSingleAttribute());
 
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
 
