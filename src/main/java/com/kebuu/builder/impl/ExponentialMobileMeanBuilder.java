@@ -2,7 +2,7 @@ package com.kebuu.builder.impl;
 
 public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
-    private static final String EMM_PREFIX_NAME = "emm_";
+    private static final String EMM_PREFIX_NAME = "emm";
     private final double exponentialFactor;
 
     public ExponentialMobileMeanBuilder(int period) {

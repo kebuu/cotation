@@ -19,25 +19,25 @@ import static java.util.stream.Collectors.toList;
 public abstract class WeightedMobileMeanBuilder extends AbstractBuilder {
 
     @Getter private final int mobileMeanRange;
-    @Getter private final RealCotationAttribute mobileMeanValueAttribute;
+    @Getter private final RealCotationAttribute attribute;
 
     public WeightedMobileMeanBuilder(int mobileMeanRange, String attributeBaseName) {
         Preconditions.checkArgument(mobileMeanRange > 0, "Weighted mobile mean range should be greater than 0");
 
         this.mobileMeanRange = mobileMeanRange;
-        this.mobileMeanValueAttribute = new RealCotationAttribute(attributeBaseName + "_" + mobileMeanRange);
+        this.attribute = new RealCotationAttribute(attributeBaseName + "_" + mobileMeanRange);
     }
 
     protected abstract double getWeight(int i);
 
     @Override
     public CotationAttributes builtAttributes() {
-        return new CotationAttributes(mobileMeanValueAttribute);
+        return new CotationAttributes(attribute);
     }
 
     @Override
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue<>(mobileMeanValueAttribute);
+        SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue<>(attribute);
 
         if (cotations.getByIndex(cotation.getPosition() - mobileMeanRange).isPresent()) {
             List<ValueAndWeight> valuesAndWeights = IntStream.range(0, mobileMeanRange)
@@ -63,7 +63,6 @@ public abstract class WeightedMobileMeanBuilder extends AbstractBuilder {
 
         return weightedValuesSum / weightsSum;
     }
-
 
     @Value
     private static class ValueAndWeight {

@@ -1,4 +1,4 @@
-Petit TU -> voir si on peut n'initialiser la base de données qu'une seule fois pour tous les tests (et après c'est la transation qui gère)
+Petit TU -> voir si on peut n'initialiser la base de données qu'une seule fois pour tous les tests (et après c'est la transaction qui gère)
 
 Extraire texte exception/precondition
 
@@ -11,6 +11,6 @@ Créer un CandleBuilder
 Regarder le Ease of Movement, Chaikin money flow
 
 Ajouter un builder un peu plus générique que le relationBuilder (pour pouvoir avoir en sortie un Double et faire un DifferenceRelationBuilder par exemple, et l'utiliser pour le MACD)
--> Finir MACD + TU (MACD et MME)
+-> Finir MACD + TU (MACD et MME) -> refaire le MACD avec RelationBuilder
 Finir le TimeSerieBuilder
 Ajouter un TrendBuilder ?

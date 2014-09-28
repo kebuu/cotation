@@ -15,8 +15,8 @@ public class MobileMeanBuilderTests extends AbstractBuilderTests<SimpleMobileMea
     public void testBuildCotations() {
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
-        Assertions.assertThat(builtCotations.getValue(1, builder.getMobileMeanValueAttribute()).isPresent()).isFalse();
-        Assertions.assertThat(builtCotations.getValue(8, builder.getMobileMeanValueAttribute()).get()).isEqualTo(10.0 / 3.0);
+        Assertions.assertThat(builtCotations.getValue(1, builder.getAttribute()).isPresent()).isFalse();
+        Assertions.assertThat(builtCotations.getValue(8, builder.getAttribute()).get()).isEqualTo(10.0 / 3.0);
     }
 
     @Test
@@ -29,6 +29,6 @@ public class MobileMeanBuilderTests extends AbstractBuilderTests<SimpleMobileMea
 
     @Override
     protected SimpleMobileMeanBuilder createBuilder() {
-        return new MobileMeanBuilder(3);
+        return new SimpleMobileMeanBuilder(3);
     }
 }

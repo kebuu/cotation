@@ -2,10 +2,7 @@ package com.kebuu.config;
 
 import com.kebuu.builder.impl.*;
 import com.kebuu.builder.impl.relation.ValuesEnumPositionBuilder;
-import com.kebuu.builder.impl.simple.DayOfWeekInfoBuilder;
-import com.kebuu.builder.impl.simple.EndInfoBuilder;
-import com.kebuu.builder.impl.simple.MonthInfoBuilder;
-import com.kebuu.builder.impl.simple.YearInfoValueBuilder;
+import com.kebuu.builder.impl.simple.*;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,26 +30,27 @@ public class SpringConfig {
     public CompositeCotationBuilder cotationBuilders() {
         YearInfoValueBuilder yearInfoBuilder = new YearInfoValueBuilder();
         MonthInfoBuilder monthInfoBuilder = new MonthInfoBuilder();
+        DayOfMonthInfoBuilder dayOfMonthInfoBuilder = new DayOfMonthInfoBuilder();
         DayOfWeekInfoBuilder dayOfWeekInfoBuilder = new DayOfWeekInfoBuilder();
         EndInfoBuilder endInfoBuilder = new EndInfoBuilder();
 
         SimpleMobileMeanBuilder simpleMobileMeanBuilder20 = new SimpleMobileMeanBuilder(20);
         SimpleMobileMeanBuilder simpleMobileMeanBuilder50 = new SimpleMobileMeanBuilder(50);
 
-        ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(simpleMobileMeanBuilder20.getMobileMeanValueAttribute());
-        ValuesEnumPositionBuilder mobileMeanBuilder20Position = new ValuesEnumPositionBuilder(simpleMobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getSingleAttribute());
+        ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(simpleMobileMeanBuilder20.getAttribute());
+        ValuesEnumPositionBuilder mobileMeanBuilder20Position = new ValuesEnumPositionBuilder(simpleMobileMeanBuilder20.getAttribute(), endInfoBuilder.getSingleAttribute());
 
         MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(simpleMobileMeanBuilder20, simpleMobileMeanBuilder50);
 
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         RocBuilder rocBuilder = new RocBuilder();
-        MacdBuilder macdBuilder = new MacdBuilder();
+        MacdBuilder macdBuilder = new MacdBuilder(1, 2);
 
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
         ExponentialMobileMeanBuilder exponentialMobileMeanBuilder = new ExponentialMobileMeanBuilder(2);
 
-        return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
+        return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfMonthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
                                                    simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50, mobileMeansCrossBuilder2050,
-                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder, exponentialMobileMeanBuilder);
+                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, exponentialMobileMeanBuilder, macdBuilder);
     }
 }
