@@ -13,7 +13,7 @@ import lombok.Getter;
 import java.util.Optional;
 
 /**
- * Calcul du Rate Of Change : ROC(i) = 100 * cours(i) / cours(i - period)
+ * Calcul du Rate Of Change : ROC(i) = 100 * ((cours(i) / cours(i - period)) - 1)
  */
 public class RocBuilder extends AbstractBuilder {
 
@@ -53,6 +53,6 @@ public class RocBuilder extends AbstractBuilder {
     }
 
     private double calculateRocValue(double currentValue, double valueAtPeriod) {
-        return 100.0 * (currentValue) / (valueAtPeriod);
+        return 100.0 * ((currentValue / valueAtPeriod) - 1.0);
     }
 }
