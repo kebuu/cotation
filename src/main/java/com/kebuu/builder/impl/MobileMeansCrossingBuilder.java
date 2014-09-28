@@ -20,15 +20,15 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
 
     private static final String MOBILE_MEANS_CROSSING_PREFIX_NAME = "mobile_means_crossing_";
 
-    private final MobileMeanBuilder mobileMeanBuilder1;
-    private final MobileMeanBuilder mobileMeanBuilder2;
+    private final SimpleMobileMeanBuilder simpleMobileMeanBuilder1;
+    private final SimpleMobileMeanBuilder simpleMobileMeanBuilder2;
     private final EnumeratedNominalCotationAttribute<CrossingValuesStatus> enumeratedNominalCotationAttribute;
 
-    public MobileMeansCrossingBuilder(MobileMeanBuilder mobileMeanBuilder1, MobileMeanBuilder mobileMeanBuilder2) {
-        this.mobileMeanBuilder1 = mobileMeanBuilder1;
-        this.mobileMeanBuilder2 = mobileMeanBuilder2;
+    public MobileMeansCrossingBuilder(SimpleMobileMeanBuilder simpleMobileMeanBuilder1, SimpleMobileMeanBuilder simpleMobileMeanBuilder2) {
+        this.simpleMobileMeanBuilder1 = simpleMobileMeanBuilder1;
+        this.simpleMobileMeanBuilder2 = simpleMobileMeanBuilder2;
 
-        String nominalCotationAttributeName = MOBILE_MEANS_CROSSING_PREFIX_NAME + mobileMeanBuilder1.getMobileMeanRange() + "_" + mobileMeanBuilder2.getMobileMeanRange();
+        String nominalCotationAttributeName = MOBILE_MEANS_CROSSING_PREFIX_NAME + simpleMobileMeanBuilder1.getMobileMeanRange() + "_" + simpleMobileMeanBuilder2.getMobileMeanRange();
         this.enumeratedNominalCotationAttribute = new EnumeratedNominalCotationAttribute<>(nominalCotationAttributeName, CrossingValuesStatus.class);
     }
 
@@ -39,10 +39,10 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
 
     @Override
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        Optional<Double> builder1ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), mobileMeanBuilder1.getMobileMeanValueAttribute());
-        Optional<Double> builder2ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), mobileMeanBuilder2.getMobileMeanValueAttribute());
-        Optional<Double> builder1ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, mobileMeanBuilder1.getMobileMeanValueAttribute());
-        Optional<Double> builder2ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, mobileMeanBuilder2.getMobileMeanValueAttribute());
+        Optional<Double> builder1ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), simpleMobileMeanBuilder1.getMobileMeanValueAttribute());
+        Optional<Double> builder2ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), simpleMobileMeanBuilder2.getMobileMeanValueAttribute());
+        Optional<Double> builder1ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, simpleMobileMeanBuilder1.getMobileMeanValueAttribute());
+        Optional<Double> builder2ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, simpleMobileMeanBuilder2.getMobileMeanValueAttribute());
 
         SimpleCotationValue<CrossingValuesStatus> mobileMeansCrossingValue = new SimpleCotationValue<>(enumeratedNominalCotationAttribute);
 

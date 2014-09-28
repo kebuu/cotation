@@ -36,22 +36,23 @@ public class SpringConfig {
         DayOfWeekInfoBuilder dayOfWeekInfoBuilder = new DayOfWeekInfoBuilder();
         EndInfoBuilder endInfoBuilder = new EndInfoBuilder();
 
-        MobileMeanBuilder mobileMeanBuilder20 = new MobileMeanBuilder(20);
-        MobileMeanBuilder mobileMeanBuilder50 = new MobileMeanBuilder(50);
+        SimpleMobileMeanBuilder simpleMobileMeanBuilder20 = new SimpleMobileMeanBuilder(20);
+        SimpleMobileMeanBuilder simpleMobileMeanBuilder50 = new SimpleMobileMeanBuilder(50);
 
-        ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute());
-        ValuesEnumPositionBuilder mobileMeanBuilder20Position = new ValuesEnumPositionBuilder(mobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getSingleAttribute());
+        ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(simpleMobileMeanBuilder20.getMobileMeanValueAttribute());
+        ValuesEnumPositionBuilder mobileMeanBuilder20Position = new ValuesEnumPositionBuilder(simpleMobileMeanBuilder20.getMobileMeanValueAttribute(), endInfoBuilder.getSingleAttribute());
 
-        MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(mobileMeanBuilder20, mobileMeanBuilder50);
+        MobileMeansCrossingBuilder mobileMeansCrossBuilder2050 = new MobileMeansCrossingBuilder(simpleMobileMeanBuilder20, simpleMobileMeanBuilder50);
 
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         RocBuilder rocBuilder = new RocBuilder();
         MacdBuilder macdBuilder = new MacdBuilder();
 
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
+        ExponentialMobileMeanBuilder exponentialMobileMeanBuilder = new ExponentialMobileMeanBuilder(2);
 
         return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
-                mobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, mobileMeanBuilder50, mobileMeansCrossBuilder2050,
-                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder);
+                                                   simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50, mobileMeansCrossBuilder2050,
+                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder, exponentialMobileMeanBuilder);
     }
 }

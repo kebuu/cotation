@@ -7,7 +7,6 @@ import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
-import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import lombok.Getter;
 
@@ -51,15 +50,15 @@ public class MacdBuilder extends AbstractBuilder {
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(macdValueAttribute);
 
-        BuiltCotation shortPeriodBuiltValue = shortPeriodBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
-        BuiltCotation longPeriodBuiltValue = longPeriodBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
-
-        CotationValue<Double> shortPeriodValue = shortPeriodBuiltValue.getCotationValueByAttribute(shortPeriodBuilder.getAttribute()).get();
-        CotationValue<Double> longPeriodValue = longPeriodBuiltValue.getCotationValueByAttribute(longPeriodBuilder.getAttribute()).get();
-
-        if (longPeriodValue.getValue().isPresent()) {
-            macdCotationValue = macdCotationValue.withValue(longPeriodValue.forceGetValue() - shortPeriodValue.forceGetValue());
-        }
+//        BuiltCotation shortPeriodBuiltValue = shortPeriodBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
+//        BuiltCotation longPeriodBuiltValue = longPeriodBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
+//
+//        CotationValue<Double> shortPeriodValue = shortPeriodBuiltValue.getCotationValueByAttribute(shortPeriodBuilder.getAttribute()).get();
+//        CotationValue<Double> longPeriodValue = longPeriodBuiltValue.getCotationValueByAttribute(longPeriodBuilder.getAttribute()).get();
+//
+//        if (longPeriodValue.getValue().isPresent()) {
+//            macdCotationValue = macdCotationValue.withValue(longPeriodValue.forceGetValue() - shortPeriodValue.forceGetValue());
+//        }
 
         return new BuiltCotation(cotation).withAdditionalValues(macdCotationValue);
     }

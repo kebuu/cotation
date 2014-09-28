@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class MobileMeanBuilderTests extends AbstractBuilderTests<MobileMeanBuilder> {
+public class MobileMeanBuilderTests extends AbstractBuilderTests<SimpleMobileMeanBuilder> {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -24,11 +24,11 @@ public class MobileMeanBuilderTests extends AbstractBuilderTests<MobileMeanBuild
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("Mobile mean range should be greater than 0");
 
-        new MobileMeanBuilder(-1);
+        new SimpleMobileMeanBuilder(-1);
     }
 
     @Override
-    protected MobileMeanBuilder createBuilder() {
+    protected SimpleMobileMeanBuilder createBuilder() {
         return new MobileMeanBuilder(3);
     }
 }
