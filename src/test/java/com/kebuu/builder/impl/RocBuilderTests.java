@@ -11,8 +11,8 @@ public class RocBuilderTests extends AbstractBuilderTests<RocBuilder> {
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
         Assertions.assertThat(builtCotations.getValue(3, builder.getRocValueAttribute()).isPresent()).isFalse();
-        Assertions.assertThat(builtCotations.getValue(4, builder.getRocValueAttribute()).get()).isEqualTo(200.0);
-        Assertions.assertThat(builtCotations.getValue(9, builder.getRocValueAttribute()).get()).isEqualTo(100.0 / 3.0);
+        Assertions.assertThat(builtCotations.getValue(4, builder.getRocValueAttribute()).get()).isEqualTo(100.0);
+        Assertions.assertThat(builtCotations.getValue(9, builder.getRocValueAttribute()).get()).isEqualTo(-200.0 / 3.0);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class StochasticBuilder extends AbstractBuilder {
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         SimpleCotationValue<Double> stochasticValue = new SimpleCotationValue<>(stochasticValueAttribute);
 
-        Optional<Cotation> stochasticStartCotation = cotations.getByIndex(cotation.getPosition() - period);
+        Optional<Cotation> stochasticStartCotation = cotations.getByIndex(cotation.getPosition() - period + 1);
 
         if (stochasticStartCotation.isPresent()) {
             DoubleSummaryStatistics doubleSummaryStatistics = IntStream.range(0, period)

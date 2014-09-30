@@ -2,10 +2,9 @@ package com.kebuu.builder.impl;
 
 import com.google.common.base.Preconditions;
 import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
-import com.kebuu.dto.cotation.attribute.CotationAttributes;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import lombok.Getter;
@@ -16,10 +15,12 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
-public abstract class WeightedMobileMeanBuilder extends AbstractBuilder {
+public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeBuilder<Double> {
 
     @Getter private final int mobileMeanRange;
     @Getter private final RealCotationAttribute attribute;
+
+    protected abstract double getWeight(int i);
 
     public WeightedMobileMeanBuilder(int mobileMeanRange, String attributeBaseName) {
         Preconditions.checkArgument(mobileMeanRange > 0, "Weighted mobile mean range should be greater than 0");
@@ -28,15 +29,12 @@ public abstract class WeightedMobileMeanBuilder extends AbstractBuilder {
         this.attribute = new RealCotationAttribute(attributeBaseName + "_" + mobileMeanRange);
     }
 
-    protected abstract double getWeight(int i);
-
     @Override
-    public CotationAttributes builtAttributes() {
-        return new CotationAttributes(attribute);
+    public CotationAttribute<Double> getSingleAttribute() {
+        return attribute;
     }
 
-    @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public SimpleCotationValue<Double> calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue<>(attribute);
 
         if (cotations.getByIndex(cotation.getPosition() - mobileMeanRange).isPresent()) {
@@ -48,8 +46,7 @@ public abstract class WeightedMobileMeanBuilder extends AbstractBuilder {
 
             mobileMeanValue = mobileMeanValue.withValue(calculateWeightedValue(valuesAndWeights));
         }
-
-        return new BuiltCotation(cotation).withAdditionalValues(mobileMeanValue);
+        return mobileMeanValue;
     }
 
     private Double calculateWeightedValue(List<ValueAndWeight> valuesAndWeights) {

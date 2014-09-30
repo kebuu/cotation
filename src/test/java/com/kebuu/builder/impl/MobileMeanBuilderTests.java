@@ -22,7 +22,7 @@ public class MobileMeanBuilderTests extends AbstractBuilderTests<SimpleMobileMea
     @Test
     public void testCreateBuilder() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Mobile mean range should be greater than 0");
+        expectedException.expectMessage("Weighted mobile mean range should be greater than 0");
 
         new SimpleMobileMeanBuilder(-1);
     }

@@ -3,7 +3,6 @@ package com.kebuu.builder.impl;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
@@ -21,14 +20,7 @@ public class RestrictedValueBuilder<T> extends AbstractSingleAttributeBuilder<T>
         this.restrictedValues = ImmutableSet.copyOf(restrictedValues);
     }
 
-    @Override
-    protected BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        BuiltCotation builtCotation = delegate.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
-        validateListedAttributeValue(builtCotation.getCotationValueByAttribute(delegate.getSingleAttribute()).get());
-        return builtCotation;
-    }
-
-    protected void validateListedAttributeValue(CotationValue<T> value) {
+    protected void validateCotationValue(CotationValue<T> value) {
         if(value.getValue().isPresent()) {
             T unwrappedValue = value.getValue().get();
 
@@ -39,5 +31,12 @@ public class RestrictedValueBuilder<T> extends AbstractSingleAttributeBuilder<T>
     @Override
     public CotationAttribute<T> getSingleAttribute() {
         return delegate.getSingleAttribute();
+    }
+
+    @Override
+    public CotationValue<T> calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+        CotationValue<T> cotationValue = delegate.calculateSingleValue(cotation, cotations, builtCotations, alreadyBuiltCotations);
+        validateCotationValue(cotationValue);
+        return cotationValue;
     }
 }
