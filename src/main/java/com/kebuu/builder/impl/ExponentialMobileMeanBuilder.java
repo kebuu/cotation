@@ -12,6 +12,6 @@ public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
     @Override
     protected double getWeight(int i) {
-        return Math.exp(Integer.valueOf(i + 1).doubleValue() * Math.log(exponentialFactor));
+        return Math.pow(exponentialFactor, Integer.valueOf(i + 1).doubleValue());
     }
 }
