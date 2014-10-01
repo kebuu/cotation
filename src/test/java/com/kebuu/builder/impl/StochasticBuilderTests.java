@@ -13,13 +13,13 @@ public class StochasticBuilderTests extends AbstractBuilderTests<StochasticBuild
 
     @Test
     public void testBuildCotations_withPeriod3() {
-        builder = new StochasticBuilder(2);
+        builder = new StochasticBuilder(3);
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
         Assertions.assertThat(builtCotations.getValue(2, builder.getStochasticValueAttribute()).isPresent()).isFalse();
-        Assertions.assertThat(builtCotations.getValue(3, builder.getStochasticValueAttribute()).get()).isEqualTo(100.0);
+        Assertions.assertThat(builtCotations.getValue(3, builder.getStochasticValueAttribute()).isPresent()).isFalse();
         Assertions.assertThat(builtCotations.getValue(4, builder.getStochasticValueAttribute()).get()).isEqualTo(100.0);
-        Assertions.assertThat(builtCotations.getValue(8, builder.getStochasticValueAttribute()).get()).isEqualTo(0.0);
+        Assertions.assertThat(builtCotations.getValue(5, builder.getStochasticValueAttribute()).get()).isEqualTo(0.0);
     }
 
     @Test
