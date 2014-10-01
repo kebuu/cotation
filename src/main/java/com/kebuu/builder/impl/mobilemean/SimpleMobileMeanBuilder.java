@@ -1,4 +1,4 @@
-package com.kebuu.builder.impl;
+package com.kebuu.builder.impl.mobilemean;
 
 /**
  * La moyenne mobile à n séance, n étant > 0.

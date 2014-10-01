@@ -25,6 +25,7 @@ public class SimpleCotationValue<T> implements CotationValue<T> {
     public SimpleCotationValue<T> withValue(T value) {
         return new SimpleCotationValue<>(attribute, value);
     }
+
     public T unwrapValue() {
         return value.get();
     }

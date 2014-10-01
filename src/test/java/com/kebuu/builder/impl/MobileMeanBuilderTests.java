@@ -1,5 +1,6 @@
 package com.kebuu.builder.impl;
 
+import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
 import com.kebuu.dto.cotation.BuiltCotations;
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;

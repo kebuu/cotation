@@ -1,9 +1,11 @@
-package com.kebuu.builder.impl;
+package com.kebuu.builder.impl.mobilemean;
+
+import lombok.Getter;
 
 public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
     private static final String EMM_PREFIX_NAME = "emm";
-    private final double exponentialFactor;
+    @Getter private final double exponentialFactor;
 
     public ExponentialMobileMeanBuilder(int period) {
         super(period, EMM_PREFIX_NAME);

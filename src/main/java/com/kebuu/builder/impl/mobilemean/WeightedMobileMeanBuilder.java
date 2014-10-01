@@ -1,6 +1,7 @@
-package com.kebuu.builder.impl;
+package com.kebuu.builder.impl.mobilemean;
 
 import com.google.common.base.Preconditions;
+import com.kebuu.builder.impl.AbstractSingleAttributeBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.Cotations;
