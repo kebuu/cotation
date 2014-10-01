@@ -1,8 +1,7 @@
 package com.kebuu.builder.impl;
 
 import com.google.common.base.Preconditions;
-import com.kebuu.builder.impl.mobilemean.ExponentialMobileMeanBuilder;
-import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
+import com.kebuu.builder.impl.mobilemean.SimplifiedExponentialMobileMeanBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
@@ -22,21 +21,21 @@ public class MacdBuilder extends AbstractBuilder {
     private static final int DEFAULT_SHORT_PERIOD = 12;
     private static final int DEFAULT_LONG_PERIOD = 26;
 
-    @Getter private final int mmPeriod;
-    @Getter private final int emmPeriod;
+    @Getter private final int shortPeriod;
+    @Getter private final int longPeriod;
     @Getter private final RealCotationAttribute macdValueAttribute;
 
-    private final SimpleMobileMeanBuilder mmBuilder;
-    private final ExponentialMobileMeanBuilder emmBuilder;
+    private final SimplifiedExponentialMobileMeanBuilder shortSemmBuilder;
+    private final SimplifiedExponentialMobileMeanBuilder longSemmBuilder;
 
-    public MacdBuilder(int mmPeriod, int emmPeriod) {
-        Preconditions.checkArgument(emmPeriod >= mmPeriod, "Long period should be greater or equals than short period");
+    public MacdBuilder(int shortPeriod, int longPeriod) {
+        Preconditions.checkArgument(longPeriod >= shortPeriod, "Long period should be greater or equals than short period");
 
-        this.mmPeriod = mmPeriod;
-        this.emmPeriod = emmPeriod;
-        this.macdValueAttribute = new RealCotationAttribute(MACD_PREFIX_NAME + mmPeriod + "_" + emmPeriod);
-        this.mmBuilder = new SimpleMobileMeanBuilder(mmPeriod);
-        this.emmBuilder = new ExponentialMobileMeanBuilder(emmPeriod);
+        this.shortPeriod = shortPeriod;
+        this.longPeriod = longPeriod;
+        this.macdValueAttribute = new RealCotationAttribute(MACD_PREFIX_NAME + shortPeriod + "_" + longPeriod);
+        this.shortSemmBuilder = new SimplifiedExponentialMobileMeanBuilder(shortPeriod);
+        this.longSemmBuilder = new SimplifiedExponentialMobileMeanBuilder(longPeriod);
     }
 
     public MacdBuilder() {
@@ -52,16 +51,13 @@ public class MacdBuilder extends AbstractBuilder {
     public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
         SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(macdValueAttribute);
 
-        BuiltCotation mmBuiltValue = mmBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
-        BuiltCotation emmBuiltValue = emmBuilder.build(cotation, cotations, builtCotations, alreadyBuiltCotations);
+        CotationValue<Double> shortValue  = shortSemmBuilder.calculateSingleValue(cotation, cotations, builtCotations, alreadyBuiltCotations);
+        CotationValue<Double> longValue = longSemmBuilder.calculateSingleValue(cotation, cotations, builtCotations, alreadyBuiltCotations);
 
-        CotationValue<Double> mmValue = mmBuiltValue.getCotationValueByAttribute(mmBuilder.getAttribute()).get();
-        CotationValue<Double> emmValue = emmBuiltValue.getCotationValueByAttribute(emmBuilder.getAttribute()).get();
-
-        if (emmValue.getValue().isPresent()) {
-            macdCotationValue = macdCotationValue.withValue(mmValue.forceGetValue() - emmValue.forceGetValue());
+        if (longValue.getValue().isPresent()) {
+            macdCotationValue = macdCotationValue.withValue(shortValue.forceGetValue() - longValue.forceGetValue());
         }
 
-        return new BuiltCotation(cotation).withAdditionalValues(macdCotationValue);
+        return new BuiltCotation(cotation).withAdditionalValues(macdCotationValue, shortValue, longValue);
     }
 }

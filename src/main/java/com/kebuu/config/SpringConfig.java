@@ -1,9 +1,7 @@
 package com.kebuu.config;
 
 import com.kebuu.builder.impl.*;
-import com.kebuu.builder.impl.mobilemean.ExponentialMobileMeanBuilder;
 import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
-import com.kebuu.builder.impl.mobilemean.SimplifiedExponentialMobileMeanBuilder;
 import com.kebuu.builder.impl.relation.ValuesEnumPositionBuilder;
 import com.kebuu.builder.impl.simple.*;
 import org.flywaydb.core.Flyway;
@@ -50,11 +48,9 @@ public class SpringConfig {
         MacdBuilder macdBuilder = new MacdBuilder(1, 2);
 
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
-        ExponentialMobileMeanBuilder exponentialMobileMeanBuilder = new ExponentialMobileMeanBuilder(2);
-        SimplifiedExponentialMobileMeanBuilder simplifiedExponentialMobileMeanBuilder = new SimplifiedExponentialMobileMeanBuilder(2);
 
         return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfMonthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
-                                                   simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50, mobileMeansCrossBuilder2050,
-                nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, exponentialMobileMeanBuilder, simplifiedExponentialMobileMeanBuilder, macdBuilder);
+            simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50, mobileMeansCrossBuilder2050,
+            nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder);
     }
 }
