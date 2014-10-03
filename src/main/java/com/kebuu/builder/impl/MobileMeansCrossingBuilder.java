@@ -4,7 +4,7 @@ import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
@@ -39,7 +39,10 @@ public class MobileMeansCrossingBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
+        Cotation cotation = cotationBuilderInfo.getCotation();
+        BuiltCotations alreadyBuiltCotations = cotationBuilderInfo.getAlreadyBuiltCotations();
+
         Optional<Double> builder1ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), simpleMobileMeanBuilder1.getAttribute());
         Optional<Double> builder2ValueCurrentCotation = alreadyBuiltCotations.getValue(cotation.getPosition(), simpleMobileMeanBuilder2.getAttribute());
         Optional<Double> builder1ValuePreviousCotation = alreadyBuiltCotations.getValue(cotation.getPosition() - 1, simpleMobileMeanBuilder1.getAttribute());

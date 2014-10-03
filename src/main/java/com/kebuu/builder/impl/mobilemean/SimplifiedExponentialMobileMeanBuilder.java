@@ -1,8 +1,6 @@
 package com.kebuu.builder.impl.mobilemean;
 
-import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 
 import java.util.Optional;
@@ -16,15 +14,15 @@ public class SimplifiedExponentialMobileMeanBuilder extends ExponentialMobileMea
     }
 
     @Override
-    public SimpleCotationValue<Double> calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public SimpleCotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> value = new SimpleCotationValue<>(attribute);
 
-        Optional<Double> previousValue = builtCotations.getValue(cotation.getPosition() - 1, attribute);
+        Optional<Double> previousValue = cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.getCotation().getPosition() - 1, attribute);
 
         if (previousValue.isPresent()) {
-            value = value.withValue(calculateSimplifiedValue(getValueToAverage(cotation, cotations, builtCotations, alreadyBuiltCotations).get(), previousValue.get(), exponentialFactor));
+            value = value.withValue(calculateSimplifiedValue(getValueToAverage(cotationBuilderInfo).get(), previousValue.get(), exponentialFactor));
         } else {
-            SimpleCotationValue<Double> cotationValue = super.calculateSingleValue(cotation, cotations, builtCotations, alreadyBuiltCotations);
+            SimpleCotationValue<Double> cotationValue = super.calculateSingleValue(cotationBuilderInfo);
 
             if (cotationValue.hasValue()) {
                 value = value.withValue(cotationValue.unwrapValue());

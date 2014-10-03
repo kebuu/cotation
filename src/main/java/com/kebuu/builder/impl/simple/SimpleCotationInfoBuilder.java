@@ -2,8 +2,7 @@ package com.kebuu.builder.impl.simple;
 
 import com.kebuu.builder.impl.AbstractSingleAttributeBuilder;
 import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.exception.InvalidCotationInfoException;
@@ -19,8 +18,8 @@ public abstract class SimpleCotationInfoBuilder<T> extends AbstractSingleAttribu
     }
 
     @Override
-    public CotationValue calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        SimpleCotationValue<T> simpleCotationValue = new SimpleCotationValue(getSingleAttribute(), tranformer.apply(cotation));
+    public CotationValue calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
+        SimpleCotationValue<T> simpleCotationValue = new SimpleCotationValue(getSingleAttribute(), tranformer.apply(cotationBuilderInfo.getCotation()));
 
         if (!isValidValue(simpleCotationValue)) {
             throw new InvalidCotationInfoException();

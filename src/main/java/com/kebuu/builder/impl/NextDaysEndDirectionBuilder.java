@@ -3,7 +3,7 @@ package com.kebuu.builder.impl;
 import com.google.common.base.Preconditions;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
-import com.kebuu.dto.cotation.BuiltCotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
@@ -16,7 +16,8 @@ import lombok.Getter;
 import java.util.*;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 public class NextDaysEndDirectionBuilder extends AbstractBuilder {
 
@@ -49,12 +50,12 @@ public class NextDaysEndDirectionBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
         List<CotationValue> cotationValues = nextDays.stream()
-            .map(nextDayStep -> createCotationValue(cotation, cotations, nextDayStep))
+            .map(nextDayStep -> createCotationValue(cotationBuilderInfo.getCotation(), cotationBuilderInfo.getCotations(), nextDayStep))
             .collect(toList());
 
-        return new BuiltCotation(cotation).withAdditionalValues(cotationValues);
+        return new BuiltCotation(cotationBuilderInfo.getCotation()).withAdditionalValues(cotationValues);
     }
 
     public CotationAttribute<Direction> createAttribute(Integer nextDay) {

@@ -2,9 +2,7 @@ package com.kebuu.builder.impl;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 
@@ -34,8 +32,8 @@ public class RestrictedValueBuilder<T> extends AbstractSingleAttributeBuilder<T>
     }
 
     @Override
-    public CotationValue<T> calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        CotationValue<T> cotationValue = delegate.calculateSingleValue(cotation, cotations, builtCotations, alreadyBuiltCotations);
+    public CotationValue<T> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
+        CotationValue<T> cotationValue = delegate.calculateSingleValue(cotationBuilderInfo);
         validateCotationValue(cotationValue);
         return cotationValue;
     }

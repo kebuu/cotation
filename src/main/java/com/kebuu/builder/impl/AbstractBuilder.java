@@ -4,6 +4,7 @@ import com.kebuu.builder.CotationBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.Cotations;
 
 public abstract class AbstractBuilder implements CotationBuilder {
@@ -13,12 +14,12 @@ public abstract class AbstractBuilder implements CotationBuilder {
         BuiltCotations builtCotations = new BuiltCotations();
 
         for (Cotation cotation : cotations) {
-            BuiltCotation builtCotation = build(cotation, cotations, builtCotations, alreadyBuiltCotations);
+            BuiltCotation builtCotation = build(new CotationBuilderInfo(cotation, cotations, builtCotations, alreadyBuiltCotations));
             builtCotations.add(builtCotation);
         }
 
         return builtCotations;
     }
 
-    protected abstract BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations);
+    protected abstract BuiltCotation build(CotationBuilderInfo cotationBuilderInfo);
 }

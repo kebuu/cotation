@@ -3,7 +3,6 @@ package com.kebuu.builder.impl.mobilemean;
 import com.google.common.base.Preconditions;
 import com.kebuu.builder.impl.AbstractSingleAttributeBuilder;
 import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
@@ -45,16 +44,20 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
         return attribute;
     }
 
-    public SimpleCotationValue<Double> calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    @Override
+    public SimpleCotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> mobileMeanValue = new SimpleCotationValue<>(attribute);
 
+        Cotation cotation = cotationBuilderInfo.getCotation();
+        Cotations cotations = cotationBuilderInfo.getCotations();
+
         Optional<Double> valueToAverage = cotations.getByIndex(cotation.getPosition() - mobileMeanRange)
-            .flatMap(firstCotationInRange -> getValueToAverage(firstCotationInRange, cotations, builtCotations, alreadyBuiltCotations));
+            .flatMap(firstCotationInRange -> getValueToAverage(cotationBuilderInfo.withCotation(firstCotationInRange)));
 
         if (valueToAverage.isPresent()) {
             List<ValueAndWeight> valuesAndWeights = IntStream.range(0, mobileMeanRange)
                 .mapToObj(i -> {
-                    Optional<Double> baseValue = getValueToAverage(cotations.forceGetByIndex(cotation.getPosition() - i), cotations, builtCotations, alreadyBuiltCotations);
+                    Optional<Double> baseValue = getValueToAverage(cotationBuilderInfo.withCotation(cotations.forceGetByIndex(cotation.getPosition() - i)));
                     return new ValueAndWeight(baseValue.get(), getWeight(cotation.getPosition() - i));
                 })
                 .collect(toList());
@@ -76,8 +79,7 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
         return weightedValuesSum / weightsSum;
     }
 
-    protected Optional<Double> getValueToAverage(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
-        CotationBuilderInfo cotationBuilderInfo = new CotationBuilderInfo(cotation, cotations, builtCotations, alreadyBuiltCotations);
+    protected Optional<Double> getValueToAverage(CotationBuilderInfo cotationBuilderInfo) {
         return valueToAverageExtractor.apply(cotationBuilderInfo);
     }
 

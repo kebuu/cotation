@@ -3,7 +3,7 @@ package com.kebuu.builder.impl;
 import com.google.common.base.Preconditions;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
-import com.kebuu.dto.cotation.BuiltCotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
@@ -43,8 +43,11 @@ public class StochasticBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> stochasticValue = new SimpleCotationValue<>(stochasticValueAttribute);
+
+        Cotation cotation = cotationBuilderInfo.getCotation();
+        Cotations cotations = cotationBuilderInfo.getCotations();
 
         Optional<Cotation> stochasticStartCotation = cotations.getByIndex(cotation.getPosition() - period + 1);
 

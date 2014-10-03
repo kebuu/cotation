@@ -4,7 +4,7 @@ import com.kebuu.builder.impl.AbstractBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
@@ -57,7 +57,10 @@ public class ValuesCrossingBuilder extends AbstractBuilder {
     }
 
     @Override
-    protected BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    protected BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
+        Cotation cotation = cotationBuilderInfo.getCotation();
+        BuiltCotations alreadyBuiltCotations = cotationBuilderInfo.getAlreadyBuiltCotations();
+
         Optional<Double> currentValue1 = alreadyBuiltCotations.getByIndex(cotation.getPosition()).flatMap(value1Transfomer);
         Optional<Double> currentValue2 = alreadyBuiltCotations.getByIndex(cotation.getPosition()).flatMap(value2Transfomer);
         Optional<Double> previousValue1 = alreadyBuiltCotations.getByIndex(cotation.getPosition() - 1).flatMap(value1Transfomer);

@@ -3,8 +3,7 @@ package com.kebuu.builder.impl;
 import com.google.common.base.Preconditions;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
-import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttributes;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
@@ -40,10 +39,12 @@ public class RocBuilder extends AbstractBuilder {
     }
 
     @Override
-    public BuiltCotation build(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> rocValue = new SimpleCotationValue<>(rocValueAttribute);
 
-        Optional<Cotation> cotationAtPeriod = cotations.getByIndex(cotation.getPosition() - period);
+        Cotation cotation = cotationBuilderInfo.getCotation();
+
+        Optional<Cotation> cotationAtPeriod = cotationBuilderInfo.getCotations().getByIndex(cotation.getPosition() - period);
 
         if (cotationAtPeriod.isPresent()) {
             rocValue = rocValue.withValue(calculateRocValue(cotation.getEnd(), cotationAtPeriod.get().getEnd()));

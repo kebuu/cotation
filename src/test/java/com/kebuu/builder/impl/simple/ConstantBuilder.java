@@ -1,9 +1,7 @@
 package com.kebuu.builder.impl.simple;
 
 import com.kebuu.builder.impl.AbstractSingleAttributeBuilder;
-import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotations;
-import com.kebuu.dto.cotation.Cotations;
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.TestAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
@@ -28,7 +26,7 @@ public class ConstantBuilder<T> extends AbstractSingleAttributeBuilder<T> {
     }
 
     @Override
-    public CotationValue calculateSingleValue(Cotation cotation, Cotations cotations, BuiltCotations builtCotations, BuiltCotations alreadyBuiltCotations) {
+    public CotationValue calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
         return new SimpleCotationValue<T>(attribute, value);
     }
 }
