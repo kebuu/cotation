@@ -10,5 +10,8 @@ public interface CotationAttribute<T> {
     
     String getArffType();
 
-    CotationAttribute<T> copy();
+    /**
+     * Indicate that this attribute is just used for intermediary calculus
+     */
+    boolean isTechnical();
 }

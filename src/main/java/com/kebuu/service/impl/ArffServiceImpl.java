@@ -18,12 +18,14 @@ public class ArffServiceImpl implements ArffService {
     @Override
     public String ToArff(CotationAttributes attributes, BuiltCotations builtCotations) {
         List<String> headerLines = StreamUtils.stream(attributes)
+                .filter(cotationAttribute -> !cotationAttribute.isTechnical())
                 .map(cotationAttribute -> Constant.ARFF_ATTRIBUTE_TAG + " " + cotationAttribute.getName() + " " + cotationAttribute.getArffType())
                 .collect(Collectors.toList());
 
         List<String> valueLines = StreamUtils.stream(builtCotations)
                 .map(builtCotation -> {
                     return builtCotation.getValues().stream()
+                       .filter(cotationValue -> !cotationValue.getAttribute().isTechnical())
                        .map(cotationValue -> cotationValue.getAttribute().getFormatter().format(cotationValue))
                        .collect(Collectors.joining(Constant.ARFF_VALUE_SEPARATOR));
                 })
