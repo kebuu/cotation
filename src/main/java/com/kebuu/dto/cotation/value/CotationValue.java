@@ -13,4 +13,8 @@ public interface CotationValue<T> {
     default T forceGetValue() {
         return getValue().get();
     }
+
+    default boolean hasValue(){
+        return getValue().isPresent();
+    }
 }

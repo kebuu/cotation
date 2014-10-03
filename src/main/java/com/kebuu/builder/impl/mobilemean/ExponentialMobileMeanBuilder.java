@@ -5,10 +5,14 @@ import lombok.Getter;
 public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
     private static final String EMM_PREFIX_NAME = "emm";
-    @Getter private final double exponentialFactor;
+    @Getter protected final double exponentialFactor;
 
     public ExponentialMobileMeanBuilder(int period) {
-        super(period, EMM_PREFIX_NAME);
+        this(period, EMM_PREFIX_NAME);
+    }
+
+    public ExponentialMobileMeanBuilder(int period, String attributeBaseName) {
+        super(period, attributeBaseName);
         this.exponentialFactor = 2.0 / (Integer.valueOf(period).doubleValue() + 1.0);
     }
 

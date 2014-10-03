@@ -20,6 +20,9 @@ public abstract class IndexedListWrapper<T, K> extends ListWrapper<T> implements
     public Optional<T> getByIndex(K k) {
         return Optional.ofNullable(index.get(k));
     }
+    public T forceGetByIndex(K k) {
+        return getByIndex(k).get();
+    }
 
     protected abstract Function<T, K> getIndexFunction();
 

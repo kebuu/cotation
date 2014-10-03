@@ -50,4 +50,8 @@ public class BuiltCotations extends IndexedListWrapper<BuiltCotation, Integer> {
     public <T> Optional<T> getValue(int cotationPosition, CotationAttribute<T> attribute) {
         return getCotationValue(cotationPosition, attribute).flatMap(CotationValue::getValue);
     }
+
+    public <T> T forceGetValue(int cotationPosition, CotationAttribute<T> attribute) {
+        return getValue(cotationPosition, attribute).get();
+    }
 }
