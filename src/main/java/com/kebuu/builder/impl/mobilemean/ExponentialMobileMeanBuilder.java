@@ -19,7 +19,7 @@ public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
     }
 
     public ExponentialMobileMeanBuilder(int period, String attributeBaseName, CotationAttribute<Double> attributeToAverage) {
-        super(period, EMM_PREFIX_NAME, attributeToAverage);
+        super(period, attributeBaseName, attributeToAverage);
         this.exponentialFactor = calculateExponentialFactor(period);
     }
 

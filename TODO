@@ -4,15 +4,16 @@ Extraire texte exception/precondition
 
 Cotation -> quotation ?
 
-Ajouter des commentaires sur les interfaces (au moins certaines)
+Ajouter des commentaires sur les interfaces et explications builder complexe + mobile means
 
-Ajouter le %D au stocastic
 Créer un CandleBuilder
 Regarder le Ease of Movement, Chaikin money flow
 
-Ajouter un builder un peu plus générique que le relationBuilder (pour pouvoir avoir en sortie un Double et faire un DifferenceRelationBuilder par exemple, et l'utiliser pour le MACD)
--> Finir MACD + TU (MACD et MME) -> refaire le MACD avec RelationBuilder
-Ajouter la gestion de hidden attribute
+Revoir les relationsBuilder
+TU (MACD et MME)
+Finaliser la gestion de hidden attribute
+
+créer un builderFactory ?
 
 
 Finir le TimeSerieBuilder

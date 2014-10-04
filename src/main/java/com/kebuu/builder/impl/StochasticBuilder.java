@@ -1,6 +1,7 @@
 package com.kebuu.builder.impl;
 
 import com.google.common.base.Preconditions;
+import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
@@ -20,21 +21,30 @@ import java.util.stream.IntStream;
  */
 public class StochasticBuilder extends AbstractBuilder {
 
-    private static final String STOCHASTIC_PREFIX_NAME = "stochastic_";
-    private static final int DEFAULT_PERIOD = 14;
+    public static final String STOCHASTIC_PREFIX_NAME = "stochastic_";
+    public static final int DEFAULT_PERIOD = 14;
+    public static final int DEFAULT_SIGNAL_PERIOD = 2;
 
     @Getter private final int period;
+    @Getter private final int signalPeriod;
     @Getter private final RealCotationAttribute stochasticValueAttribute;
 
-    public StochasticBuilder(int period) {
+    private final SimpleMobileMeanBuilder signalBuilder;
+
+    public StochasticBuilder(int period, int signalPeriod) {
         Preconditions.checkArgument(period > 0, "Period should be greater than 0");
         this.period = period;
+        this.signalPeriod = signalPeriod;
 
         this.stochasticValueAttribute = new RealCotationAttribute(STOCHASTIC_PREFIX_NAME + period);
+        this.signalBuilder = new SimpleMobileMeanBuilder(signalPeriod, stochasticValueAttribute);
     }
 
+    public StochasticBuilder(int period) {
+        this(period, DEFAULT_SIGNAL_PERIOD);
+    }
     public StochasticBuilder() {
-        this(DEFAULT_PERIOD);
+        this(DEFAULT_PERIOD, DEFAULT_SIGNAL_PERIOD);
     }
 
     @Override
@@ -48,6 +58,7 @@ public class StochasticBuilder extends AbstractBuilder {
 
         Cotation cotation = cotationBuilderInfo.getCotation();
         Cotations cotations = cotationBuilderInfo.getCotations();
+        BuiltCotation builtCotation = new BuiltCotation(cotation);
 
         Optional<Cotation> stochasticStartCotation = cotations.getByIndex(cotation.getPosition() - period + 1);
 
@@ -64,9 +75,12 @@ public class StochasticBuilder extends AbstractBuilder {
                 double value = calculateStochasticValue(cotation.getEnd(), max, min);
                 stochasticValue = stochasticValue.withValue(value);
             }
+
+            builtCotation = builtCotation.withAdditionalValues(stochasticValue);
+            builtCotation = builtCotation.withAdditionalValues(signalBuilder.calculateSingleValue(cotationBuilderInfo.withBuiltCotation(builtCotation)));
         }
 
-        return new BuiltCotation(cotation).withAdditionalValues(stochasticValue);
+        return builtCotation;
     }
 
     private double calculateStochasticValue(double current, double max, double min) {

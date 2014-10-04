@@ -40,7 +40,8 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
     }
 
     public WeightedMobileMeanBuilder(int mobileMeanRange, String attributeBaseName, CotationAttribute<Double> attributeToAverage) {
-        this(mobileMeanRange, attributeBaseName, (cotationBuilderInfo) -> cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.position(), attributeToAverage));
+        this(mobileMeanRange, attributeBaseName + "_" + attributeToAverage.getName(),
+                    (cotationBuilderInfo) -> cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.position(), attributeToAverage));
     }
 
     @Override

@@ -61,11 +61,7 @@ public class MacdBuilder extends AbstractBuilder {
             SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(macdValueAttribute, shortValue.forceGetValue() - longValue.forceGetValue());
             builtCotation = builtCotation.withAdditionalValues(shortValue, longValue, macdCotationValue);
 
-            CotationValue<Double> signalValue = signalSemmBuilder.calculateSingleValue(cotationBuilderInfo.withBuiltCotations(cotationBuilderInfo.getBuiltCotations().copy().add(builtCotation)));
-
-            if (signalValue.hasValue()) {
-                builtCotation = builtCotation.withAdditionalValues(signalValue);
-            }
+            builtCotation = builtCotation.withAdditionalValues(signalSemmBuilder.calculateSingleValue(cotationBuilderInfo.withBuiltCotation(builtCotation)));
         }
 
         return builtCotation;

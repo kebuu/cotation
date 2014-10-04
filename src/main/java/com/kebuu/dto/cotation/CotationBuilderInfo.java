@@ -16,4 +16,8 @@ public class CotationBuilderInfo {
     public int position() {
         return cotation.getPosition();
     }
+
+    public CotationBuilderInfo withBuiltCotation(BuiltCotation builtCotation) {
+        return this.withBuiltCotations(this.getBuiltCotations().copy().add(builtCotation));
+    }
 }
