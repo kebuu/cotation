@@ -1,6 +1,7 @@
 package com.kebuu.builder.impl.mobilemean;
 
 import com.kebuu.dto.cotation.CotationBuilderInfo;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 
 import java.util.Optional;
@@ -11,6 +12,10 @@ public class SimplifiedExponentialMobileMeanBuilder extends ExponentialMobileMea
 
     public SimplifiedExponentialMobileMeanBuilder(int period) {
         super(period, SIMPLE_EMM_PREFIX_NAME);
+    }
+
+    public SimplifiedExponentialMobileMeanBuilder(int period, CotationAttribute<Double> attributeToAverage) {
+        super(period, SIMPLE_EMM_PREFIX_NAME, attributeToAverage);
     }
 
     @Override

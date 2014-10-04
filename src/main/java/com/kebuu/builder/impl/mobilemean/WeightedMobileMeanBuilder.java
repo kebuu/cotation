@@ -39,6 +39,10 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
         this.valueToAverageExtractor = valueToAverageExtractor;
     }
 
+    public WeightedMobileMeanBuilder(int mobileMeanRange, String attributeBaseName, CotationAttribute<Double> attributeToAverage) {
+        this(mobileMeanRange, attributeBaseName, (cotationBuilderInfo) -> cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.position(), attributeToAverage));
+    }
+
     @Override
     public CotationAttribute<Double> getSingleAttribute() {
         return attribute;
@@ -51,10 +55,10 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
         Cotation cotation = cotationBuilderInfo.getCotation();
         Cotations cotations = cotationBuilderInfo.getCotations();
 
-        Optional<Double> valueToAverage = cotations.getByIndex(cotation.getPosition() - mobileMeanRange)
+        Optional<Double> firstValueToAverage = cotations.getByIndex(cotation.getPosition() - mobileMeanRange)
             .flatMap(firstCotationInRange -> getValueToAverage(cotationBuilderInfo.withCotation(firstCotationInRange)));
 
-        if (valueToAverage.isPresent()) {
+        if (firstValueToAverage.isPresent()) {
             List<ValueAndWeight> valuesAndWeights = IntStream.range(0, mobileMeanRange)
                 .mapToObj(i -> {
                     Optional<Double> baseValue = getValueToAverage(cotationBuilderInfo.withCotation(cotations.forceGetByIndex(cotation.getPosition() - i)));

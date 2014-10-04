@@ -45,7 +45,7 @@ public class SpringConfig {
 
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         RocBuilder rocBuilder = new RocBuilder();
-        MacdBuilder macdBuilder = new MacdBuilder(1, 2);
+        MacdBuilder macdBuilder = new MacdBuilder(1, 2, 9);
 
         NextDaysEndDirectionBuilder nextDaysEndDirectionBuilder = new NextDaysEndDirectionBuilder(1);
 

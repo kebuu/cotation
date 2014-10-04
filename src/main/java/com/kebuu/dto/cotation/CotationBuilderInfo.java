@@ -12,4 +12,8 @@ public class CotationBuilderInfo {
     private Cotations cotations;
     private BuiltCotations builtCotations;
     private BuiltCotations alreadyBuiltCotations;
+
+    public int position() {
+        return cotation.getPosition();
+    }
 }
