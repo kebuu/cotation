@@ -1,6 +1,7 @@
 package com.kebuu.builder.impl;
 
 import com.google.common.base.Preconditions;
+import com.kebuu.builder.impl.decorator.TechnicalBuilder;
 import com.kebuu.builder.impl.mobilemean.SimplifiedExponentialMobileMeanBuilder;
 import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
@@ -25,8 +26,8 @@ public class MacdBuilder extends AbstractBuilder {
     @Getter private final int signalPeriod;
     @Getter private final RealCotationAttribute macdValueAttribute;
 
-    private final SimplifiedExponentialMobileMeanBuilder shortSemmBuilder;
-    private final SimplifiedExponentialMobileMeanBuilder longSemmBuilder;
+    private final AbstractSingleAttributeBuilder<Double> shortSemmBuilder;
+    private final AbstractSingleAttributeBuilder<Double> longSemmBuilder;
     private final SimplifiedExponentialMobileMeanBuilder signalSemmBuilder;
 
     public MacdBuilder(int shortPeriod, int longPeriod, int signalPeriod) {
@@ -36,8 +37,8 @@ public class MacdBuilder extends AbstractBuilder {
         this.longPeriod = longPeriod;
         this.signalPeriod = signalPeriod;
         this.macdValueAttribute = new RealCotationAttribute(MACD_PREFIX_NAME + shortPeriod + "_" + longPeriod);
-        this.shortSemmBuilder = new SimplifiedExponentialMobileMeanBuilder(shortPeriod);
-        this.longSemmBuilder = new SimplifiedExponentialMobileMeanBuilder(longPeriod);
+        this.shortSemmBuilder = TechnicalBuilder.of(new SimplifiedExponentialMobileMeanBuilder(shortPeriod));
+        this.longSemmBuilder = TechnicalBuilder.of(new SimplifiedExponentialMobileMeanBuilder(longPeriod));
         this.signalSemmBuilder = new SimplifiedExponentialMobileMeanBuilder(signalPeriod, macdValueAttribute);
     }
 

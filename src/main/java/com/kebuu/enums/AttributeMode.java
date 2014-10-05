@@ -1,4 +1,4 @@
-package com.kebuu.dto.cotation.attribute;
+package com.kebuu.enums;
 
 public enum AttributeMode {
     NORMAL, TECHNICAL;

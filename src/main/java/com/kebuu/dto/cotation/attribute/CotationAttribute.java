@@ -13,5 +13,7 @@ public interface CotationAttribute<T> {
     /**
      * Indicate that this attribute is just used for intermediary calculus
      */
-    boolean isTechnical();
+    default boolean isTechnical() {
+        return false;
+    }
 }
