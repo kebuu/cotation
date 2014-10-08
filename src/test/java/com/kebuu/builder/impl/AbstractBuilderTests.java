@@ -21,5 +21,7 @@ public abstract class AbstractBuilderTests<T extends AbstractBuilder> {
         return builtCotations.getCotationValue(position, attribute).get().forceGetValue();
     }
 
-    protected abstract T createBuilder();
+    protected T createBuilder() {
+        return null;
+    }
 }

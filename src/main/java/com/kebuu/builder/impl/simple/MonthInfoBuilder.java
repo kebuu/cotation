@@ -17,7 +17,7 @@ public class MonthInfoBuilder extends SimpleCotationInfoBuilder<Month> {
     }
 
     @Override
-    public CotationAttribute<Month> getSingleAttribute() {
+    public CotationAttribute<Month> attribute() {
         return monthCotationAttribute;
     }
 }

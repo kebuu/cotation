@@ -11,8 +11,8 @@ public class EndInfoBuilderTests extends AbstractBuilderTests<EndInfoBuilder> {
     @Test
     public void testBuildCotations() {
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
-        assertThat(forceGetValue(builtCotations, 1, builder.getSingleAttribute())).isEqualTo(1.0);
-        assertThat(forceGetValue(builtCotations, 4, builder.getSingleAttribute())).isEqualTo(2.0);
+        assertThat(forceGetValue(builtCotations, 1, builder.attribute())).isEqualTo(1.0);
+        assertThat(forceGetValue(builtCotations, 4, builder.attribute())).isEqualTo(2.0);
     }
 
     @Override

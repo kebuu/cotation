@@ -14,7 +14,7 @@ public class VolumeInfoBuilder extends SimpleCotationInfoBuilder<Long> {
     }
 
     @Override
-    public CotationAttribute<Long> getSingleAttribute() {
+    public CotationAttribute<Long> attribute() {
         return volumeCotationAttribute;
     }
 }

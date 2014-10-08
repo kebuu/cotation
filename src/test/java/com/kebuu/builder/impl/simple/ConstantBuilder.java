@@ -21,7 +21,7 @@ public class ConstantBuilder<T> extends AbstractSingleAttributeBuilder<T> {
     }
 
     @Override
-    public CotationAttribute<T> getSingleAttribute() {
+    public CotationAttribute<T> attribute() {
         return attribute;
     }
 

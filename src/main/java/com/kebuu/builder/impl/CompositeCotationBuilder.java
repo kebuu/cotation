@@ -14,7 +14,7 @@ public class CompositeCotationBuilder extends ListWrapper<CotationBuilder> {
 
     public CotationAttributes attributes() {
         return wrappedList.stream()
-            .map(CotationBuilder::builtAttributes)
+            .map(CotationBuilder::attributes)
             .reduce(new CotationAttributes(), CotationAttributes::concat);
     }
 

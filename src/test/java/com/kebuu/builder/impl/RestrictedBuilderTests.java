@@ -28,8 +28,8 @@ public class RestrictedBuilderTests extends AbstractBuilderTests<RestrictedValue
         builder = new RestrictedValueBuilder<>(ConstantBuilder.of(0), Lists.newArrayList(0, 1, 2, 3));
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
-        assertThat(forceGetValue(builtCotations, 1, builder.getSingleAttribute())).isEqualTo(0);
-        assertThat(forceGetValue(builtCotations, 2, builder.getSingleAttribute())).isEqualTo(0);
+        assertThat(forceGetValue(builtCotations, 1, builder.attribute())).isEqualTo(0);
+        assertThat(forceGetValue(builtCotations, 2, builder.attribute())).isEqualTo(0);
     }
 
     @Override

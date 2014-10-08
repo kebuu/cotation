@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
 public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeBuilder<Double> {
 
     @Getter protected final int mobileMeanRange;
-    @Getter protected final RealCotationAttribute attribute;
+    protected final RealCotationAttribute attribute;
 
     protected final Function<CotationBuilderInfo, Optional<Double>> valueToAverageExtractor;
 
@@ -45,7 +45,7 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
     }
 
     @Override
-    public CotationAttribute<Double> getSingleAttribute() {
+    public CotationAttribute<Double> attribute() {
         return attribute;
     }
 

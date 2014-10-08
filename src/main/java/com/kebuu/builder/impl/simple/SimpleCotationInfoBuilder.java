@@ -19,7 +19,7 @@ public abstract class SimpleCotationInfoBuilder<T> extends AbstractSingleAttribu
 
     @Override
     public CotationValue calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
-        SimpleCotationValue<T> simpleCotationValue = new SimpleCotationValue(getSingleAttribute(), tranformer.apply(cotationBuilderInfo.getCotation()));
+        SimpleCotationValue<T> simpleCotationValue = new SimpleCotationValue(attribute(), tranformer.apply(cotationBuilderInfo.getCotation()));
 
         if (!isValidValue(simpleCotationValue)) {
             throw new InvalidCotationInfoException();

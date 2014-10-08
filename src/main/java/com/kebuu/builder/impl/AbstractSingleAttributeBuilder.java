@@ -8,13 +8,16 @@ import com.kebuu.dto.cotation.value.CotationValue;
 
 public abstract class AbstractSingleAttributeBuilder<T> extends AbstractBuilder {
 
-    public abstract CotationAttribute<T> getSingleAttribute();
+    /**
+     * Return the single attribute built by this builder
+     */
+    public abstract CotationAttribute<T> attribute();
 
-    public abstract CotationValue calculateSingleValue(CotationBuilderInfo cotationBuilderInfo);
+    public abstract CotationValue<T> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo);
 
     @Override
-    public CotationAttributes builtAttributes() {
-        return new CotationAttributes(getSingleAttribute());
+    public CotationAttributes attributes() {
+        return new CotationAttributes(attribute());
     }
 
     @Override

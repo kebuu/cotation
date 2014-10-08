@@ -37,7 +37,7 @@ public class YearInfoValueBuilder extends RestrictedValueBuilder<Long> {
         }
 
         @Override
-        public CotationAttribute<Long> getSingleAttribute() {
+        public CotationAttribute<Long> attribute() {
             return yearCotationAttribute;
         }
     }

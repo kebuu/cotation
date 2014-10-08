@@ -19,8 +19,8 @@ public class TechnicalBuilder<T> extends AbstractSingleAttributeBuilder<T> {
     }
 
     @Override
-    public CotationAttribute<T> getSingleAttribute() {
-        return TechnicalAttribute.of(delegate.getSingleAttribute());
+    public CotationAttribute<T> attribute() {
+        return TechnicalAttribute.of(delegate.attribute());
     }
 
     @Override

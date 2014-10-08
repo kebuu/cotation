@@ -6,7 +6,10 @@ import com.kebuu.dto.cotation.attribute.CotationAttributes;
 
 public interface CotationBuilder {
 
-    CotationAttributes builtAttributes();
+    /**
+     * Return the (wrapped) list of attributes built by this builder
+     */
+    CotationAttributes attributes();
 
     BuiltCotations build(Cotations cotations, BuiltCotations alreadyBuiltCotations);
 }

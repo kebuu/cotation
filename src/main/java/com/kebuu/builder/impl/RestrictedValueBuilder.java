@@ -27,8 +27,8 @@ public class RestrictedValueBuilder<T> extends AbstractSingleAttributeBuilder<T>
     }
 
     @Override
-    public CotationAttribute<T> getSingleAttribute() {
-        return delegate.getSingleAttribute();
+    public CotationAttribute<T> attribute() {
+        return delegate.attribute();
     }
 
     @Override

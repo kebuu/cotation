@@ -34,7 +34,7 @@ public class RocBuilder extends AbstractBuilder {
     }
 
     @Override
-    public CotationAttributes builtAttributes() {
+    public CotationAttributes attributes() {
         return new CotationAttributes(rocValueAttribute);
     }
 

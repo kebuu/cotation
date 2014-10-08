@@ -1,3 +1,4 @@
+Tout passer en singleAttribute
 Petit TU -> voir si on peut n'initialiser la base de données qu'une seule fois pour tous les tests (et après c'est la transaction qui gère)
 
 Extraire texte exception/precondition
