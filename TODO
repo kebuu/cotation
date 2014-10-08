@@ -1,5 +1,4 @@
 Tout passer en singleAttribute
-Petit TU -> voir si on peut n'initialiser la base de données qu'une seule fois pour tous les tests (et après c'est la transaction qui gère)
 
 Extraire texte exception/precondition
 
@@ -8,14 +7,10 @@ Cotation -> quotation ?
 Ajouter des commentaires sur les interfaces et explications builder complexe + mobile means
 
 Créer un CandleBuilder
+Ajouter un TrendBuilder ?
 Regarder le Ease of Movement, Chaikin money flow
 
-Revoir les relationsBuilder
-TU (MACD et MME)
+TU (MACD et MME....)
 Finaliser la gestion de hidden attribute
 
-créer un builderFactory ?
 
-
-Finir le TimeSerieBuilder
-Ajouter un TrendBuilder ?
