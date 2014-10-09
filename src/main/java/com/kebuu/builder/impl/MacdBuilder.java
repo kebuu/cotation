@@ -48,7 +48,7 @@ public class MacdBuilder extends AbstractBuilder {
 
     @Override
     public CotationAttributes attributes() {
-        return new CotationAttributes(macdValueAttribute);
+        return new CotationAttributes(macdValueAttribute, signalSemmBuilder.attribute());
     }
 
     @Override

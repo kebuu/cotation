@@ -1,5 +1,6 @@
-package com.kebuu.builder.impl;
+package com.kebuu.builder.impl.relation;
 
+import com.kebuu.builder.impl.AbstractBuilderTests;
 import com.kebuu.builder.impl.relation.ValueDirectionBuilder;
 import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.CotationBuilderInfo;

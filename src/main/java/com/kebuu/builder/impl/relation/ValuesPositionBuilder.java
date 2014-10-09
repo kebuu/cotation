@@ -7,6 +7,7 @@ import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.ValueComparisonPosition;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 public class ValuesPositionBuilder extends ValuesEnumRelationBuilder<ValueComparisonPosition> {
 
@@ -16,6 +17,10 @@ public class ValuesPositionBuilder extends ValuesEnumRelationBuilder<ValueCompar
 
     public ValuesPositionBuilder(CotationAttribute<Double> attribute1, CotationAttribute attribute2) {
         super(attribute1, attribute2);
+    }
+
+    public ValuesPositionBuilder(String value1Name, Function<CotationBuilderInfo, Optional<Double>> value1Transfomer, String value2Name, Function<CotationBuilderInfo, Optional<Double>> value2Transfomer) {
+        super(value1Name, value1Transfomer, value2Name, value2Transfomer);
     }
 
     @Override
