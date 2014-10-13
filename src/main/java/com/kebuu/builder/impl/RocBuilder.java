@@ -2,10 +2,10 @@ package com.kebuu.builder.impl;
 
 import com.google.common.base.Preconditions;
 import com.kebuu.domain.Cotation;
-import com.kebuu.dto.cotation.BuiltCotation;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
-import com.kebuu.dto.cotation.attribute.CotationAttributes;
+import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
+import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import lombok.Getter;
 
@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Calcul du Rate Of Change : ROC(i) = 100 * ((cours(i) / cours(i - period)) - 1)
  */
-public class RocBuilder extends AbstractBuilder {
+public class RocBuilder extends AbstractSingleAttributeBuilder<Double> {
 
     private static final String ROC_PREFIX_NAME = "roc_";
     private static final int DEFAULT_PERIOD = 12;
@@ -34,12 +34,12 @@ public class RocBuilder extends AbstractBuilder {
     }
 
     @Override
-    public CotationAttributes attributes() {
-        return new CotationAttributes(rocValueAttribute);
+    public CotationAttribute<Double> attribute() {
+        return rocValueAttribute;
     }
 
     @Override
-    public BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
+    public CotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> rocValue = new SimpleCotationValue<>(rocValueAttribute);
 
         Cotation cotation = cotationBuilderInfo.getCotation();
@@ -50,7 +50,7 @@ public class RocBuilder extends AbstractBuilder {
             rocValue = rocValue.withValue(calculateRocValue(cotation.getEnd(), cotationAtPeriod.get().getEnd()));
         }
 
-        return new BuiltCotation(cotation).withAdditionalValues(rocValue);
+        return rocValue;
     }
 
     private double calculateRocValue(double currentValue, double valueAtPeriod) {

@@ -28,7 +28,6 @@ public class MacdBuilder extends AbstractBuilder {
 
     private final AbstractSingleAttributeBuilder<Double> shortSemmBuilder;
     private final AbstractSingleAttributeBuilder<Double> longSemmBuilder;
-    private final SimplifiedExponentialMobileMeanBuilder signalSemmBuilder;
 
     public MacdBuilder(int shortPeriod, int longPeriod, int signalPeriod) {
         Preconditions.checkArgument(longPeriod >= shortPeriod, "Long period should be greater or equals than short period");
@@ -39,7 +38,6 @@ public class MacdBuilder extends AbstractBuilder {
         this.macdValueAttribute = new RealCotationAttribute(MACD_PREFIX_NAME + shortPeriod + "_" + longPeriod);
         this.shortSemmBuilder = TechnicalBuilder.of(new SimplifiedExponentialMobileMeanBuilder(shortPeriod));
         this.longSemmBuilder = TechnicalBuilder.of(new SimplifiedExponentialMobileMeanBuilder(longPeriod));
-        this.signalSemmBuilder = new SimplifiedExponentialMobileMeanBuilder(signalPeriod, macdValueAttribute);
     }
 
     public MacdBuilder() {
@@ -48,7 +46,7 @@ public class MacdBuilder extends AbstractBuilder {
 
     @Override
     public CotationAttributes attributes() {
-        return new CotationAttributes(macdValueAttribute, signalSemmBuilder.attribute());
+        return new CotationAttributes(macdValueAttribute);
     }
 
     @Override
@@ -61,8 +59,6 @@ public class MacdBuilder extends AbstractBuilder {
         if (longValue.getValue().isPresent()) {
             SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(macdValueAttribute, shortValue.forceGetValue() - longValue.forceGetValue());
             builtCotation = builtCotation.withAdditionalValues(shortValue, longValue, macdCotationValue);
-
-            builtCotation = builtCotation.withAdditionalValues(signalSemmBuilder.calculateSingleValue(cotationBuilderInfo.withBuiltCotation(builtCotation)));
         }
 
         return builtCotation;
