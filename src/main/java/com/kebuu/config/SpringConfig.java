@@ -38,22 +38,29 @@ public class SpringConfig {
         DayOfWeekInfoBuilder dayOfWeekInfoBuilder = new DayOfWeekInfoBuilder();
         EndInfoBuilder endInfoBuilder = new EndInfoBuilder();
 
+        SimpleMobileMeanBuilder simpleMobileMeanBuilder7 = new SimpleMobileMeanBuilder(7);
         SimpleMobileMeanBuilder simpleMobileMeanBuilder20 = new SimpleMobileMeanBuilder(20);
         SimpleMobileMeanBuilder simpleMobileMeanBuilder50 = new SimpleMobileMeanBuilder(50);
 
         ValueDirectionBuilder mobileMeanBuilder20Direction = new ValueDirectionBuilder(simpleMobileMeanBuilder20.attribute());
         ValuesPositionBuilder mobileMeanBuilder20Position = new ValuesPositionBuilder(simpleMobileMeanBuilder20.attribute(), endInfoBuilder.attribute());
+        ValueDirectionBuilder mobileMeanBuilder7Direction = new ValueDirectionBuilder(simpleMobileMeanBuilder7.attribute());
+        ValuesPositionBuilder mobileMeanBuilder7Position = new ValuesPositionBuilder(simpleMobileMeanBuilder7.attribute(), endInfoBuilder.attribute());
 
         ValuesCrossingBuilder mobileMeansCrossBuilder2050 = new ValuesCrossingBuilder(simpleMobileMeanBuilder20.attribute(), simpleMobileMeanBuilder50.attribute());
+        ValuesCrossingBuilder mobileMeansCrossBuilder720 = new ValuesCrossingBuilder(simpleMobileMeanBuilder7.attribute(), simpleMobileMeanBuilder20.attribute());
 
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
-        RocBuilder rocBuilder = new RocBuilder();
-        MacdBuilder macdBuilder = new MacdBuilder(1, 2, 9);
+        SimpleMobileMeanBuilder stochasticSignalBuilder = new SimpleMobileMeanBuilder(14, stochasticBuilder.attribute());
 
-        ValueDirectionBuilder nextDaysEndDirectionBuilder = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1);
+        RocBuilder rocBuilder = new RocBuilder();
+        MacdBuilder macdBuilder = new MacdBuilder();
+
+        ValueDirectionBuilder nextDaysEndDirectionBuilder1 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5);
 
         return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfMonthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
             simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50,
-            nextDaysEndDirectionBuilder, stochasticBuilder, rocBuilder, macdBuilder, mobileMeansCrossBuilder2050);
+            nextDaysEndDirectionBuilder1, stochasticBuilder, rocBuilder, macdBuilder, mobileMeansCrossBuilder2050);
     }
 }

@@ -14,8 +14,8 @@ public class SimpleMobileMeanBuilder extends WeightedMobileMeanBuilder {
         super(mobileMeanRange, MOBILE_MEAN_PREFIX_NAME);
     }
 
-    public SimpleMobileMeanBuilder(int period, CotationAttribute<Double> attributeToAverage) {
-        super(period, MOBILE_MEAN_PREFIX_NAME, attributeToAverage);
+    public SimpleMobileMeanBuilder(int mobileMeanRange, CotationAttribute<Double> attributeToAverage) {
+        super(mobileMeanRange, MOBILE_MEAN_PREFIX_NAME, attributeToAverage);
     }
     @Override
     protected double getWeight(int i) {
