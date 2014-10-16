@@ -21,7 +21,7 @@ public class MacdBuilderTests extends AbstractBuilderTests<MacdBuilder> {
     }
 
     private Optional<Double> getRoundedValue(BuiltCotations builtCotations, int position) {
-        return builtCotations.getValue(position, builder.getMacdValueAttribute()).map(value -> NumberUtils.round(value, NB_OF_DECIMAL));
+        return builtCotations.getValue(position, builder.getAttribute()).map(value -> NumberUtils.round(value, NB_OF_DECIMAL));
     }
 
     @Override

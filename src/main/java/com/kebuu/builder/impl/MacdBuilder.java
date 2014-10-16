@@ -24,7 +24,7 @@ public class MacdBuilder extends AbstractBuilder {
     @Getter private final int shortPeriod;
     @Getter private final int longPeriod;
     @Getter private final int signalPeriod;
-    @Getter private final RealCotationAttribute macdValueAttribute;
+    @Getter private final RealCotationAttribute attribute;
 
     private final AbstractSingleAttributeBuilder<Double> shortSemmBuilder;
     private final AbstractSingleAttributeBuilder<Double> longSemmBuilder;
@@ -35,7 +35,7 @@ public class MacdBuilder extends AbstractBuilder {
         this.shortPeriod = shortPeriod;
         this.longPeriod = longPeriod;
         this.signalPeriod = signalPeriod;
-        this.macdValueAttribute = new RealCotationAttribute(MACD_PREFIX_NAME + shortPeriod + "_" + longPeriod);
+        this.attribute = new RealCotationAttribute(MACD_PREFIX_NAME + shortPeriod + "_" + longPeriod);
         this.shortSemmBuilder = TechnicalBuilder.of(new SimplifiedExponentialMobileMeanBuilder(shortPeriod));
         this.longSemmBuilder = TechnicalBuilder.of(new SimplifiedExponentialMobileMeanBuilder(longPeriod));
     }
@@ -46,7 +46,7 @@ public class MacdBuilder extends AbstractBuilder {
 
     @Override
     public CotationAttributes attributes() {
-        return new CotationAttributes(macdValueAttribute);
+        return new CotationAttributes(attribute);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MacdBuilder extends AbstractBuilder {
         CotationValue<Double> longValue = longSemmBuilder.calculateSingleValue(cotationBuilderInfo);
 
         if (longValue.getValue().isPresent()) {
-            SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(macdValueAttribute, shortValue.forceGetValue() - longValue.forceGetValue());
+            SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(attribute, shortValue.forceGetValue() - longValue.forceGetValue());
             builtCotation = builtCotation.withAdditionalValues(shortValue, longValue, macdCotationValue);
         }
 

@@ -5,6 +5,7 @@ import com.kebuu.builder.impl.MacdBuilder;
 import com.kebuu.builder.impl.RocBuilder;
 import com.kebuu.builder.impl.StochasticBuilder;
 import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
+import com.kebuu.builder.impl.mobilemean.SimplifiedExponentialMobileMeanBuilder;
 import com.kebuu.builder.impl.relation.*;
 import com.kebuu.builder.impl.simple.*;
 import org.flywaydb.core.Flyway;
@@ -47,20 +48,26 @@ public class SpringConfig {
         ValueDirectionBuilder mobileMeanBuilder7Direction = new ValueDirectionBuilder(simpleMobileMeanBuilder7.attribute());
         ValuesPositionBuilder mobileMeanBuilder7Position = new ValuesPositionBuilder(simpleMobileMeanBuilder7.attribute(), endInfoBuilder.attribute());
 
-        ValuesCrossingBuilder mobileMeansCrossBuilder2050 = new ValuesCrossingBuilder(simpleMobileMeanBuilder20.attribute(), simpleMobileMeanBuilder50.attribute());
-        ValuesCrossingBuilder mobileMeansCrossBuilder720 = new ValuesCrossingBuilder(simpleMobileMeanBuilder7.attribute(), simpleMobileMeanBuilder20.attribute());
+        ValuesCrossingBuilder mobileMeansCrossBuilder20_50 = new ValuesCrossingBuilder(simpleMobileMeanBuilder20.attribute(), simpleMobileMeanBuilder50.attribute());
+        ValuesCrossingBuilder mobileMeansCrossBuilder7_20 = new ValuesCrossingBuilder(simpleMobileMeanBuilder7.attribute(), simpleMobileMeanBuilder20.attribute());
 
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         SimpleMobileMeanBuilder stochasticSignalBuilder = new SimpleMobileMeanBuilder(14, stochasticBuilder.attribute());
+        ValuesCrossingBuilder stochasticSignalCrossing = new ValuesCrossingBuilder(stochasticBuilder.attribute(), stochasticSignalBuilder.attribute());
 
         RocBuilder rocBuilder = new RocBuilder();
+        ValuesPositionBuilder rocOverBuy = new ValuesPositionBuilder(rocBuilder.attribute(), 110D);
+        ValuesPositionBuilder rocOverSell = new ValuesPositionBuilder(rocBuilder.attribute(), 900D);
+
         MacdBuilder macdBuilder = new MacdBuilder();
+        SimplifiedExponentialMobileMeanBuilder macdSignalBuilder = new SimplifiedExponentialMobileMeanBuilder(9, macdBuilder.getAttribute());
+        ValuesCrossingBuilder macdSignalCrossing = new ValuesCrossingBuilder(macdBuilder.getAttribute(), macdSignalBuilder.attribute());
 
         ValueDirectionBuilder nextDaysEndDirectionBuilder1 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1);
         ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5);
 
         return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfMonthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
             simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50,
-            nextDaysEndDirectionBuilder1, stochasticBuilder, rocBuilder, macdBuilder, mobileMeansCrossBuilder2050);
+            nextDaysEndDirectionBuilder1, stochasticBuilder, rocBuilder, macdBuilder, mobileMeansCrossBuilder20_50);
     }
 }
