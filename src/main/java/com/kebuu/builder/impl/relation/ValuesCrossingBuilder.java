@@ -8,6 +8,7 @@ import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.CrossingValuesStatus;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import static com.kebuu.enums.CrossingValuesStatus.*;
 
@@ -17,6 +18,10 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
         super(attribute1, attribute2);
     }
 
+    public ValuesCrossingBuilder(String value1Name, Function<CotationBuilderInfo, Optional<Double>> value1Transfomer, String value2Name, Function<CotationBuilderInfo, Optional<Double>> value2Transfomer) {
+        super(value1Name, value1Transfomer, value2Name, value2Transfomer);
+    }
+
     @Override
     protected Class<CrossingValuesStatus> getEnumClass() {
         return CrossingValuesStatus.class;
@@ -24,7 +29,7 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
 
     @Override
     protected String getAttributeNamePrefix() {
-        return "value_direction_";
+        return "crossing_";
     }
 
     @Override
@@ -46,8 +51,8 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
             Double currentValuesDelta = currentValue1.get() - currentValue2.get();
             Double previousValuesDelta = previousValue1.get() - previousValue2.get();
 
-            if (Math.signum(currentValuesDelta) != Math.signum(previousValuesDelta)) {
-                if (currentValuesDelta >= 0) {
+            if (areValuesCrossing(currentValuesDelta, previousValuesDelta)) {
+                if (currentValuesDelta <= 0) {
                     crossingValuesStatus = crossingValuesStatus.withValue(FIRST_CROSSING_DOWN);
                 } else {
                     crossingValuesStatus = crossingValuesStatus.withValue(FIRST_CROSSING_UP);
@@ -56,6 +61,10 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
         }
 
         return crossingValuesStatus;
+    }
+
+    private boolean areValuesCrossing(Double currentValuesDelta, Double previousValuesDelta) {
+        return Math.signum(currentValuesDelta) != Math.signum(previousValuesDelta); //TODO to improve
     }
 
     private boolean areNeededValuesPresent(Optional<Double> builder1ValueCurrentCotation, Optional<Double> builder2ValueCurrentCotation, Optional<Double> builder1ValuePreviousCotation, Optional<Double> builder2ValuePreviousCotation) {

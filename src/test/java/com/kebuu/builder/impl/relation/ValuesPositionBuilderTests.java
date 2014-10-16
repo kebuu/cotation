@@ -11,13 +11,13 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ValuePositionBuilderTests extends AbstractBuilderTests<ValuesPositionBuilder> {
+public class ValuesPositionBuilderTests extends AbstractBuilderTests<ValuesPositionBuilder> {
 
     private static final Function<CotationBuilderInfo, Optional<Double>> TRANSFOMER1 = (CotationBuilderInfo x) -> Optional.of(x.getCotation().getEnd());
     private static final Function<CotationBuilderInfo, Optional<Double>> TRANSFOMER2 = (CotationBuilderInfo x) -> Optional.of(x.getCotation().getStart());
 
     @Test
-    public void testWithNegativeDirectionStep() {
+    public void simpleTest() {
         builder = new ValuesPositionBuilder("test1", TRANSFOMER1, "test2", TRANSFOMER2);
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);

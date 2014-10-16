@@ -30,7 +30,7 @@ public class ValuesPositionBuilder extends ValuesEnumRelationBuilder<ValueCompar
 
     @Override
     protected String getAttributeNamePrefix() {
-        return "values_position_";
+        return "position_";
     }
 
     @Override

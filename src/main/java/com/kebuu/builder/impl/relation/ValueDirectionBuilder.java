@@ -15,7 +15,7 @@ import java.util.function.Function;
 public class ValueDirectionBuilder extends ValuesEnumRelationBuilder<Direction> {
 
     private static final int DEFAULT_DIRECTION_STEP = -1;
-    private static final String NAME_PREFIX = "value_direction_";
+    private static final String NAME_PREFIX = "direction_";
 
     /**
      * Set a positive direction step to get the direction to the next step
