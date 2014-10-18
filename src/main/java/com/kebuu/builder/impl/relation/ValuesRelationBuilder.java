@@ -8,7 +8,7 @@ import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static com.kebuu.utils.FunctionUtils.createValueTransformer;
+import static com.kebuu.utils.FunctionUtils.transformerFromAttribute;
 
 public abstract class ValuesRelationBuilder<T, K extends AbstractAttribute<T>> extends AbstractSingleAttributeBuilder<T> {
 
@@ -50,11 +50,11 @@ public abstract class ValuesRelationBuilder<T, K extends AbstractAttribute<T>> e
     }
 
     public ValuesRelationBuilder(CotationAttribute<Double> attribute1, CotationAttribute<Double> attribute2) {
-        this(attribute1.getName(), createValueTransformer(attribute1), attribute2.getName(), createValueTransformer(attribute2));
+        this(attribute1.getName(), transformerFromAttribute(attribute1), attribute2.getName(), transformerFromAttribute(attribute2));
     }
 
     public ValuesRelationBuilder(CotationAttribute<Double> attribute1, Double constantValue) {
-        this(attribute1.getName(), createValueTransformer(attribute1), constantValue);
+        this(attribute1.getName(), transformerFromAttribute(attribute1), constantValue);
     }
 
     protected Optional<Double> getValue1(CotationBuilderInfo cotationBuilderInfo) {

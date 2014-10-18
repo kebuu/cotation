@@ -8,14 +8,14 @@ import com.kebuu.dto.cotation.attribute.CotationAttribute;
  */
 public class SimpleMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
-    private static final String MOBILE_MEAN_PREFIX_NAME = "mobile_mean_";
+    private static final String MOBILE_MEAN_BASE_NAME = "mobile_mean";
 
     public SimpleMobileMeanBuilder(int mobileMeanRange) {
-        super(mobileMeanRange, MOBILE_MEAN_PREFIX_NAME);
+        super(mobileMeanRange, MOBILE_MEAN_BASE_NAME);
     }
 
     public SimpleMobileMeanBuilder(int mobileMeanRange, CotationAttribute<Double> attributeToAverage) {
-        super(mobileMeanRange, MOBILE_MEAN_PREFIX_NAME, attributeToAverage);
+        super(mobileMeanRange, MOBILE_MEAN_BASE_NAME, attributeToAverage);
     }
     @Override
     protected double getWeight(int i) {

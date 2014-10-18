@@ -1,9 +1,6 @@
 package com.kebuu.config;
 
-import com.kebuu.builder.impl.CompositeCotationBuilder;
-import com.kebuu.builder.impl.MacdBuilder;
-import com.kebuu.builder.impl.RocBuilder;
-import com.kebuu.builder.impl.StochasticBuilder;
+import com.kebuu.builder.impl.*;
 import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
 import com.kebuu.builder.impl.mobilemean.SimplifiedExponentialMobileMeanBuilder;
 import com.kebuu.builder.impl.relation.*;
@@ -52,12 +49,12 @@ public class SpringConfig {
         ValuesCrossingBuilder mobileMeansCrossBuilder7_20 = new ValuesCrossingBuilder(simpleMobileMeanBuilder7.attribute(), simpleMobileMeanBuilder20.attribute());
 
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
-        SimpleMobileMeanBuilder stochasticSignalBuilder = new SimpleMobileMeanBuilder(14, stochasticBuilder.attribute());
+        SimpleMobileMeanBuilder stochasticSignalBuilder = new SimpleMobileMeanBuilder(5, stochasticBuilder.attribute());
         ValuesCrossingBuilder stochasticSignalCrossing = new ValuesCrossingBuilder(stochasticBuilder.attribute(), stochasticSignalBuilder.attribute());
+        OverBuyOrSellBuilder stochasticOverBuyOrSell = new OverBuyOrSellBuilder(stochasticBuilder.attribute(), 80D, 20D);
 
         RocBuilder rocBuilder = new RocBuilder();
-        ValuesPositionBuilder rocOverBuy = new ValuesPositionBuilder(rocBuilder.attribute(), 110D);
-        ValuesPositionBuilder rocOverSell = new ValuesPositionBuilder(rocBuilder.attribute(), 900D);
+        OverBuyOrSellBuilder rocOverBuyOrSell = new OverBuyOrSellBuilder(rocBuilder.attribute(), 110D, 90D);
 
         MacdBuilder macdBuilder = new MacdBuilder();
         SimplifiedExponentialMobileMeanBuilder macdSignalBuilder = new SimplifiedExponentialMobileMeanBuilder(9, macdBuilder.getAttribute());
@@ -66,8 +63,32 @@ public class SpringConfig {
         ValueDirectionBuilder nextDaysEndDirectionBuilder1 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1);
         ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5);
 
-        return new CompositeCotationBuilder(yearInfoBuilder, monthInfoBuilder, dayOfMonthInfoBuilder, dayOfWeekInfoBuilder, endInfoBuilder,
-            simpleMobileMeanBuilder20, mobileMeanBuilder20Direction, mobileMeanBuilder20Position, simpleMobileMeanBuilder50,
-            nextDaysEndDirectionBuilder1, stochasticBuilder, rocBuilder, macdBuilder, mobileMeansCrossBuilder20_50);
+        return new CompositeCotationBuilder(
+            yearInfoBuilder,
+            monthInfoBuilder,
+            dayOfMonthInfoBuilder,
+            dayOfWeekInfoBuilder,
+            endInfoBuilder,
+            simpleMobileMeanBuilder7,
+            simpleMobileMeanBuilder20,
+            simpleMobileMeanBuilder50,
+            mobileMeanBuilder7Direction,
+            mobileMeanBuilder7Position,
+            mobileMeanBuilder20Direction,
+            mobileMeanBuilder20Position,
+            mobileMeansCrossBuilder7_20,
+            mobileMeansCrossBuilder20_50,
+            stochasticBuilder,
+            stochasticSignalBuilder,
+            stochasticSignalCrossing,
+            stochasticOverBuyOrSell,
+            rocBuilder,
+            rocOverBuyOrSell,
+            macdBuilder,
+            macdSignalBuilder,
+            macdSignalCrossing,
+            nextDaysEndDirectionBuilder1,
+            nextDaysEndDirectionBuilder5
+        );
     }
 }

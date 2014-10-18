@@ -6,12 +6,11 @@ import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class FunctionUtils {
+public abstract class FunctionUtils {
 
-    private FunctionUtils() {
-    }
+    private FunctionUtils() {}
 
-    public static Function<CotationBuilderInfo, Optional<Double>> createValueTransformer(CotationAttribute<Double> attribute) {
+    public static <T> Function<CotationBuilderInfo, Optional<T>> transformerFromAttribute(CotationAttribute<T> attribute) {
         return (CotationBuilderInfo cotationBuilderInfo) -> cotationBuilderInfo.getAlreadyBuiltCotation().getValueByAttribute(attribute);
     }
 }

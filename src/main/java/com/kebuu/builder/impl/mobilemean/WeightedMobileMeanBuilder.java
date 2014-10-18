@@ -8,6 +8,7 @@ import com.kebuu.dto.cotation.Cotations;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
+import com.kebuu.utils.FunctionUtils;
 import lombok.Getter;
 import lombok.Value;
 
@@ -35,13 +36,12 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
         Preconditions.checkArgument(mobileMeanRange > 0, "Weighted mobile mean range should be greater than 0");
 
         this.mobileMeanRange = mobileMeanRange;
-        this.attribute = new RealCotationAttribute(attributeBaseName + "_"+ mobileMeanRange);
+        this.attribute = new RealCotationAttribute(attributeBaseName + "_" + mobileMeanRange);
         this.valueToAverageExtractor = valueToAverageExtractor;
     }
 
     public WeightedMobileMeanBuilder(int mobileMeanRange, String attributeBaseName, CotationAttribute<Double> attributeToAverage) {
-        this(mobileMeanRange, attributeBaseName + "_" + attributeToAverage.getName(),
-                    (cotationBuilderInfo) -> cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.position(), attributeToAverage));
+        this(mobileMeanRange, attributeBaseName + "_" + attributeToAverage.getName(), FunctionUtils.transformerFromAttribute(attributeToAverage));
     }
 
     @Override

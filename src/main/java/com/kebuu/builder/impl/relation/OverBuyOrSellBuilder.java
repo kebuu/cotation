@@ -8,6 +8,7 @@ import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.OverBuyOrSellStatus;
+import com.kebuu.utils.FunctionUtils;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -22,7 +23,7 @@ public class OverBuyOrSellBuilder extends AbstractSingleAttributeBuilder<OverBuy
     private final Function<CotationBuilderInfo, Optional<Double>> transfomer;
 
     public OverBuyOrSellBuilder(CotationAttribute<Double> baseAttribute, double overBuyThreshold, double overSellThreshold) {
-        this(baseAttribute.getName(), cotationBuilderInfo -> cotationBuilderInfo.getAlreadyBuiltCotations().getValue(cotationBuilderInfo.position(), baseAttribute), overBuyThreshold, overSellThreshold);
+        this(baseAttribute.getName(), FunctionUtils.transformerFromAttribute(baseAttribute), overBuyThreshold, overSellThreshold);
     }
 
     public OverBuyOrSellBuilder(String nameSuffix, Function<CotationBuilderInfo, Optional<Double>> transfomer, double overBuyThreshold, double overSellThreshold) {

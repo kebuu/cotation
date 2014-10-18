@@ -5,7 +5,7 @@ import com.kebuu.dto.cotation.formatter.DefaultFormatter;
 import lombok.Getter;
 
 @Getter
-public abstract class AbstractAttribute<T>  implements CotationAttribute<T> {
+public abstract class AbstractAttribute<T> implements CotationAttribute<T> {
 
     protected final String name;
     protected CotationAttributeFormatter<T> formatter;

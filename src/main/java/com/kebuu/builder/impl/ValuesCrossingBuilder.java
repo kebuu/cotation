@@ -1,5 +1,6 @@
-package com.kebuu.builder.impl.relation;
+package com.kebuu.builder.impl;
 
+import com.kebuu.builder.impl.relation.ValuesEnumRelationBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
