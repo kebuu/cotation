@@ -11,8 +11,6 @@ import com.kebuu.enums.CrossingValuesStatus;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static com.kebuu.enums.CrossingValuesStatus.*;
-
 public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingValuesStatus> {
 
     public ValuesCrossingBuilder(CotationAttribute<Double> attribute1, CotationAttribute<Double> attribute2) {
@@ -47,25 +45,12 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
         SimpleCotationValue<CrossingValuesStatus> crossingValuesStatus = new SimpleCotationValue<>(attribute);
 
         if (areNeededValuesPresent(currentValue1, currentValue2, previousValue1, previousValue2)) {
-            crossingValuesStatus = crossingValuesStatus.withValue(NOT_CROSSING);
-
-            Double currentValuesDelta = currentValue1.get() - currentValue2.get();
-            Double previousValuesDelta = previousValue1.get() - previousValue2.get();
-
-            if (areValuesCrossing(currentValuesDelta, previousValuesDelta)) {
-                if (currentValuesDelta <= 0) {
-                    crossingValuesStatus = crossingValuesStatus.withValue(FIRST_CROSSING_DOWN);
-                } else {
-                    crossingValuesStatus = crossingValuesStatus.withValue(FIRST_CROSSING_UP);
-                }
-            }
+            CrossingValuesStatus crossingValueStatus = CrossingValuesStatus.fromValues(currentValue1.get(), currentValue2.get(),
+                previousValue1.get(), previousValue2.get());
+            crossingValuesStatus = crossingValuesStatus.withValue(crossingValueStatus);
         }
 
         return crossingValuesStatus;
-    }
-
-    private boolean areValuesCrossing(Double currentValuesDelta, Double previousValuesDelta) {
-        return Math.signum(currentValuesDelta) != Math.signum(previousValuesDelta); //TODO to improve
     }
 
     private boolean areNeededValuesPresent(Optional<Double> builder1ValueCurrentCotation, Optional<Double> builder2ValueCurrentCotation, Optional<Double> builder1ValuePreviousCotation, Optional<Double> builder2ValuePreviousCotation) {

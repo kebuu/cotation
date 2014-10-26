@@ -25,8 +25,10 @@ public class ValuesCrossingBuilderTests extends AbstractBuilderTests<ValuesCross
 
         Assertions.assertThat(builtCotations.getValue(1, getAttribute()).isPresent()).isFalse();
         Assertions.assertThat(builtCotations.getValue(2, getAttribute()).get()).isEqualTo(CrossingValuesStatus.NOT_CROSSING);
+        Assertions.assertThat(builtCotations.getValue(3, getAttribute()).get()).isEqualTo(CrossingValuesStatus.NOT_CROSSING);
         Assertions.assertThat(builtCotations.getValue(5, getAttribute()).get()).isEqualTo(CrossingValuesStatus.FIRST_CROSSING_DOWN);
         Assertions.assertThat(builtCotations.getValue(6, getAttribute()).get()).isEqualTo(CrossingValuesStatus.FIRST_CROSSING_UP);
+        Assertions.assertThat(builtCotations.getValue(7, getAttribute()).get()).isEqualTo(CrossingValuesStatus.NOT_CROSSING);
     }
 
     @Override
