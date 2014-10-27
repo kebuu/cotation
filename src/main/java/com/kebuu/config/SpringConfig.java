@@ -54,8 +54,8 @@ public class SpringConfig {
         OverBuyOrSellBuilder stochasticOverBuyOrSell = new OverBuyOrSellBuilder(stochasticBuilder.attribute(), 80D, 20D);
 
         RocBuilder rocBuilder = new RocBuilder();
-        OverBuyOrSellBuilder rocOverBuyOrSell = new OverBuyOrSellBuilder(rocBuilder.attribute(), 110D, 90D);
-
+        OverBuyOrSellBuilder rocOverBuyOrSell = new OverBuyOrSellBuilder(rocBuilder.attribute(), 10D, -10D);
+        
         MacdBuilder macdBuilder = new MacdBuilder();
         SimplifiedExponentialMobileMeanBuilder macdSignalBuilder = new SimplifiedExponentialMobileMeanBuilder(9, macdBuilder.getAttribute());
         ValuesCrossingBuilder macdSignalCrossing = new ValuesCrossingBuilder(macdBuilder.getAttribute(), macdSignalBuilder.attribute());

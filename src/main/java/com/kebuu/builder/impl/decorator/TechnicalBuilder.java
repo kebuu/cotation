@@ -5,6 +5,7 @@ import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.dto.cotation.attribute.decorator.TechnicalAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
+import com.kebuu.dto.cotation.value.SimpleCotationValue;
 
 public class TechnicalBuilder<T> extends AbstractSingleAttributeBuilder<T> {
 
@@ -24,7 +25,7 @@ public class TechnicalBuilder<T> extends AbstractSingleAttributeBuilder<T> {
     }
 
     @Override
-    public CotationValue calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
-        return delegate.calculateSingleValue(cotationBuilderInfo);
+    public CotationValue<T> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
+        return new SimpleCotationValue(attribute(), delegate.calculateSingleValue(cotationBuilderInfo).getValue());
     }
 }

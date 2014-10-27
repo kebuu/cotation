@@ -16,8 +16,8 @@ public class MacdBuilderTests extends AbstractBuilderTests<MacdBuilder> {
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
         Assertions.assertThat(getRoundedValue(builtCotations, 1).isPresent()).isFalse();
-        Assertions.assertThat(getRoundedValue(builtCotations, 4).get()).isEqualTo(0.257143);
-        Assertions.assertThat(getRoundedValue(builtCotations, 9).get()).isEqualTo(-0.286769);
+        Assertions.assertThat(getRoundedValue(builtCotations, 4).get()).isEqualTo(0.52381);
+        Assertions.assertThat(getRoundedValue(builtCotations, 9).get()).isEqualTo(-0.285671);
     }
 
     private Optional<Double> getRoundedValue(BuiltCotations builtCotations, int position) {

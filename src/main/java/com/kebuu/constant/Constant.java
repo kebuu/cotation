@@ -8,7 +8,7 @@ public final class Constant {
     public static final String ARFF_DATA_TAG = "@data";
     public static final String ARFF_ATTRIBUTE_TAG = "@attribute";
     public static final String ARFF_RELATION_TAG = "@relation";
-    public static final String ARFF_VALUE_SEPARATOR = ",";
+    public static final String VALUE_SEPARATOR = ",";
     public static final String EMPTY_VALUE = "?";
     public static final String ARFF_TYPE_REAL = "real";
     public static final String ARFF_TYPE_INTEGER = "integer";

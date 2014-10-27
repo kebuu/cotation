@@ -26,8 +26,8 @@ public class MacdBuilder extends AbstractBuilder {
     @Getter private final int signalPeriod;
     @Getter private final RealCotationAttribute attribute;
 
-    private final AbstractSingleAttributeBuilder<Double> shortSemmBuilder;
-    private final AbstractSingleAttributeBuilder<Double> longSemmBuilder;
+    private final TechnicalBuilder<Double> shortSemmBuilder;
+    private final TechnicalBuilder<Double> longSemmBuilder;
 
     public MacdBuilder(int shortPeriod, int longPeriod, int signalPeriod) {
         Preconditions.checkArgument(longPeriod >= shortPeriod, "Long period should be greater or equals than short period");
@@ -51,16 +51,16 @@ public class MacdBuilder extends AbstractBuilder {
 
     @Override
     public BuiltCotation build(CotationBuilderInfo cotationBuilderInfo) {
-        BuiltCotation builtCotation = new BuiltCotation(cotationBuilderInfo.getCotation());
+        SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(attribute);
 
-        CotationValue<Double> shortValue  = shortSemmBuilder.calculateSingleValue(cotationBuilderInfo);
+        CotationValue<Double> shortValue = shortSemmBuilder.calculateSingleValue(cotationBuilderInfo);
         CotationValue<Double> longValue = longSemmBuilder.calculateSingleValue(cotationBuilderInfo);
 
         if (longValue.getValue().isPresent()) {
-            SimpleCotationValue<Double> macdCotationValue = new SimpleCotationValue<>(attribute, shortValue.forceGetValue() - longValue.forceGetValue());
-            builtCotation = builtCotation.withAdditionalValues(shortValue, longValue, macdCotationValue);
+            macdCotationValue = macdCotationValue.withValue(shortValue.forceGetValue() - longValue.forceGetValue());
         }
 
-        return builtCotation;
+        BuiltCotation builtCotation = new BuiltCotation(cotationBuilderInfo.getCotation());
+        return builtCotation.withAdditionalValues(shortValue, longValue, macdCotationValue);
     }
 }
