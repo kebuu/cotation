@@ -51,16 +51,22 @@ public class SpringConfig {
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         SimpleMobileMeanBuilder stochasticSignalBuilder = new SimpleMobileMeanBuilder(5, stochasticBuilder.attribute());
         ValuesCrossingBuilder stochasticSignalCrossing = new ValuesCrossingBuilder(stochasticBuilder.attribute(), stochasticSignalBuilder.attribute());
-        OverBuyOrSellBuilder stochasticOverBuyOrSell = new OverBuyOrSellBuilder(stochasticBuilder.attribute(), 80D, 20D);
+        OverBuyOrSellBuilder stochasticOverBuyOrSell = new OverBuyOrSellBuilder(stochasticBuilder.attribute(), 78D, 22D);
+        ValueDirectionBuilder stochasticDirection = new ValueDirectionBuilder(stochasticBuilder.attribute());
+        ValuesPositionBuilder stochasticValueAndSignalPosition = new ValuesPositionBuilder(stochasticBuilder.attribute(), stochasticSignalBuilder.attribute());
 
         RocBuilder rocBuilder = new RocBuilder();
         OverBuyOrSellBuilder rocOverBuyOrSell = new OverBuyOrSellBuilder(rocBuilder.attribute(), 10D, -10D);
-        
+
         MacdBuilder macdBuilder = new MacdBuilder();
         SimplifiedExponentialMobileMeanBuilder macdSignalBuilder = new SimplifiedExponentialMobileMeanBuilder(9, macdBuilder.getAttribute());
         ValuesCrossingBuilder macdSignalCrossing = new ValuesCrossingBuilder(macdBuilder.getAttribute(), macdSignalBuilder.attribute());
+        ValueDirectionBuilder macdDirection = new ValueDirectionBuilder(macdBuilder.getAttribute());
+        ValuesPositionBuilder macdValueAndSignalPosition = new ValuesPositionBuilder(macdBuilder.getAttribute(), macdSignalBuilder.attribute());
 
         ValueDirectionBuilder nextDaysEndDirectionBuilder1 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder2 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 2);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder3 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 3);
         ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5);
 
         return new CompositeCotationBuilder(
@@ -85,9 +91,13 @@ public class SpringConfig {
             rocBuilder,
             rocOverBuyOrSell,
             macdBuilder,
+            macdDirection,
             macdSignalBuilder,
+            macdValueAndSignalPosition,
             macdSignalCrossing,
             nextDaysEndDirectionBuilder1,
+            nextDaysEndDirectionBuilder2,
+            nextDaysEndDirectionBuilder3,
             nextDaysEndDirectionBuilder5
         );
     }
