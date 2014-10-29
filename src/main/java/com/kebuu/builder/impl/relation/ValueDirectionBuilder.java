@@ -17,32 +17,48 @@ import java.util.function.Function;
 @Slf4j
 public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direction> {
 
+    private static final double DEFAULT_NONE_THRESHOLD = 0.0;
     private static final int DEFAULT_DIRECTION_STEP = -1;
     private static final String NAME_PREFIX = "direction_";
+
     private final EnumeratedNominalCotationAttribute<Direction> attribute;
-    private final Function<CotationBuilderInfo, Optional<Double>> transfomer;
+    private final Function<CotationBuilderInfo, Optional<Double>> transformer;
+
+    /**
+     * The minimum difference between current and step values unless consider the direction as Direction.NONE
+     */
+    private final double noneThreshold;
 
     /**
      * Set a positive direction step to get the direction to the next step
-     * and a negative direction steop to get the direction since the la step
+     * and a negative direction step to get the direction since the last step
      */
     protected final int directionStep;
 
     public ValueDirectionBuilder(CotationAttribute<Double> attribute) {
-        this(attribute, DEFAULT_DIRECTION_STEP);
+        this(attribute, DEFAULT_DIRECTION_STEP, DEFAULT_NONE_THRESHOLD);
+    }
+
+    public ValueDirectionBuilder(CotationAttribute<Double> attribute, double noneThreshold) {
+        this(attribute, DEFAULT_DIRECTION_STEP, noneThreshold);
     }
 
     public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep) {
-        this(attribute.getName(), FunctionUtils.transformerFromAttribute(attribute), directionStep);
+        this(attribute, directionStep, DEFAULT_NONE_THRESHOLD);
+    }
+
+    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep, double noneThreshold) {
+        this(attribute.getName(), FunctionUtils.transformerFromAttribute(attribute), directionStep, noneThreshold);
     }
 
     public ValueDirectionBuilder(String name, Function<CotationBuilderInfo, Optional<Double>> transformer) {
-        this(name, transformer, DEFAULT_DIRECTION_STEP);
+        this(name, transformer, DEFAULT_DIRECTION_STEP, DEFAULT_NONE_THRESHOLD);
     }
 
-    public ValueDirectionBuilder(String name, Function<CotationBuilderInfo, Optional<Double>> transformer, int directionStep) {
+    public ValueDirectionBuilder(String name, Function<CotationBuilderInfo, Optional<Double>> transformer, int directionStep, double noneThreshold) {
         this.directionStep = directionStep;
-        this.transfomer = transformer;
+        this.noneThreshold = noneThreshold;
+        this.transformer = transformer;
         this.attribute = new EnumeratedNominalCotationAttribute<>(NAME_PREFIX + name + "_" + directionStep, Direction.class);
     }
 
@@ -57,9 +73,9 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
 
         Cotation cotation = cotationBuilderInfo.getCotation();
 
-        Optional<Double> currentValue = transfomer.apply(cotationBuilderInfo);
+        Optional<Double> currentValue = transformer.apply(cotationBuilderInfo);
         Optional<Double> stepValue = cotationBuilderInfo.getCotations().getByIndex(cotation.getPosition() + directionStep)
-            .flatMap(stepCotation -> transfomer.apply(cotationBuilderInfo.withCotation(stepCotation)));
+            .flatMap(stepCotation -> transformer.apply(cotationBuilderInfo.withCotation(stepCotation)));
 
         if (stepValue.isPresent()) {
             directionValue = directionValue.withValue(calculateDirection(currentValue, stepValue));
@@ -69,9 +85,9 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
 
     private Direction calculateDirection(Optional<Double> currentValue, Optional<Double> stepValue) {
         if (directionStep > 0) {
-            return Direction.fromConsecutiveValues(currentValue.get(), stepValue.get());
+            return Direction.fromConsecutiveValues(currentValue.get(), stepValue.get(), noneThreshold);
         } else {
-            return Direction.fromConsecutiveValues(stepValue.get(), currentValue.get());
+            return Direction.fromConsecutiveValues(stepValue.get(), currentValue.get(), noneThreshold);
         }
     }
 }

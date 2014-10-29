@@ -29,12 +29,26 @@ public class ValueDirectionBuilderTests extends AbstractBuilderTests<ValueDirect
 
     @Test
     public void testWithPositiveDirectionStep() {
-        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1);
+        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1, 0.0);
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
         Assertions.assertThat(builtCotations.getValue(1, getAttribute()).get()).isEqualTo(Direction.NONE);
         Assertions.assertThat(builtCotations.getValue(6, getAttribute()).get()).isEqualTo(Direction.UP);
+        Assertions.assertThat(builtCotations.getValue(8, getAttribute()).get()).isEqualTo(Direction.DOWN);
+        Assertions.assertThat(builtCotations.getValue(9, getAttribute()).isPresent()).isFalse();
+    }
+
+    @Test
+    public void testWithPositiveDirectionStepWithThreshold() {
+        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1, 1.0);
+
+        BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
+
+        Assertions.assertThat(builtCotations.getValue(2, getAttribute()).get()).isEqualTo(Direction.NONE);
+        Assertions.assertThat(builtCotations.getValue(3, getAttribute()).get()).isEqualTo(Direction.UP);
+        Assertions.assertThat(builtCotations.getValue(4, getAttribute()).get()).isEqualTo(Direction.DOWN);
+        Assertions.assertThat(builtCotations.getValue(5, getAttribute()).get()).isEqualTo(Direction.UP);
         Assertions.assertThat(builtCotations.getValue(8, getAttribute()).get()).isEqualTo(Direction.DOWN);
         Assertions.assertThat(builtCotations.getValue(9, getAttribute()).isPresent()).isFalse();
     }
