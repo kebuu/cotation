@@ -8,5 +8,7 @@ Ajouter des commentaires sur les interfaces et explications builder complexe + m
 Créer un CandleBuilder
 Ajouter un TrendBuilder ?
 Regarder le Ease of Movement, Chaikin money flow
-Integrer les volumes
 
+Indiquer pour chaque indicateur sa dernière indication et de quand elle date MACD_ADVICE, STOCASTIC_ADVICE
+Ajouter un seuil pour la direction de la cloture (+/- 0.2%)
+Ajouter un builder de variation (en pourcentage ou brute)
