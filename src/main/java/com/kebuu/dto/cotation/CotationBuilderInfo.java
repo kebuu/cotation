@@ -24,6 +24,10 @@ public class CotationBuilderInfo {
     }
 
     public Optional<Cotation> getPreviousCotation() {
-        return cotations.getByIndex(cotation.getPosition() - 1);
+        return getCotation(-1);
+    }
+
+    public Optional<Cotation> getCotation(int positionDelta) {
+        return cotations.getByIndex(cotation.getPosition() + positionDelta);
     }
 }
