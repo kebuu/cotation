@@ -1,5 +1,6 @@
 Extraire texte exception/precondition
 Ajouter TU sur les services/controller export + technicalBuilder
+Start build after begin
 
 Cotation -> quotation ?
 
@@ -7,7 +8,6 @@ Ajouter des commentaires sur les interfaces et explications builder complexe + m
 
 Créer un CandleBuilder
 Ajouter un TrendBuilder ?
-Regarder le Ease of Movement, Chaikin money flow
 
 Indiquer pour chaque indicateur sa dernière indication et de quand elle date MACD_ADVICE, STOCASTIC_ADVICE
 Ajouter un seuil pour la direction de la cloture (+/- 0.2%)

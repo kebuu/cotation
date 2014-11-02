@@ -30,4 +30,8 @@ public class Cotation {
     @NotNull private double max;
     @NotNull private double end;
     private Long volume;
+
+    public boolean hasVolume() {
+        return volume != null;
+    }
 }

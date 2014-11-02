@@ -43,15 +43,15 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
 
     @Override
     public CotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
-        SimpleCotationValue<Double> stochasticValue = new SimpleCotationValue<>(attribute);
+        SimpleCotationValue<Double> cmfValue = new SimpleCotationValue<>(attribute);
 
         Optional<Cotation> startPeriodCotation = cotationBuilderInfo.getCotation(-period);
 
         if (startPeriodCotation.isPresent() && startPeriodCotation.get().getVolume() != null) {
-            stochasticValue = stochasticValue.withValue(calculateValue(cotationBuilderInfo, period));
+            cmfValue = cmfValue.withValue(calculateValue(cotationBuilderInfo, period));
         }
 
-        return stochasticValue;
+        return cmfValue;
     }
 
     private double calculateValue(CotationBuilderInfo cotationBuilderInfo, int period) {
@@ -59,7 +59,7 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
         double endValue = cotationBuilderInfo.getCotation().getEnd();
 
         List<Cotation> usedCotations = IntStream.rangeClosed(0, period)
-            .mapToObj(index -> cotationBuilderInfo.getCotation(index).get())
+            .mapToObj(index -> cotationBuilderInfo.getCotation(-index).get())
             .collect(Collectors.toList());
 
         double volumeSum = usedCotations.stream().mapToDouble(Cotation::getVolume).sum();
@@ -70,7 +70,7 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
         if (lowestValue == highestValue) {
             value = volume / volumeSum;
         } else {
-            value = volume * (2 * endValue - lowestValue - highestValue) / ((highestValue - lowestValue) * volumeSum);
+            value = volume * (2.0 * endValue - lowestValue - highestValue) / ((highestValue - lowestValue) * volumeSum);
         }
 
         return value;

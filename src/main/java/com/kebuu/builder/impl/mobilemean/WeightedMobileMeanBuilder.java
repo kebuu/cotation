@@ -19,6 +19,11 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * For a mobileMeanRange equals to 1, the mobile mean value is only the current value.
+ * For a mobileMeanRange equals to 2, the mobile mean value is the average of the current value and le previous one.
+ * ...
+ */
 public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeBuilder<Double> {
 
     @Getter protected final int mobileMeanRange;

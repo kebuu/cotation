@@ -69,6 +69,9 @@ public class SpringConfig {
         ValueDirectionBuilder nextDaysEndDirectionBuilder3 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 3);
         ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5);
 
+        ChaikinMoneyFlowBuilder chaikinMoneyFlowBuilder = new ChaikinMoneyFlowBuilder();
+        EaseOfMovementBuilder easeOfMovementBuilder = new EaseOfMovementBuilder();
+
         return new CompositeCotationBuilder(
             yearInfoBuilder,
             monthInfoBuilder,
@@ -98,7 +101,9 @@ public class SpringConfig {
             nextDaysEndDirectionBuilder1,
             nextDaysEndDirectionBuilder2,
             nextDaysEndDirectionBuilder3,
-            nextDaysEndDirectionBuilder5
+            nextDaysEndDirectionBuilder5,
+            chaikinMoneyFlowBuilder,
+            easeOfMovementBuilder
         );
     }
 }
