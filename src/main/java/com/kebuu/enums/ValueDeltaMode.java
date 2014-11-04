@@ -9,7 +9,7 @@ public enum ValueDeltaMode {
 
     PERCENT {
         public double getDelta(double currentValue, double previousValue) {
-            return RAW.getDelta(currentValue, previousValue) / previousValue;
+            return RAW.getDelta(currentValue, previousValue) / previousValue * 100.0;
         }
     };
 
