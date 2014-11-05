@@ -1,7 +1,11 @@
 package com.kebuu.builder.impl.mobilemean;
 
+import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import lombok.Getter;
+
+import java.util.Optional;
+import java.util.function.Function;
 
 public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
@@ -20,6 +24,11 @@ public class ExponentialMobileMeanBuilder extends WeightedMobileMeanBuilder {
 
     public ExponentialMobileMeanBuilder(int period, String attributeBaseName, CotationAttribute<Double> attributeToAverage) {
         super(period, attributeBaseName, attributeToAverage);
+        this.exponentialFactor = calculateExponentialFactor(period);
+    }
+
+    public ExponentialMobileMeanBuilder(int period, String baseName, Function<CotationBuilderInfo, Optional<Double>> valueToAverageExtractor) {
+        super(period, baseName, valueToAverageExtractor);
         this.exponentialFactor = calculateExponentialFactor(period);
     }
 

@@ -68,7 +68,7 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
             List<ValueAndWeight> valuesAndWeights = IntStream.range(0, mobileMeanRange)
                 .mapToObj(i -> {
                     Optional<Double> baseValue = getValueToAverage(cotationBuilderInfo.withCotation(cotations.forceGetByIndex(cotation.getPosition() - i)));
-                    return new ValueAndWeight(baseValue.get(), getWeight(cotation.getPosition() - i));
+                    return new ValueAndWeight(baseValue.get(), getWeight(i));
                 })
                 .collect(toList());
 

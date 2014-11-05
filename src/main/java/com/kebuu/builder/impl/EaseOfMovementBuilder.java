@@ -1,6 +1,7 @@
 package com.kebuu.builder.impl;
 
 import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
+import com.kebuu.builder.impl.mobilemean.SimplifiedExponentialMobileMeanBuilder;
 import com.kebuu.domain.Cotation;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
@@ -12,7 +13,7 @@ import java.util.Optional;
  * Calcul du Ease of Movement : 10000 * (((highest + lowest) - (highestHier + lowestHier)) / 2) * (highest - lowest) / volume
  * A moyenner sur la période
  */
-public class EaseOfMovementBuilder extends SimpleMobileMeanBuilder {
+public class EaseOfMovementBuilder extends SimplifiedExponentialMobileMeanBuilder {
 
     public static final String PREFIX_NAME = "eom";
     public static final int DEFAULT_PERIOD = 14;
@@ -43,8 +44,12 @@ public class EaseOfMovementBuilder extends SimpleMobileMeanBuilder {
             double yesterdayHighest = previousCotation.getMax();
             double yesterdayLowest = previousCotation.getMin();
 
+            if (cotation.getPosition() == 5950) {
+                System.out.println();
+            }
+
             if (todayVolume != NumberUtils.DOUBLE_ZERO) {
-                double eomValue = 10000.0 * (((todayHighest + todayLowest) - (yesterdayHighest + yesterdayLowest)) / 2.0) * (todayHighest - todayLowest) / todayVolume;
+                double eomValue = 1000000.0 * (((todayHighest + todayLowest) - (yesterdayHighest + yesterdayLowest)) / 2.0) * (todayHighest - todayLowest) / todayVolume;
                 result = Optional.of(eomValue);
             }
         }
