@@ -61,7 +61,7 @@ public abstract class WeightedMobileMeanBuilder extends AbstractSingleAttributeB
         Cotation cotation = cotationBuilderInfo.getCotation();
         Cotations cotations = cotationBuilderInfo.getCotations();
 
-        Optional<Double> firstValueToAverage = cotations.getByIndex(cotation.getPosition() - mobileMeanRange)
+        Optional<Double> firstValueToAverage = cotations.getByIndex(cotation.getPosition() - mobileMeanRange + 1)
             .flatMap(firstCotationInRange -> getValueToAverage(cotationBuilderInfo.withCotation(firstCotationInRange)));
 
         if (firstValueToAverage.isPresent()) {
