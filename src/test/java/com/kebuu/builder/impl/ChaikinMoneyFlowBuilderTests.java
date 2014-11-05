@@ -15,8 +15,10 @@ public class ChaikinMoneyFlowBuilderTests extends AbstractBuilderTests<ChaikinMo
     public void testBuildCotations() {
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
-        Assertions.assertThat(builtCotations.getValue(3, builder.attribute()).isPresent()).isFalse();
-        Assertions.assertThat(builtCotations.getValue(4, builder.attribute()).get()).isEqualTo((30.0 * (2.0 * 2.0 - 1.0 - 2.0)) / ((2.0 - 1.0) * 60.0));
+        Assertions.assertThat(builtCotations.getValue(3, builder.attribute()).get()).isEqualTo(1.0);
+        Assertions.assertThat(builtCotations.getValue(4, builder.attribute()).get()).isEqualTo(1.0);
+        Assertions.assertThat(builtCotations.getValue(5, builder.attribute()).get()).isEqualTo(-1.0);
+        Assertions.assertThat(builtCotations.getValue(6, builder.attribute()).get()).isEqualTo(9.0);
     }
 
     @Test
@@ -25,19 +27,19 @@ public class ChaikinMoneyFlowBuilderTests extends AbstractBuilderTests<ChaikinMo
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
-        Assertions.assertThat(builtCotations.getValue(3, builder.attribute()).get()).isEqualTo(20.0 / 30.0);
+        Assertions.assertThat(builtCotations.getValue(3, builder.attribute()).get()).isEqualTo(1.0);
     }
 
     @Test
     public void testCreationBuilderFailed() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Period should be greater than 0");
+        expectedException.expectMessage("Weighted mobile mean range should be greater than 0");
 
         new ChaikinMoneyFlowBuilder(0);
     }
 
     @Override
     protected ChaikinMoneyFlowBuilder createBuilder() {
-        return new ChaikinMoneyFlowBuilder(4);
+        return new ChaikinMoneyFlowBuilder(1);
     }
 }

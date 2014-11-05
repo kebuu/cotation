@@ -18,7 +18,7 @@ public class EaseOfMovementBuilder extends SimpleMobileMeanBuilder {
     public static final int DEFAULT_PERIOD = 14;
 
     public EaseOfMovementBuilder(int period) {
-        super(period, PREFIX_NAME, EaseOfMovementBuilder::transformer);
+        super(period, PREFIX_NAME, EaseOfMovementBuilder::extractValueToAverage);
     }
 
     public EaseOfMovementBuilder() {
@@ -30,7 +30,7 @@ public class EaseOfMovementBuilder extends SimpleMobileMeanBuilder {
         return attribute;
     }
 
-    private static Optional<Double> transformer(CotationBuilderInfo cotationBuilderInfo) {
+    private static Optional<Double> extractValueToAverage(CotationBuilderInfo cotationBuilderInfo) {
         Optional<Double> result = Optional.empty();
 
         Cotation cotation = cotationBuilderInfo.getCotation();

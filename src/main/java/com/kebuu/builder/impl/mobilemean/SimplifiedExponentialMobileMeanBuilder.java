@@ -22,7 +22,7 @@ public class SimplifiedExponentialMobileMeanBuilder extends ExponentialMobileMea
     public SimpleCotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> value = new SimpleCotationValue<>(attribute);
 
-        Optional<Double> previousValue = cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.getCotation().getPosition() - 1, attribute);
+        Optional<Double> previousValue = cotationBuilderInfo.getBuiltCotations().getValue(cotationBuilderInfo.position() - 1, attribute);
 
         if (previousValue.isPresent()) {
             value = value.withValue(calculateSimplifiedValue(getValueToAverage(cotationBuilderInfo).get(), previousValue.get(), exponentialFactor));

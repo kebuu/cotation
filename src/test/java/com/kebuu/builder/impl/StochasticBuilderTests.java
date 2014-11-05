@@ -28,7 +28,7 @@ public class StochasticBuilderTests extends AbstractBuilderTests<StochasticBuild
         builder = new StochasticBuilder(4, 2);
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
-        NumberUtils.assertEquals(builtCotations.getValue(8, builder.getStochasticValueAttribute()).get(), (100.0 / 2.0 * ((3.0 - 1.0) / (4.0 - 1.0) + (4.0 - 1.0) / (4.0 - 1.0))), 6);
+        NumberUtils.assertEquals(builtCotations.getValue(8, builder.getStochasticValueAttribute()).get(), (100.0 / 2.0 * ((3.0 - 0.5) / (4.0 - 0.5) + (4.0 - 1.0) / (4.0 - 1.0))), 6);
     }
 
     @Test

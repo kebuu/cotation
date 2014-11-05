@@ -1,35 +1,25 @@
 package com.kebuu.builder.impl;
 
-import com.google.common.base.Preconditions;
-import com.kebuu.domain.Cotation;
+import com.kebuu.builder.impl.mobilemean.SimpleMobileMeanBuilder;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
-import com.kebuu.dto.cotation.attribute.CotationAttribute;
-import com.kebuu.dto.cotation.attribute.RealCotationAttribute;
-import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
-import lombok.Getter;
+import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Calcul du Chaikin money flow : (volume / sum(volume)) * ((end - lowest) – (highest - end)) / (highest - lowest)
+ * Calcul du Chaikin money flow
+ * Step 1 ((Close – Low) – (High – Close)/ (High – Low)) * Volume
+ * Step 2 21 Day Average of Step1 (Daily MF) / 21 Day Average of Volume
  */
-public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Double> {
+public class ChaikinMoneyFlowBuilder extends SimpleMobileMeanBuilder {
 
-    public static final String PREFIX_NAME = "chainkin_";
+    public static final String PREFIX_NAME = "chaikin";
     public static final int DEFAULT_PERIOD = 21;
 
-    @Getter private final int period;
-    @Getter private final RealCotationAttribute attribute;
-
     public ChaikinMoneyFlowBuilder(int period) {
-        Preconditions.checkArgument(period > 0, "Period should be greater than 0");
-
-        this.period = period;
-        this.attribute = new RealCotationAttribute(PREFIX_NAME + period);
+        super(period, PREFIX_NAME, (CotationBuilderInfo cotationBuilderInfo) -> ChaikinMoneyFlowBuilder.extractValueToAverage(cotationBuilderInfo, period));
     }
 
     public ChaikinMoneyFlowBuilder() {
@@ -37,42 +27,39 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
     }
 
     @Override
-    public CotationAttribute<Double> attribute() {
-        return attribute;
-    }
+    public SimpleCotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
+        SimpleCotationValue<Double> mobileMeanValue = super.calculateSingleValue(cotationBuilderInfo);
 
-    @Override
-    public CotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
-        SimpleCotationValue<Double> cmfValue = new SimpleCotationValue<>(attribute);
+        if (mobileMeanValue.hasValue() && mobileMeanValue.unwrapValue() != NumberUtils.DOUBLE_ZERO) {
+            double volumeSum = IntStream.range(0, mobileMeanRange)
+                .mapToDouble(index -> cotationBuilderInfo.getCotation(-index).get().getVolume())
+                .sum();
 
-        Optional<Cotation> startPeriodCotation = cotationBuilderInfo.getCotation(-period + 1);
-
-        if (startPeriodCotation.isPresent() && startPeriodCotation.get().getVolume() != null) {
-            cmfValue = cmfValue.withValue(calculateValue(cotationBuilderInfo, period));
+            mobileMeanValue = mobileMeanValue.withValue(mobileMeanRange * mobileMeanValue.unwrapValue() / volumeSum);
         }
 
-        return cmfValue;
+        return mobileMeanValue;
     }
 
-    private double calculateValue(CotationBuilderInfo cotationBuilderInfo, int period) {
-        double volume = cotationBuilderInfo.getCotation().getVolume();
-        double endValue = cotationBuilderInfo.getCotation().getEnd();
+    private static Optional<Double> extractValueToAverage(CotationBuilderInfo cotationBuilderInfo, int period) {
+        Optional<Double> result = Optional.empty();
 
-        List<Cotation> usedCotations = IntStream.range(0, period)
-            .mapToObj(index -> cotationBuilderInfo.getCotation(-index).get())
-            .collect(Collectors.toList());
+        if (cotationBuilderInfo.getCotation().hasVolume()) {
+            double volume = cotationBuilderInfo.getCotation().getVolume();
+            double endValue = cotationBuilderInfo.getCotation().getEnd();
+            double lowestValue = cotationBuilderInfo.getCotation().getMin();
+            double highestValue = cotationBuilderInfo.getCotation().getMax();
 
-        double volumeSum = usedCotations.stream().mapToDouble(Cotation::getVolume).sum();
-        double lowestValue = usedCotations.stream().mapToDouble(Cotation::getMin).min().getAsDouble();
-        double highestValue = usedCotations.stream().mapToDouble(Cotation::getMax).max().getAsDouble();
+            double value;
+            if (lowestValue == highestValue) {
+                value = volume;
+            } else {
+                value = volume * (2.0 * endValue - lowestValue - highestValue) / (highestValue - lowestValue);
+            }
 
-        double value;
-        if (lowestValue == highestValue) {
-            value = volume / volumeSum;
-        } else {
-            value = volume * (2.0 * endValue - lowestValue - highestValue) / ((highestValue - lowestValue) * volumeSum);
+            result = Optional.of(value);
         }
 
-        return value;
+        return result;
     }
 }
