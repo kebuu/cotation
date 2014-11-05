@@ -21,7 +21,7 @@ public class ChaikinMoneyFlowBuilderTests extends AbstractBuilderTests<ChaikinMo
 
     @Test
     public void testBuildCotations_whenLowestEqualsHigest() {
-        builder = new ChaikinMoneyFlowBuilder(1);
+        builder = new ChaikinMoneyFlowBuilder(2);
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
@@ -31,13 +31,13 @@ public class ChaikinMoneyFlowBuilderTests extends AbstractBuilderTests<ChaikinMo
     @Test
     public void testCreationBuilderFailed() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Period should be greater or equals to 0");
+        expectedException.expectMessage("Period should be greater than 0");
 
-        new ChaikinMoneyFlowBuilder(-1);
+        new ChaikinMoneyFlowBuilder(0);
     }
 
     @Override
     protected ChaikinMoneyFlowBuilder createBuilder() {
-        return new ChaikinMoneyFlowBuilder(3);
+        return new ChaikinMoneyFlowBuilder(4);
     }
 }

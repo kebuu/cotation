@@ -26,7 +26,7 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
     @Getter private final RealCotationAttribute attribute;
 
     public ChaikinMoneyFlowBuilder(int period) {
-        Preconditions.checkArgument(period >= 0, "Period should be greater or equals to 0");
+        Preconditions.checkArgument(period > 0, "Period should be greater than 0");
 
         this.period = period;
         this.attribute = new RealCotationAttribute(PREFIX_NAME + period);
@@ -45,7 +45,7 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
     public CotationValue<Double> calculateSingleValue(CotationBuilderInfo cotationBuilderInfo) {
         SimpleCotationValue<Double> cmfValue = new SimpleCotationValue<>(attribute);
 
-        Optional<Cotation> startPeriodCotation = cotationBuilderInfo.getCotation(-period);
+        Optional<Cotation> startPeriodCotation = cotationBuilderInfo.getCotation(-period + 1);
 
         if (startPeriodCotation.isPresent() && startPeriodCotation.get().getVolume() != null) {
             cmfValue = cmfValue.withValue(calculateValue(cotationBuilderInfo, period));
@@ -58,7 +58,7 @@ public class ChaikinMoneyFlowBuilder extends AbstractSingleAttributeBuilder<Doub
         double volume = cotationBuilderInfo.getCotation().getVolume();
         double endValue = cotationBuilderInfo.getCotation().getEnd();
 
-        List<Cotation> usedCotations = IntStream.rangeClosed(0, period)
+        List<Cotation> usedCotations = IntStream.range(0, period)
             .mapToObj(index -> cotationBuilderInfo.getCotation(-index).get())
             .collect(Collectors.toList());
 
