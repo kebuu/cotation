@@ -2,16 +2,16 @@ package com.kebuu.enums;
 
 public enum ValueDeltaMode {
     RAW {
-        public double getDelta(double currentValue, double previousValue) {
-            return currentValue - previousValue;
+        public double getDelta(double value1, double value2) {
+            return value2 - value1;
         }
     },
 
     PERCENT {
-        public double getDelta(double currentValue, double previousValue) {
-            return RAW.getDelta(currentValue, previousValue) / previousValue * 100.0;
+        public double getDelta(double value1, double value2) {
+            return RAW.getDelta(value1, value2) / value1 * 100.0;
         }
     };
 
-    public abstract double getDelta(double currentValue, double previousValue);
+    public abstract double getDelta(double value1, double value2);
 }

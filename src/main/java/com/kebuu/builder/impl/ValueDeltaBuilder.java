@@ -54,7 +54,7 @@ public class ValueDeltaBuilder extends AbstractSingleAttributeBuilder<Double> {
             Optional<Double> previousValue = baseAttributeTransformer.apply(cotationBuilderInfo.withCotation(cotationAtPeriod.get()));
 
             if(currentValue.isPresent() && previousValue.isPresent()) {
-                deltaValue = deltaValue.withValue(mode.getDelta(currentValue.get(), previousValue.get()));
+                deltaValue = deltaValue.withValue(mode.getDelta(previousValue.get(), currentValue.get()));
             }
         }
 

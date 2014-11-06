@@ -41,6 +41,10 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
         this(attribute, DEFAULT_DIRECTION_STEP, DEFAULT_NO_DIRECTION_THRESHOLD, DEFAULT_THRESHOLD_MODE);
     }
 
+    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep) {
+        this(attribute, directionStep, DEFAULT_THRESHOLD_MODE);
+    }
+
     public ValueDirectionBuilder(CotationAttribute<Double> attribute, double noDirectionThreshold) {
         this(attribute, DEFAULT_DIRECTION_STEP, noDirectionThreshold, DEFAULT_THRESHOLD_MODE);
     }
