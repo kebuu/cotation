@@ -4,6 +4,7 @@ import com.kebuu.dto.cotation.BuiltCotations;
 import com.kebuu.dto.cotation.CotationBuilderInfo;
 import com.kebuu.dto.cotation.attribute.CotationAttribute;
 import com.kebuu.enums.Direction;
+import com.kebuu.enums.ValueDirectionMode;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class ValueDirectionBuilderTests extends AbstractBuilderTests<ValueDirect
     private static final Function<CotationBuilderInfo, Optional<Double>> TRANSFOMER = (CotationBuilderInfo x) -> Optional.of(x.getCotation().getEnd());
 
     @Test
-    public void testWithNegativeDirectionStep() {
+    public void testWithNegativeDirectionStep_modePercent() {
         builder = new ValueDirectionBuilder("test", TRANSFOMER);
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
@@ -27,8 +28,20 @@ public class ValueDirectionBuilderTests extends AbstractBuilderTests<ValueDirect
     }
 
     @Test
+    public void testWithNegativeDirectionStep() {
+        builder = new ValueDirectionBuilder("test", TRANSFOMER, -1, 0.0, ValueDirectionMode.RAW);
+
+        BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
+
+        Assertions.assertThat(builtCotations.getValue(1, getAttribute()).isPresent()).isFalse();
+        Assertions.assertThat(builtCotations.getValue(2, getAttribute()).get()).isEqualTo(Direction.NONE);
+        Assertions.assertThat(builtCotations.getValue(6, getAttribute()).get()).isEqualTo(Direction.UP);
+        Assertions.assertThat(builtCotations.getValue(8, getAttribute()).get()).isEqualTo(Direction.DOWN);
+    }
+
+    @Test
     public void testWithPositiveDirectionStep() {
-        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1, 0.0);
+        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1, 0.0, ValueDirectionMode.RAW);
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 
@@ -40,7 +53,7 @@ public class ValueDirectionBuilderTests extends AbstractBuilderTests<ValueDirect
 
     @Test
     public void testWithPositiveDirectionStepWithThreshold() {
-        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1, 1.0);
+        builder = new ValueDirectionBuilder("test", TRANSFOMER, 1, 1.0, ValueDirectionMode.RAW);
 
         BuiltCotations builtCotations = builder.build(cotations, alreadyBuiltCotations);
 

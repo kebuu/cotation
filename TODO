@@ -11,4 +11,5 @@ Ajouter un TrendBuilder ?
 
 Indiquer pour chaque indicateur sa dernière indication et de quand elle date MACD_ADVICE, STOCASTIC_ADVICE
 Ajouter un seuil pour la direction de la cloture (+/- 0.2%)
-Ajouter un builder de variation (en pourcentage ou brute)
+
+Mettre par defaut valuedirectionMode = PERCENT +TU

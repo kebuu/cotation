@@ -7,6 +7,7 @@ import com.kebuu.dto.cotation.attribute.EnumeratedNominalCotationAttribute;
 import com.kebuu.dto.cotation.value.CotationValue;
 import com.kebuu.dto.cotation.value.SimpleCotationValue;
 import com.kebuu.enums.Direction;
+import com.kebuu.enums.ValueDirectionMode;
 import com.kebuu.utils.FunctionUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,9 +20,11 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
     private static final double DEFAULT_NO_DIRECTION_THRESHOLD = 0.0;
     private static final int DEFAULT_DIRECTION_STEP = -1;
     private static final String NAME_PREFIX = "direction_";
+    private static final ValueDirectionMode DEFAULT_THRESHOLD_MODE = ValueDirectionMode.PERCENT;
 
     private final EnumeratedNominalCotationAttribute<Direction> attribute;
     private final Function<CotationBuilderInfo, Optional<Double>> transformer;
+    private final ValueDirectionMode thresholdMode;
 
     /**
      * The minimum difference between current and step values unless consider the direction as Direction.NONE
@@ -35,30 +38,35 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
     protected final int directionStep;
 
     public ValueDirectionBuilder(CotationAttribute<Double> attribute) {
-        this(attribute, DEFAULT_DIRECTION_STEP, DEFAULT_NO_DIRECTION_THRESHOLD);
+        this(attribute, DEFAULT_DIRECTION_STEP, DEFAULT_NO_DIRECTION_THRESHOLD, DEFAULT_THRESHOLD_MODE);
     }
 
     public ValueDirectionBuilder(CotationAttribute<Double> attribute, double noDirectionThreshold) {
-        this(attribute, DEFAULT_DIRECTION_STEP, noDirectionThreshold);
+        this(attribute, DEFAULT_DIRECTION_STEP, noDirectionThreshold, DEFAULT_THRESHOLD_MODE);
     }
 
-    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep) {
-        this(attribute, directionStep, DEFAULT_NO_DIRECTION_THRESHOLD);
+    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep, ValueDirectionMode thresholdMode) {
+        this(attribute, directionStep, DEFAULT_NO_DIRECTION_THRESHOLD, thresholdMode);
     }
 
-    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep, double noDirectionThreshold) {
-        this(attribute.getName(), FunctionUtils.transformerFromAttribute(attribute), directionStep, noDirectionThreshold);
+    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep, double noDirectionThreshold, ValueDirectionMode thresholdMode) {
+        this(attribute.getName(), FunctionUtils.transformerFromAttribute(attribute), directionStep, noDirectionThreshold, thresholdMode);
     }
 
     public ValueDirectionBuilder(String name, Function<CotationBuilderInfo, Optional<Double>> transformer) {
-        this(name, transformer, DEFAULT_DIRECTION_STEP, DEFAULT_NO_DIRECTION_THRESHOLD);
+        this(name, transformer, DEFAULT_DIRECTION_STEP, DEFAULT_NO_DIRECTION_THRESHOLD, DEFAULT_THRESHOLD_MODE);
     }
 
     public ValueDirectionBuilder(String name, Function<CotationBuilderInfo, Optional<Double>> transformer, int directionStep, double noDirectionThreshold) {
+        this(name, transformer, directionStep, noDirectionThreshold, DEFAULT_THRESHOLD_MODE);
+    }
+
+    public ValueDirectionBuilder(String name, Function<CotationBuilderInfo, Optional<Double>> transformer, int directionStep, double noDirectionThreshold, ValueDirectionMode thresholdMode) {
         this.directionStep = directionStep;
         this.noDirectionThreshold = noDirectionThreshold;
         this.transformer = transformer;
         this.attribute = new EnumeratedNominalCotationAttribute<>(NAME_PREFIX + name + "_" + directionStep, Direction.class);
+        this.thresholdMode = thresholdMode;
     }
 
     @Override
@@ -84,9 +92,9 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
 
     private Direction calculateDirection(Optional<Double> currentValue, Optional<Double> stepValue) {
         if (directionStep > 0) {
-            return Direction.fromConsecutiveValues(currentValue.get(), stepValue.get(), noDirectionThreshold);
+            return thresholdMode.getDirection(currentValue.get(), stepValue.get(), noDirectionThreshold);
         } else {
-            return Direction.fromConsecutiveValues(stepValue.get(), currentValue.get(), noDirectionThreshold);
+            return thresholdMode.getDirection(stepValue.get(), currentValue.get(), noDirectionThreshold);
         }
     }
 }
