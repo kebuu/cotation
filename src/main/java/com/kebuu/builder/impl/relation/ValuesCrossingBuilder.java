@@ -16,6 +16,10 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
         super(attribute1, attribute2);
     }
 
+    public ValuesCrossingBuilder(CotationAttribute<Double> attribute1, double constant) {
+        super(attribute1, constant);
+    }
+
     public ValuesCrossingBuilder(String value1Name, Function<CotationBuilderInfo, Optional<Double>> value1Transfomer, String value2Name, Function<CotationBuilderInfo, Optional<Double>> value2Transfomer) {
         super(value1Name, value1Transfomer, value2Name, value2Transfomer);
     }
@@ -44,8 +48,8 @@ public class ValuesCrossingBuilder extends ValuesEnumRelationBuilder<CrossingVal
         SimpleCotationValue<CrossingValuesStatus> crossingValuesStatus = new SimpleCotationValue<>(attribute);
 
         if (areNeededValuesPresent(currentValue1, currentValue2, previousValue1, previousValue2)) {
-            CrossingValuesStatus crossingValueStatus = CrossingValuesStatus.fromValues(currentValue1.get(), currentValue2.get(),
-                previousValue1.get(), previousValue2.get());
+            CrossingValuesStatus crossingValueStatus = CrossingValuesStatus.fromValues(previousValue1.get(), currentValue1.get(), previousValue2.get(), currentValue2.get()
+            );
             crossingValuesStatus = crossingValuesStatus.withValue(crossingValueStatus);
         }
 

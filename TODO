@@ -10,6 +10,3 @@ Créer un CandleBuilder
 Ajouter un TrendBuilder ?
 
 Indiquer pour chaque indicateur sa dernière indication et de quand elle date MACD_ADVICE, STOCASTIC_ADVICE
-Ajouter un seuil pour la direction de la cloture (+/- 0.2%)
-
-Mettre par defaut valuedirectionMode = PERCENT +TU

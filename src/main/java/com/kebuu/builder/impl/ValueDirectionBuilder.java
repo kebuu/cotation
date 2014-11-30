@@ -53,6 +53,10 @@ public class ValueDirectionBuilder extends AbstractSingleAttributeBuilder<Direct
         this(attribute, directionStep, DEFAULT_NO_DIRECTION_THRESHOLD, thresholdMode);
     }
 
+    public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep, double noDirectionThreshold) {
+        this(attribute.getName(), FunctionUtils.transformerFromAttribute(attribute), directionStep, noDirectionThreshold, DEFAULT_THRESHOLD_MODE);
+    }
+
     public ValueDirectionBuilder(CotationAttribute<Double> attribute, int directionStep, double noDirectionThreshold, ValueDirectionMode thresholdMode) {
         this(attribute.getName(), FunctionUtils.transformerFromAttribute(attribute), directionStep, noDirectionThreshold, thresholdMode);
     }

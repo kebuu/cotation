@@ -7,6 +7,7 @@ import com.kebuu.builder.impl.relation.OverBuyOrSellBuilder;
 import com.kebuu.builder.impl.relation.ValuesCrossingBuilder;
 import com.kebuu.builder.impl.relation.ValuesPositionBuilder;
 import com.kebuu.builder.impl.simple.*;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,8 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SpringConfig {
+
+    private static final double directionThreshold = 0.0;
 
     @Autowired private DataSource dataSource;
 
@@ -53,7 +56,7 @@ public class SpringConfig {
         StochasticBuilder stochasticBuilder = new StochasticBuilder();
         SimpleMobileMeanBuilder stochasticSignalBuilder = new SimpleMobileMeanBuilder(5, stochasticBuilder.attribute());
         ValuesCrossingBuilder stochasticSignalCrossing = new ValuesCrossingBuilder(stochasticBuilder.attribute(), stochasticSignalBuilder.attribute());
-        OverBuyOrSellBuilder stochasticOverBuyOrSell = new OverBuyOrSellBuilder(stochasticBuilder.attribute(), 78D, 22D);
+        OverBuyOrSellBuilder stochasticOverBuyOrSell = new OverBuyOrSellBuilder(stochasticBuilder.attribute(), 80D, 20D);
         ValueDirectionBuilder stochasticDirection = new ValueDirectionBuilder(stochasticBuilder.attribute());
         ValuesPositionBuilder stochasticValueAndSignalPosition = new ValuesPositionBuilder(stochasticBuilder.attribute(), stochasticSignalBuilder.attribute());
 
@@ -67,14 +70,19 @@ public class SpringConfig {
         ValuesPositionBuilder macdValueAndSignalPosition = new ValuesPositionBuilder(macdBuilder.getAttribute(), macdSignalBuilder.attribute());
 
         ChaikinMoneyFlowBuilder chaikinMoneyFlowBuilder = new ChaikinMoneyFlowBuilder();
+        ValueDirectionBuilder chaikinMoneyFlowDirection = new ValueDirectionBuilder(chaikinMoneyFlowBuilder.attribute());
+        ValuesPositionBuilder chaikinMoneyFlowPosition = new ValuesPositionBuilder(chaikinMoneyFlowBuilder.attribute(), NumberUtils.DOUBLE_ZERO);
+        ValuesCrossingBuilder chaikinMoneyFlowCrossing = new ValuesCrossingBuilder(chaikinMoneyFlowBuilder.attribute(), NumberUtils.DOUBLE_ZERO);
+
         EaseOfMovementBuilder easeOfMovementBuilder = new EaseOfMovementBuilder();
+        ValueDirectionBuilder easeOfMovementDirection = new ValueDirectionBuilder(easeOfMovementBuilder.attribute());
+        ValuesPositionBuilder easeOfMovementPosition = new ValuesPositionBuilder(easeOfMovementBuilder.attribute(), NumberUtils.DOUBLE_ZERO);
+        ValuesCrossingBuilder easeOfMovementCrossing = new ValuesCrossingBuilder(easeOfMovementBuilder.attribute(), NumberUtils.DOUBLE_ZERO);
 
-        ValueDeltaBuilder endDelta = new ValueDeltaBuilder(endInfoBuilder.attribute());
-
-        ValueDirectionBuilder nextDaysEndDirectionBuilder1 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1);
-        ValueDirectionBuilder nextDaysEndDirectionBuilder2 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 2);
-        ValueDirectionBuilder nextDaysEndDirectionBuilder3 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 3);
-        ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder1 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 1, directionThreshold);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder2 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 2, directionThreshold);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder3 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 3, directionThreshold);
+        ValueDirectionBuilder nextDaysEndDirectionBuilder5 = new ValueDirectionBuilder(endInfoBuilder.attribute(), 5, directionThreshold);
 
         return new CompositeCotationBuilder(
             yearInfoBuilder,
@@ -105,7 +113,13 @@ public class SpringConfig {
             macdValueAndSignalPosition,
             macdSignalCrossing,
             chaikinMoneyFlowBuilder,
+            chaikinMoneyFlowDirection,
+            chaikinMoneyFlowPosition,
+            chaikinMoneyFlowCrossing,
             easeOfMovementBuilder,
+            easeOfMovementDirection,
+            easeOfMovementPosition,
+            easeOfMovementCrossing,
             nextDaysEndDirectionBuilder1,
             nextDaysEndDirectionBuilder2,
             nextDaysEndDirectionBuilder3,
